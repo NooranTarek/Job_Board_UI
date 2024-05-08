@@ -14,15 +14,24 @@ const routes = [
     children: [
       { path: "about", component: AboutView },
       { path: "home", component: HomeView },
-      { path: "profile", component: CandidateProfile },
-
+      {
+        path: "profile",
+        component: CandidateProfile,
+        children: [
+          {
+            path: "CandidateUpdateProfileForm",
+            component: CandidateUpdateProfileForm,
+          },
+          {
+            path: "CandidateProfileApplication",
+            component: CandidateProfileApplication,
+          },
+        ],
+      },
     ],
   },
   { path: "/login", component: LoginView },
   { path: "/register", component: RegisterView },
-  { path: "/CandidateUpdateProfileForm", component: CandidateUpdateProfileForm },
-  { path: "/CandidateProfileApplication", component: CandidateProfileApplication },
-
 ];
 
 const router = createRouter({
