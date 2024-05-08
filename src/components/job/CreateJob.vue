@@ -132,7 +132,8 @@
 
 <script>
 import axiosInstance from "../../apis/config";
-
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 export default {
   data() {
     return {
@@ -163,14 +164,14 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         });
-        alert("Job created successfully");
+        toast.success("Job Posted successfully");
         this.errors = {};
       } catch (error) {
         if (error.response && error.response.status === 422) {
           this.errors = error.response.data.errors;
         } else {
           console.error("Error creating job:", error);
-          alert("Error creating job. Please try again later.");
+          toast.error("Error Posting job. Please try again later.");
         }
       }
     },
@@ -180,8 +181,9 @@ export default {
 
 <style scoped>
 .job-form {
-  max-width: 800px;
+  max-width: 700px;
   margin: 0 auto;
+  margin-left: 30px;
 }
 
 .form {
@@ -193,7 +195,7 @@ export default {
 }
 
 .form-group {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .form-label {
