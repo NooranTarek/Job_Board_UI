@@ -8,9 +8,13 @@ export default {
 </script>
 
 <template>
-  <div>
-    <CreateJob />
-  </div>
+  <RouterView />
 </template>
 
-<style scoped></style>
+<script >
+
+import {RouterView} from "vue-router"
+export default {
+  name: 'App',
+}
+</script>
