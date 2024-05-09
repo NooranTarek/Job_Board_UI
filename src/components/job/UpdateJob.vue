@@ -131,7 +131,7 @@
 </template>
 
 <script>
-import axiosInstance from "../../apis/config";
+import axiosInstance from "../../axios";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
