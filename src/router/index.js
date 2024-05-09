@@ -4,9 +4,10 @@ import AboutView from "../components/Candidate/AboutView.vue";
 import CandidateView from "../components/Candidate/CandidateView.vue";
 import LoginView from "../components/LoginView.vue";
 import RegisterView from "../components/RegisterView.vue";
-import CandidateProfile from "../components/Candidate/CandidateProfile.vue"
-import CandidateUpdateProfileForm from "../components/Candidate/CandidateUpdateProfileForm.vue"
-import CandidateProfileApplication from "../components/Candidate/CandidateProfileApplication.vue"
+import CandidateProfile from "../components/Candidate/CandidateProfile.vue";
+import CandidateUpdateProfileForm from "../components/Candidate/CandidateUpdateProfileForm.vue";
+import CandidateProfileApplication from "../components/Candidate/CandidateProfileApplication.vue";
+import CreateJob from "../components/job/CreateJob.vue";
 const routes = [
   {
     path: "/",
@@ -32,6 +33,7 @@ const routes = [
   },
   { path: "/login", component: LoginView },
   { path: "/register", component: RegisterView },
+  { path: "/job", component: CreateJob },
 ];
 
 const router = createRouter({
