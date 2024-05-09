@@ -1,141 +1,185 @@
 <!-- MyComponent.vue -->
 
 <template>
-
-<div class="container">
+  <div class="container">
     <div class="row">
-        <div class="col-lg-3 col-md-4">
-            <div class="text-center card-box">
-                <div class="member-card">
-                    <div class="thumb-xl member-thumb m-b-10 center-block">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-circle img-thumbnail" alt="profile-image">
-                    </div>
-
-                    <div class="">
-                        <h4 class="m-b-5">Nouran Tarek</h4>
-                    </div>
-                    
-                    <div class="text-left m-t-40">
-                        <p class="text-muted font-13"><strong>Email :</strong> <span class="m-l-15">Nouran@gmail.com</span></p>
-                        <p class="text-muted font-13"><strong>Role :</strong> <span class="m-l-15">Candidate</span></p>
-                    </div>
-
-
-                </div>
-            </div> <!-- end card-box -->
-
-
-        </div> <!-- end col -->
-
-
-        <div class="col-md-8 col-lg-9">
-            <div class="">
-                <div class="">
-                    <ul class="nav nav-tabs navtab-custom">
-                         <li class="">
-          <RouterLink class="nav-link" to="/WelcomeCandidate">Welcome</RouterLink>
-
-                        </li>
-                        <li class="">
-          <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Sittings</RouterLink>
-
-                        </li>
-                        <li class="active">
-          <RouterLink class="nav-link" to="CandidateProfileApplication">Applications</RouterLink>
-
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-
-                        <div class="tab-pane active" id="profile">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/008B8B/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/FF7F50/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/6495ED/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/4169E1/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/B0E0E6/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/4169E1/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                </div>
+      <div class="col-lg-3 col-md-4">
+        <div class="text-center card-box">
+          <div class="member-card">
+            <div class="thumb-xl member-thumb m-b-10 center-block">
+              <img
+                :src="user.image ? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
+                class="img-circle img-thumbnail"
+                alt="profile-image"
+              />
             </div>
-        </div> <!-- end col -->
+            <div class>
+              <h4 class="m-b-5">{{ user ? user.name : 'Loading...' }}</h4>
+            </div>
+            <div class="text-left m-t-40">
+              <p class="text-muted font-13">
+                <strong>Email :</strong>
+                <span class="m-l-15">{{ user ? user.email : 'Loading...' }}</span>
+              </p>
+              <p class="text-muted font-13">
+                <strong>Role :</strong>
+                <span class="m-l-15">{{ user ? user.role : 'Loading...' }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- end card-box -->
+      </div>
+      <!-- end col -->
+
+      <div class="col-md-8 col-lg-9">
+        <div class>
+          <div class>
+            <ul class="nav nav-tabs navtab-custom">
+              <li class>
+                <RouterLink class="nav-link" to="/WelcomeCandidate">Welcome</RouterLink>
+              </li>
+              <li class>
+                <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Sittings</RouterLink>
+              </li>
+              <li class="active">
+                <RouterLink class="nav-link" to="CandidateProfileApplication">Applications</RouterLink>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="profile">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <div class="gal-detail thumb">
+                      <a href="#" class="image-popup" title="Screenshot-2">
+                        <img
+                          src="https://www.bootdey.com/image/400x300/008B8B/00000"
+                          class="thumb-img"
+                          alt="work-thumbnail"
+                        />
+                      </a>
+                      <h4 class="text-center">Gallary Image</h4>
+                      <div class="ga-border"></div>
+                      <p class="text-muted text-center">
+                        <small>Photography</small>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="gal-detail thumb">
+                      <a href="#" class="image-popup" title="Screenshot-2">
+                        <img
+                          src="https://www.bootdey.com/image/400x300/FF7F50/00000"
+                          class="thumb-img"
+                          alt="work-thumbnail"
+                        />
+                      </a>
+                      <h4 class="text-center">Gallary Image</h4>
+                      <div class="ga-border"></div>
+                      <p class="text-muted text-center">
+                        <small>Photography</small>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="gal-detail thumb">
+                      <a href="#" class="image-popup" title="Screenshot-2">
+                        <img
+                          src="https://www.bootdey.com/image/400x300/6495ED/00000"
+                          class="thumb-img"
+                          alt="work-thumbnail"
+                        />
+                      </a>
+                      <h4 class="text-center">Gallary Image</h4>
+                      <div class="ga-border"></div>
+                      <p class="text-muted text-center">
+                        <small>Photography</small>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="gal-detail thumb">
+                      <a href="#" class="image-popup" title="Screenshot-2">
+                        <img
+                          src="https://www.bootdey.com/image/400x300/4169E1/00000"
+                          class="thumb-img"
+                          alt="work-thumbnail"
+                        />
+                      </a>
+                      <h4 class="text-center">Gallary Image</h4>
+                      <div class="ga-border"></div>
+                      <p class="text-muted text-center">
+                        <small>Photography</small>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="gal-detail thumb">
+                      <a href="#" class="image-popup" title="Screenshot-2">
+                        <img
+                          src="https://www.bootdey.com/image/400x300/B0E0E6/00000"
+                          class="thumb-img"
+                          alt="work-thumbnail"
+                        />
+                      </a>
+                      <h4 class="text-center">Gallary Image</h4>
+                      <div class="ga-border"></div>
+                      <p class="text-muted text-center">
+                        <small>Photography</small>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="gal-detail thumb">
+                      <a href="#" class="image-popup" title="Screenshot-2">
+                        <img
+                          src="https://www.bootdey.com/image/400x300/4169E1/00000"
+                          class="thumb-img"
+                          alt="work-thumbnail"
+                        />
+                      </a>
+                      <h4 class="text-center">Gallary Image</h4>
+                      <div class="ga-border"></div>
+                      <p class="text-muted text-center">
+                        <small>Photography</small>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end col -->
     </div>
     <!-- end row -->
-</div>
+  </div>
 </template>
 
 <script>
+import { useUserStore } from "../../store/modules/UserProfilePinia";
 
+export default {
+  setup() {
+    const userStore = useUserStore();
+    console.log(userStore.user);
+    userStore.fetchUser();
+    return { user: userStore.user };
+  }
+};
 </script>
 
 <style scoped>
-.container{
-    margin-top:20px;
-    padding-top: 50px;
-    background:rgb(248,249,250);
-
+.container {
+  margin-top: 20px;
+  padding-top: 50px;
+  background: rgb(248, 249, 250);
 }
 /* ===========
    Profile
@@ -160,9 +204,9 @@
 }
 .social-links li a {
   -webkit-border-radius: 50%;
-  background: #EFF0F4;
+  background: #eff0f4;
   border-radius: 50%;
-  color: #7A7676;
+  color: #7a7676;
   display: inline-block;
   height: 30px;
   line-height: 30px;
@@ -225,9 +269,6 @@
   margin: 10px auto;
 }
 
-
-
-
 .tabs-vertical-env .tab-content {
   background: #ffffff;
   display: table-cell;
@@ -248,7 +289,7 @@
 .tabs-vertical-env .nav.tabs-vertical li > a {
   color: #333333;
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -266,7 +307,7 @@
   font-weight: 500;
   padding-left: 20px;
   padding-right: 20px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 .nav.nav-tabs > li > a:hover {
   color: #228bdf !important;
@@ -334,12 +375,12 @@
 }
 
 .nav.nav-tabs + .tab-content {
-    background: #ffffff;
-    margin-bottom: 20px;
-    padding: 20px;
+  background: #ffffff;
+  margin-bottom: 20px;
+  padding: 20px;
 }
 .progress.progress-sm .progress-bar {
-    font-size: 8px;
-    line-height: 5px;
+  font-size: 8px;
+  line-height: 5px;
 }
 </style>
