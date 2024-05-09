@@ -32,23 +32,20 @@
             <div class="">
                 <div class="">
                     <ul class="nav nav-tabs navtab-custom">
-                        <li class="">
-          <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Sittings</RouterLink>
+            <li class="">
+          <RouterLink class="nav-link" to="/WelcomeCandidate">Welcome</RouterLink>
 
                         </li>
                         <li class="">
-          <RouterLink class="nav-link" to="CandidateProfileApplication">Applications</RouterLink>
+          <RouterLink class="nav-link" to="/CandidateUpdateProfileForm">Sittings</RouterLink>
+
+                        </li>
+                        <li class="">
+          <RouterLink class="nav-link" to="/CandidateProfileApplication">Applications</RouterLink>
 
                         </li>
                     </ul>
-                     <div class="welcome-message">
-                            <h2>
-                                <i  class="fa fa-fire" ></i>
-                                Are You Ready to update ans see your filled applications 
-                                <i  class="fa fa-fire" ></i>
-
-                            </h2>
-                        </div>                </div>
+              </div>
                 </div>
         </div> <!-- end col -->
     </div>
@@ -57,12 +54,7 @@
 </template>
 
 <script>
-export default {
-  mounted() {
-    // Initialize Bootstrap tabs
-    $('.nav-tabs').tab();
-  }
-}
+
 </script>
 
 <style scoped>

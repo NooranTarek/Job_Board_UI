@@ -9,6 +9,7 @@ import CandidateUpdateProfileForm from "../components/Candidate/CandidateUpdateP
 import CandidateProfileApplication from "../components/Candidate/CandidateProfileApplication.vue";
 import CreateJob from "../components/job/CreateJob.vue";
 import UpdateJob from "../components/job/UpdateJob.vue";
+import WelcomeCandidate from "../components/Candidate/WelcomeCandidate.vue";
 const routes = [
   {
     path: "/",
@@ -16,20 +17,16 @@ const routes = [
     children: [
       { path: "about", component: AboutView },
       { path: "home", component: HomeView },
+      { path: "/profile", component: CandidateProfile },
       {
-        path: "profile",
-        component: CandidateProfile,
-        children: [
-          {
-            path: "CandidateUpdateProfileForm",
-            component: CandidateUpdateProfileForm,
-          },
-          {
-            path: "CandidateProfileApplication",
-            component: CandidateProfileApplication,
-          },
-        ],
+        path: "/CandidateProfileApplication",
+        component: CandidateProfileApplication,
       },
+      {
+        path: "/CandidateUpdateProfileForm",
+        component: CandidateUpdateProfileForm,
+      },
+      { path: "/WelcomeCandidate", component: WelcomeCandidate },
     ],
   },
   { path: "/login", component: LoginView },
