@@ -19,8 +19,6 @@ const routes = [
       { path: "/CandidateProfileApplication", component: CandidateProfileApplication },
       { path: "/CandidateUpdateProfileForm", component: CandidateUpdateProfileForm },
       { path: "/WelcomeCandidate", component: WelcomeCandidate },
-
-
     ],
   },
   { path: "/login", component: LoginView },

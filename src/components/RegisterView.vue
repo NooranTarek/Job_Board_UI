@@ -1,4 +1,3 @@
-<!-- MyComponent.vue -->
 
 <template>
 <section class="vh-100" style="background-color: #eee;">
@@ -15,7 +14,7 @@
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <span v-if="v$.name.$error"> {{ v$.name.$errors[0].$message }} </span>
+                        <span v-if="v$.name.$error" class="text-danger"> {{ v$.name.$errors[0].$message }} </span>
                         <input type="text" id="form3Example1c" class="form-control" v-model="this.name"/>
                         <label class="form-label" for="form3Example1c">Your Name</label>
                     </div>
@@ -23,7 +22,7 @@
                 <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <span v-if="v$.email.$error" class=""> {{ v$.email.$errors[0].$message }} </span>
+                        <span v-if="v$.email.$error" class="text-danger"> {{ v$.email.$errors[0].$message }} </span>
                       <input type="email" id="form3Example3c" class="form-control" v-model="email"/>
                       <label class="form-label" for="form3Example3c">Your Email</label>
 
@@ -33,7 +32,7 @@
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <span v-if="v$.password.password.$error" class=""> {{ v$.password.password.$errors[0].$message }} </span>
+                        <div v-if="v$.password.password.$error" class="text-danger"> {{ v$.password.password.$errors[0].$message }} </div>
                         <input type="password" id="form3Example4c" class="form-control" v-model="password.password"/>
                       <label class="form-label" for="form3Example4c">Password</label>
                     </div>
@@ -42,7 +41,7 @@
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                     <div data-mdb-input-init class="form-outline flex-fill mb-0">
-                        <span v-if="v$.password.confirm.$error" class=""> {{ v$.password.confirm.$errors[0].$message }} </span>
+                        <span v-if="v$.password.confirm.$error" class="text-danger"> {{ v$.password.confirm.$errors[0].$message }} </span>
                         <input type="password" id="form3Example4cd" class="form-control" v-model="password.confirm" />
                       <label class="form-label" for="form3Example4cd">Repeat your password</label>
                     </div>
