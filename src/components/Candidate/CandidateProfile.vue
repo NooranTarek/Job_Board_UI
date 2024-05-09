@@ -6,7 +6,7 @@
         <div class="member-card">
             <div class="thumb-xl member-thumb m-b-10 center-block">
               <img
-                :src="user.image? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
+                :src="user? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
                 class="img-circle img-thumbnail"
                 alt="profile-image"
               />
