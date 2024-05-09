@@ -32,94 +32,28 @@
             <div class="">
                 <div class="">
                     <ul class="nav nav-tabs navtab-custom">
-                         <li class="">
+            <li class="active">
           <RouterLink class="nav-link" to="/WelcomeCandidate">Welcome</RouterLink>
 
                         </li>
                         <li class="">
-          <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Sittings</RouterLink>
+          <RouterLink class="nav-link" to="/CandidateUpdateProfileForm">Sittings</RouterLink>
 
                         </li>
-                        <li class="active">
-          <RouterLink class="nav-link" to="CandidateProfileApplication">Applications</RouterLink>
+                        <li class="">
+          <RouterLink class="nav-link" to="/CandidateProfileApplication">Applications</RouterLink>
 
                         </li>
                     </ul>
-                    <div class="tab-content">
+                     <div class="welcome-message">
+                            <h2>
+                                <i  class="fa fa-fire" ></i>
+                                Are You Ready to update ans see your filled applications 
+                                <i  class="fa fa-fire" ></i>
 
-                        <div class="tab-pane active" id="profile">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/008B8B/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/FF7F50/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/6495ED/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/4169E1/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/B0E0E6/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-4">
-                                    <div class="gal-detail thumb">
-                                        <a href="#" class="image-popup" title="Screenshot-2">
-                                            <img src="https://www.bootdey.com/image/400x300/4169E1/00000" class="thumb-img" alt="work-thumbnail">
-                                        </a>
-                                        <h4 class="text-center">Gallary Image</h4>
-                                        <div class="ga-border"></div>
-                                        <p class="text-muted text-center"><small>Photography</small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
+                            </h2>
+                        </div>                </div>
                 </div>
-            </div>
         </div> <!-- end col -->
     </div>
     <!-- end row -->
@@ -135,6 +69,29 @@
     margin-top:20px;
     padding-top: 50px;
     background:rgb(248,249,250);
+
+}
+
+.welcome-message {
+    margin-top: 20px;
+    text-align: center;
+    width: 800px;
+    height: 260px; 
+    background-image: url("https://www.shutterstock.com/image-vector/welcome-message-office-manager-boss-260nw-2270734631.jpg");
+}
+.welcome-message i {
+    color: #ffc107; /* You can change the color to match your theme */
+    margin: 0 5px;
+    font-size: 30px;
+    margin-top: 250px;
+
+}
+.welcome-message h2 {
+    font-size: 25px;
+    margin-right: 10px;
+    color: rgb(140,140,210);
+    font-weight: bolder;
+
 
 }
 /* ===========
