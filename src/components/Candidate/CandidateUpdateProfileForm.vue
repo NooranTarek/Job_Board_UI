@@ -32,6 +32,10 @@
             <div class="">
                 <div class="">
                     <ul class="nav nav-tabs navtab-custom">
+                         <li class="">
+          <RouterLink class="nav-link" to="/WelcomeCandidate">Welcome</RouterLink>
+
+                        </li>
                         <li class="active">
           <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Sittings</RouterLink>
 
@@ -72,12 +76,7 @@
 </template>
 
 <script>
-export default {
-  mounted() {
-    // Initialize Bootstrap tabs
-    $('.nav-tabs').tab();
-  }
-}
+
 </script>
 
 <style scoped>
