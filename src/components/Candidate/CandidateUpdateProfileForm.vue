@@ -8,7 +8,7 @@
           <div class="member-card">
             <div class="thumb-xl member-thumb m-b-10 center-block">
               <img
-                :src="user.image? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
+                :src="user? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
                 class="img-circle img-thumbnail"
                 alt="profile-image"
               />
@@ -77,28 +77,23 @@
 
 <script>
 import { useUserStore } from "../../store/modules/UserProfilePinia";
+import { useVuelidate } from '@vuelidate/core'
 
 export default {
   setup() {
     const userStore = useUserStore();
-    console.log(userStore.user);
+    // console.log(userStore.user);
     userStore.fetchUser();
     return { user: userStore.user, userStore }; // Include userStore in the return object
   },
   methods: {
     async updateUser() {
       console.log(this.user.id);
-      try {
         await this.userStore.updateUser({ 
           id: this.user.id,
           name: this.user.name,
           email: this.user.email,
         });
-
-        console.log('User updated successfully');
-      } catch (error) {
-        console.error('Error updating user:', error);
-      }
     }
   }
 };
