@@ -15,6 +15,16 @@ export const JobStore = defineStore("jobstore", {
                 console.error("Error fetching jobs:", error);
             }
         },
+        async getJobs({ page, limit, order, search, filters }) {
+            try {
+                const response = await axiosInstance.get("jobs", {
+                    params: { page, limit, order, search, filters }
+                });
+                this.jobs = response.data;
+            } catch (error) {
+                console.error("Error fetching jobs:", error);
+            }
+        },
         async changeJobStatus(id, jobForm) {
             try {
                 const resp = await axiosInstance.put(`jobs/${id}`, jobForm);
