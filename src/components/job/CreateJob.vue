@@ -127,6 +127,15 @@
             errors.application_deadline[0]
           }}</span>
         </div>
+        <div class="mb-3">
+          <label for="logo" class="form-label">Logo</label>
+          <input
+            type="file"
+            class="form-control"
+            id="logo"
+            @change="handleLogoUpload"
+          />
+        </div>
       </div>
 
       <button type="submit" class="btn btn-primary">Post Job</button>
@@ -157,6 +166,7 @@ export default {
         benefits: "",
         location: "",
         work_type: "",
+        logo: null,
         application_deadline: "",
       },
       errors: {},
@@ -184,13 +194,19 @@ export default {
 
         const formData = new FormData();
         for (const key in this.job) {
+          if (key === "logo" && !this.job[key]) {
+            continue;
+          }
           formData.append(key, this.job[key]);
         }
+
         if (this.v$.$error) return;
 
         await axiosInstance.post("jobs", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization:
+              "Bearer 5|yM0VwQcQexoiqA2sFvJdTe4yJ712aECxMR1NypZDcf7c40f0",
           },
         });
         toast.success("Job Posted successfully");
@@ -198,10 +214,19 @@ export default {
       } catch (error) {
         if (error.response && error.response.status === 422) {
           this.errors = error.response.data.errors;
+          console.log(JSON.parse(error.response.data));
         } else {
           console.error("Error creating job:", error);
           toast.error("Error Posting job. Please try again later.");
         }
+      }
+    },
+    handleLogoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.job.logo = file;
+      } else {
+        this.job.logo = null;
       }
     },
   },
