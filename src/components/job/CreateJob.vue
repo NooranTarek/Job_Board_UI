@@ -9,7 +9,9 @@
           id="title"
           v-model="job.title"
         />
-        <span v-if="errors.title" class="error">{{ errors.title[0] }}</span>
+        <span v-if="v$.job.title.$error" class="error">{{
+          v$.job.title.$errors[0].$message
+        }}</span>
       </div>
       <div class="form-group row">
         <div class="col">
@@ -19,8 +21,8 @@
             id="description"
             v-model="job.description"
           ></textarea>
-          <span v-if="errors.description" class="error">{{
-            errors.description[0]
+          <span v-if="v$.job.description.$error" class="error">{{
+            v$.job.description.$errors[0].$message
           }}</span>
         </div>
         <div class="col">
@@ -32,8 +34,8 @@
             id="responsibilities"
             v-model="job.responsibilities"
           ></textarea>
-          <span v-if="errors.responsibilities" class="error">{{
-            errors.responsibilities[0]
+          <span v-if="v$.job.responsibilities.$error" class="error">{{
+            v$.job.responsibilities.$errors[0].$message
           }}</span>
         </div>
       </div>
@@ -45,7 +47,9 @@
             id="skills"
             v-model="job.skills"
           ></textarea>
-          <span v-if="errors.skills" class="error">{{ errors.skills[0] }}</span>
+          <span v-if="v$.job.skills.$error" class="error">{{
+            v$.job.skills.$errors[0].$message
+          }}</span>
         </div>
         <div class="col">
           <label for="qualifications" class="form-label">Qualifications</label>
@@ -54,8 +58,8 @@
             id="qualifications"
             v-model="job.qualifications"
           ></textarea>
-          <span v-if="errors.qualifications" class="error">{{
-            errors.qualifications[0]
+          <span v-if="v$.job.qualifications.$error" class="error">{{
+            v$.job.qualifications.$errors[0].$message
           }}</span>
         </div>
       </div>
@@ -68,8 +72,8 @@
             id="salary_range"
             v-model="job.salary_range"
           />
-          <span v-if="errors.salary_range" class="error">{{
-            errors.salary_range[0]
+          <span v-if="v$.job.salary_range.$error" class="error">{{
+            v$.job.salary_range.$errors[0].$message
           }}</span>
         </div>
         <div class="col">
@@ -80,8 +84,8 @@
             id="location"
             v-model="job.location"
           />
-          <span v-if="errors.location" class="error">{{
-            errors.location[0]
+          <span v-if="v$.job.location.$error" class="error">{{
+            v$.job.location.$errors[0].$message
           }}</span>
         </div>
       </div>
@@ -92,8 +96,8 @@
           id="benefits"
           v-model="job.benefits"
         ></textarea>
-        <span v-if="errors.benefits" class="error">{{
-          errors.benefits[0]
+        <span v-if="v$.job.benefits.$error" class="error">{{
+          v$.job.benefits.$errors[0].$message
         }}</span>
       </div>
       <div class="form-group row">
@@ -105,8 +109,8 @@
             <option value="remote">Remote</option>
             <option value="hybrid">Hybrid</option>
           </select>
-          <span v-if="errors.work_type" class="error">{{
-            errors.work_type[0]
+          <span v-if="v$.job.work_type.$error" class="error">{{
+            v$.job.work_type.$errors[0].$message
           }}</span>
         </div>
         <div class="col">
@@ -134,7 +138,13 @@
 import axiosInstance from "../../apis/config";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import { useVuelidate } from "@vuelidate/core";
+
+import { helpers, required, maxLength, numeric } from "@vuelidate/validators";
 export default {
+  setup() {
+    return { v$: useVuelidate() };
+  },
   data() {
     return {
       job: {
@@ -152,13 +162,32 @@ export default {
       errors: {},
     };
   },
+  validations() {
+    return {
+      job: {
+        title: { required, maxLength: maxLength(255) },
+        description: { required, maxLength: maxLength(255) },
+        responsibilities: { required, maxLength: maxLength(255) },
+        skills: { required, maxLength: maxLength(255) },
+        qualifications: { required, maxLength: maxLength(255) },
+        salary_range: { required, numeric },
+        benefits: { required, maxLength: maxLength(255) },
+        location: { required, maxLength: maxLength(100) },
+        work_type: { required, maxLength: maxLength(100) },
+      },
+    };
+  },
   methods: {
     async createJob() {
       try {
+        this.v$.$validate();
+
         const formData = new FormData();
         for (const key in this.job) {
           formData.append(key, this.job[key]);
         }
+        if (this.v$.$error) return;
+
         await axiosInstance.post("jobs", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
