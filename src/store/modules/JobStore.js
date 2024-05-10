@@ -1,15 +1,14 @@
 import { defineStore } from "pinia";
-import axios from 'axios';
+import axiosInstance from "../../axios";
 
-
-export const JobStore = defineStore("jobstore",{
-    state:()=>({
-        jobs:[]
+export const JobStore = defineStore("jobstore", {
+    state: () => ({
+        jobs: []
     }),
-    actions:{
+    actions: {
         async getAllJobs() {
             try {
-                const response = await axios.get("http://localhost:8000/api/jobs");
+                const response = await axiosInstance.get("jobs");
                 this.jobs = response.data;
                 console.log(response);
             } catch (error) {
@@ -18,11 +17,11 @@ export const JobStore = defineStore("jobstore",{
         },
         async changeJobStatus(id, jobForm) {
             try {
-                const resp= await axios.put(`http://localhost:8000/api/jobs/${id}`,jobForm);
+                const resp = await axiosInstance.put(`jobs/${id}`, jobForm);
                 console.log(resp);
             } catch (error) {
-                console.log("Error change job status job:",error)
+                console.log("Error changing job status:", error)
             }
         },
     }
-})
+});
