@@ -10,8 +10,11 @@ import CandidateProfileApplication from "../components/Candidate/CandidateProfil
 import CreateJob from "../components/job/CreateJob.vue";
 import UpdateJob from "../components/job/UpdateJob.vue";
 import WelcomeCandidate from "../components/Candidate/WelcomeCandidate.vue";
-
 import manageJobsComponent from "../components/admin/job/manageJobsComponent.vue";
+import JobList from "../components/job/JobList.vue";
+import JobDetails from "../components/job/JobDetails.vue";
+import JobSearch from "../components/job/JobSearch.vue";
+
 const routes = [
   {
     path: "/",
@@ -33,9 +36,12 @@ const routes = [
   },
   { path: "/login", component: LoginView },
   { path: "/register", component: RegisterView },
-  { path: "/job", component: CreateJob },
-  { path: "/job/:id", component: UpdateJob },
+  { path: "/jobs/create", component: CreateJob },
+  { path: "/jobs/update/:id", component: UpdateJob },
   { path: "/manageJobs", component: manageJobsComponent },
+  { path: "/job/:id", component: JobDetails, name: "JobDetails" },
+  { path: "/jobs", component: JobList },
+  { path: "/jobs/search", component: JobSearch },
 ];
 
 const router = createRouter({
