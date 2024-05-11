@@ -12,6 +12,7 @@ import UpdateJob from "../components/job/UpdateJob.vue";
 import WelcomeCandidate from "../components/Candidate/WelcomeCandidate.vue";
 import manageJobsComponent from "../components/admin/job/manageJobsComponent.vue";
 import JobList from "../components/job/JobList.vue";
+import JobDetails from "../components/job/JobDetails.vue";
 
 const routes = [
   {
@@ -34,10 +35,12 @@ const routes = [
   },
   { path: "/login", component: LoginView },
   { path: "/register", component: RegisterView },
-  { path: "/job", component: CreateJob },
-  { path: "/job/:id", component: UpdateJob },
+  { path: "/job/create", component: CreateJob },
+  { path: "/job/update/:id", component: UpdateJob },
   { path: "/manageJobs", component: manageJobsComponent },
   { path: "/jobs", component: JobList },
+  { path: "/job/:id", component: JobDetails, name: "JobDetails" },
+
 ];
 
 const router = createRouter({
