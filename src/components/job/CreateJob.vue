@@ -123,8 +123,8 @@
             class="form-control"
             v-model="job.application_deadline"
           />
-          <span v-if="errors.application_deadline" class="error">{{
-            errors.application_deadline[0]
+          <span v-if="v$.job.application_deadline.$error" class="error">{{
+            v$.job.application_deadline.$errors[0].$message
           }}</span>
         </div>
         <div class="mb-3">
@@ -136,6 +136,9 @@
             @change="handleLogoUpload"
           />
         </div>
+        <span v-if="v$.job.logo.$error" class="error">{{
+          v$.job.logo.$errors[0].$message
+        }}</span>
       </div>
 
       <button type="submit" class="btn btn-primary">Post Job</button>
@@ -184,6 +187,29 @@ export default {
         benefits: { required, maxLength: maxLength(255) },
         location: { required, maxLength: maxLength(100) },
         work_type: { required, maxLength: maxLength(100) },
+        application_deadline: {
+          required,
+          futureDate: helpers.withMessage(
+            "Application deadline must be a future date",
+            (value) => {
+              if (!value) return true;
+              const selectedDate = new Date(value);
+              const currentDate = new Date();
+              return selectedDate >= currentDate;
+            }
+          ),
+        },
+        logo: {
+          isImage: helpers.withMessage(
+            "Please upload a valid image file (jpg, jpeg, png, gif)",
+            (value) => {
+              if (!value) return true;
+              const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+              const extension = value.name.split(".").pop().toLowerCase();
+              return allowedExtensions.includes(extension);
+            }
+          ),
+        },
       },
     };
   },
