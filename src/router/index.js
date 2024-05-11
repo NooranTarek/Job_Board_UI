@@ -10,12 +10,16 @@ import CandidateProfileApplication from "../components/Candidate/CandidateProfil
 import CreateJob from "../components/job/CreateJob.vue";
 import UpdateJob from "../components/job/UpdateJob.vue";
 import WelcomeCandidate from "../components/Candidate/WelcomeCandidate.vue";
+import UserMonitor from "../components/admin/UserMonitor.vue";
+import NavbarAdmin from "../components/admin/NavbarAdmin.vue";
+import { useUserStore } from "../store/modules/UserProfilePinia"; // Adjust the path as necessary
 import manageJobsComponent from "../components/admin/job/manageJobsComponent.vue";
 import JobList from "../components/job/JobList.vue";
 import JobDetails from "../components/job/JobDetails.vue";
 import JobSearch from "../components/job/JobSearch.vue";
 
 const routes = [
+  //! Candidate pages _______________________________________________________________
   {
     path: "/",
     component: CandidateView,
@@ -33,7 +37,30 @@ const routes = [
       },
       { path: "/WelcomeCandidate", component: WelcomeCandidate },
     ],
+    meta: { requiresAuth: true, requiredRole: "candidate" },
   },
+
+  //! Admin pages _______________________________________________________________
+  {
+    path: "/admin",
+    component: NavbarAdmin,
+    children: [
+      { path: "UserMonitor", name: "UserMonitor", component: UserMonitor },
+    ],
+    meta: { requiresAuth: true, requiredRole: "admin" },
+  },
+  //! Employer pages _______________________________________________________________
+  
+  // {
+  //   path: "/employer",
+  //   component: NavbarEmployer,
+  //   children: [
+  //     { path: "UserMonitor", name: "UserMonitor", component: UserMonitor },
+  //   ],
+  //   meta: { requiresAuth: true, requiredRole: "employer" },
+  // },
+
+  //! Unautjorized pages _______________________________________________________________
   { path: "/login", component: LoginView },
   { path: "/register", component: RegisterView },
   { path: "/jobs/create", component: CreateJob },
@@ -45,8 +72,43 @@ const routes = [
 ];
 
 const router = createRouter({
-  routes,
   history: createWebHistory(),
+  routes,
 });
+
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+
+    if (!localStorage.getItem("token")) {
+      next({ path: "/login", query: { redirect: to.fullPath } });
+      return;
+    }
+  }
+
+  if (to.matched.some((record) => record.meta.requiredRole)) {
+    try {
+      const user = await userStore.fetchUser();
+      const requiredRole = to.meta.requiredRole;
+
+      if (user.role !== requiredRole) {
+        next({ path: "/login", query: { redirect: to.fullPath } });
+        return;
+      }
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      next({ path: "/login", query: { redirect: to.fullPath } });
+      return;
+    }
+  }
+
+  // Proceed to the next route
+  next();
+});
+
+
+
+
 
 export default router;

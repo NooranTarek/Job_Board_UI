@@ -50,7 +50,6 @@
                       <span v-if="v$.password.confirm.$error" class="text-danger"> {{ v$.password.confirm.$errors[0].$message }} </span>
                     </div>
                   </div>
-                  <div>
                     
                     <label  style="margin-left: 33px;" class="form-label" for="Role">Role</label>
                     <div class="d-flex align-items-center">
@@ -61,7 +60,17 @@
                         <option  v-if="IsAdmin()" value="admin">Admin</option>
                         </select>
                         </div>
-                      
+
+                      <div class="d-flex flex-row align-items-center mb-4 mt-4">
+                      <!-- <font-awesome-icon :icon="['fas', 'key']" />     -->
+                      <font-awesome-icon icon="key" class="me-3 mt-4" />
+                        <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                      <label class="form-label" for="form3Example4cd" >Image</label>
+                      <input type="file" id="form3Example4cd" class="form-control" name="file_upload" accept=".jpg" @change="onChange($event)" />
+                      <!-- <span v-if="v$.password.confirm.$error" class="text-danger"> {{ v$.image.$error.$message }} </span> -->
+                    </div>
+                  </div>
+                  <div>
                   </div>
                   
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4 mt-3">
@@ -112,11 +121,12 @@ export default {
     return {
       name: '',
       email: '',
+      role: 'candidate',
       password: {
         password: '',
         confirm: '',
-        role: 'Candidate'
-    }
+    }, 
+    image : ''
   }
 },
 validations(){
@@ -128,12 +138,17 @@ validations(){
        password: {
         password: { required, maxLength: maxLength(100), regex: helpers.withMessage('At least one special character, one letter, one digit, and be at least 8 charachters',helpers.regex(passwordRegex) )},
         confirm: { required, passwordMatch: helpers.withMessage('Password does not match ',sameAs(this.password.password)) },
-    }
+    },
 }
 },
 methods: {
   onChange(event){
       this.role = event.target.value;
+  },
+  onChange(event){
+    console.log(event.target.files[0]);
+      this.image = event.target.files[0];
+
   },
   IsAdmin(){
     const token = localStorage.getItem('token');
@@ -147,14 +162,16 @@ methods: {
         // console.log(this.v$)
     },
      async register() {
+    const formData = new FormData();
+          formData.append('name', this.name);
+          formData.append('email', this.email);
+          formData.append('password', this.password.password);
+          formData.append('c_password', this.password.confirm);
+          formData.append('role', this.role);
+          formData.append('image', this.image);
+          console.log(formData.get('image'));
       try {
-         const response =  await this.userStore.register({ 
-          name: this.name,
-          email: this.email,
-          password: this.password.password,
-          c_password: this.password.confirm,
-          role: this.role
-        })
+         const response =  await this.userStore.register(formData)
           // console.log(response.data);
           this.$router.push('/login');
           // toast.success("User Created successfully");

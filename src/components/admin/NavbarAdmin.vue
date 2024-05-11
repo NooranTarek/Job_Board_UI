@@ -7,33 +7,36 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <!-- <li class="nav-item active">
           <RouterLink class="nav-link" to="home">Home</RouterLink>
+        </li> -->
+        <li  class="nav-item">
+          <router-link class="nav-link" :to="{name:'UserMonitor'}">Monitor Candidates</router-link>
         </li>
-        <li v-if="specifyRole('candidate')" class="nav-item">
-          <RouterLink class="nav-link" to="about">My Application</RouterLink>
+        <!-- <li class="nav-item">
+          <RouterLink class="nav-link" to="profile">Monitor Employers</RouterLink>
         </li>
-        <li v-if="specifyRole('any')" class="nav-item">
-          <RouterLink class="nav-link" to="profile">my-Profile</RouterLink>
+        <li class="nav-item">
+          <RouterLink class="nav-link" to="profile">Monitor Admins</RouterLink>
         </li>
-        <li v-if="specifyRole('admin')" class="nav-item">
-          <RouterLink class="nav-link" to="user-monitor">user-monitor</RouterLink>
-        </li>
+        <li  class="nav-item"> -->
+          <!-- <RouterLink class="nav-link" to="useronitor"></RouterLink> -->
+        <!-- </li> -->
       </ul>
 
       <ul class="navbar-nav ms-auto">
 
-        <li v-if="specifyRole('any')" class="nav-item">
+        <li  class="nav-item">
           <!-- <RouterLink class="nav-link" to="/register">Image</RouterLink> -->
           <img  v-if="this.user"  style="width:50px;" :src="this.user.image" alt="">
         </li>
-        <li v-if="! specifyRole('any')" class="nav-item active">
+        <li class="nav-item active">
           <RouterLink class="nav-link" to="/login" >Login</RouterLink>
         </li>
-        <li v-if="! specifyRole('any')" class="nav-item">
+        <li  class="nav-item">
           <RouterLink class="nav-link" to="/register">Register</RouterLink>
         </li>
-        <li v-if="specifyRole('any')" class="nav-item" @click="this.logout">
+        <li  class="nav-item" @click="this.logout">
           <span  style="cursor: pointer;" class="nav-link"  >Logout</span>
         </li>
         
@@ -41,6 +44,9 @@
      
     </div>
   </nav>
+  <section>
+    <router-view></router-view>
+  </section>
 </template>
 <script>
 import { useUserStore } from "../../store/modules/UserProfilePinia";
