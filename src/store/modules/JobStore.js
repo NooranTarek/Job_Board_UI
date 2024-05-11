@@ -9,7 +9,7 @@ export const JobStore = defineStore("jobstore", {
         async getAllJobs() {
             try {
                 const response = await axiosInstance.get("jobs");
-                this.jobs = response.data;
+                this.jobs = response.data.data;
                 console.log(response);
             } catch (error) {
                 console.error("Error fetching jobs:", error);
@@ -20,7 +20,9 @@ export const JobStore = defineStore("jobstore", {
                 const response = await axiosInstance.get("jobs", {
                     params: { page, limit, order, search, filters }
                 });
-                this.jobs = response.data;
+                this.jobs = response.data.data;
+                console.log(this.jobs);
+
             } catch (error) {
                 console.error("Error fetching jobs:", error);
             }
