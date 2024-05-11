@@ -11,28 +11,23 @@ export const useUserStore = defineStore({
   actions: {
     async fetchUser() {
       try {
-        // Replace 'YOUR_TOKEN_HERE' with your actual token value
-        const token = '4|WJmoVosVlnEPB8Qnm2ZGxOXuZKG0saFyLCunrey901606c66';
+        const token = '5|M26KEjnH0VIEciura7S29bstXRt2rOy1lbFgijQHffb7218c';
 
-        // Add the token to the request headers
         const config = {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
 
-        // Make the GET request with the configured headers
         const response = await axiosInstance.get('/user', config);
 
-        // Update the store state with the user data
         this.user = response.data;
       } catch (error) {
-        // Handle errors
         this.error = error.message;
       }
     },
     async updateUser(userData) {
-          const token = '4|WJmoVosVlnEPB8Qnm2ZGxOXuZKG0saFyLCunrey901606c66';
+          const token = '5|M26KEjnH0VIEciura7S29bstXRt2rOy1lbFgijQHffb7218c';
           const config = {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -40,10 +35,11 @@ export const useUserStore = defineStore({
           };
           const response = await axiosInstance.put(`/users/${userData.id}`, userData, config);
           this.user = response.data;
+          console.log(response.data);
           if(response.data.success===true){
             toast.success(response.data.message,"🤝");
           }
-          else if (response.data.success===false){
+          else{
             // console.log(response.data.errors.email[0]);
             if(response.data.errors.name){
               toast.error(response.data.errors.name[0],"👎");
