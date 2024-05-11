@@ -13,6 +13,7 @@ import WelcomeCandidate from "../components/Candidate/WelcomeCandidate.vue";
 import manageJobsComponent from "../components/admin/job/manageJobsComponent.vue";
 import JobList from "../components/job/JobList.vue";
 import JobDetails from "../components/job/JobDetails.vue";
+import JobSearch from "../components/job/JobSearch.vue";
 
 const routes = [
   {
@@ -38,9 +39,9 @@ const routes = [
   { path: "/job/create", component: CreateJob },
   { path: "/job/update/:id", component: UpdateJob },
   { path: "/manageJobs", component: manageJobsComponent },
-  { path: "/jobs", component: JobList },
   { path: "/job/:id", component: JobDetails, name: "JobDetails" },
-
+  { path: "/jobs", component: JobList },
+  { path: "/jobs/search", component: JobSearch },
 ];
 
 const router = createRouter({
