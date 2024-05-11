@@ -1,14 +1,12 @@
-<!-- MyComponent.vue -->
 
 <template>
-  <div>
-    <p>Home</p>
-</div>
 </template>
 
-<script>
-</script>
 
+<script>
+import { useUserStore } from "../../store/modules/UserProfilePinia";
+
+</script>
 <style scoped>
 /* Scoped styles specific to this component */
 h1 {

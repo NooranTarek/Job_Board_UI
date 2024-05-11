@@ -9,7 +9,9 @@
           id="title"
           v-model="job.title"
         />
-        <span v-if="errors.title" class="error">{{ errors.title[0] }}</span>
+        <span v-if="v$.job.title.$error" class="error">{{
+          v$.job.title.$errors[0].$message
+        }}</span>
       </div>
       <div class="form-group row">
         <div class="col">
@@ -19,8 +21,8 @@
             id="description"
             v-model="job.description"
           ></textarea>
-          <span v-if="errors.description" class="error">{{
-            errors.description[0]
+          <span v-if="v$.job.description.$error" class="error">{{
+            v$.job.description.$errors[0].$message
           }}</span>
         </div>
         <div class="col">
@@ -32,8 +34,8 @@
             id="responsibilities"
             v-model="job.responsibilities"
           ></textarea>
-          <span v-if="errors.responsibilities" class="error">{{
-            errors.responsibilities[0]
+          <span v-if="v$.job.responsibilities.$error" class="error">{{
+            v$.job.responsibilities.$errors[0].$message
           }}</span>
         </div>
       </div>
@@ -45,7 +47,9 @@
             id="skills"
             v-model="job.skills"
           ></textarea>
-          <span v-if="errors.skills" class="error">{{ errors.skills[0] }}</span>
+          <span v-if="v$.job.skills.$error" class="error">{{
+            v$.job.skills.$errors[0].$message
+          }}</span>
         </div>
         <div class="col">
           <label for="qualifications" class="form-label">Qualifications</label>
@@ -54,8 +58,8 @@
             id="qualifications"
             v-model="job.qualifications"
           ></textarea>
-          <span v-if="errors.qualifications" class="error">{{
-            errors.qualifications[0]
+          <span v-if="v$.job.qualifications.$error" class="error">{{
+            v$.job.qualifications.$errors[0].$message
           }}</span>
         </div>
       </div>
@@ -68,8 +72,8 @@
             id="salary_range"
             v-model="job.salary_range"
           />
-          <span v-if="errors.salary_range" class="error">{{
-            errors.salary_range[0]
+          <span v-if="v$.job.salary_range.$error" class="error">{{
+            v$.job.salary_range.$errors[0].$message
           }}</span>
         </div>
         <div class="col">
@@ -80,8 +84,8 @@
             id="location"
             v-model="job.location"
           />
-          <span v-if="errors.location" class="error">{{
-            errors.location[0]
+          <span v-if="v$.job.location.$error" class="error">{{
+            v$.job.location.$errors[0].$message
           }}</span>
         </div>
       </div>
@@ -92,8 +96,8 @@
           id="benefits"
           v-model="job.benefits"
         ></textarea>
-        <span v-if="errors.benefits" class="error">{{
-          errors.benefits[0]
+        <span v-if="v$.job.benefits.$error" class="error">{{
+          v$.job.benefits.$errors[0].$message
         }}</span>
       </div>
       <div class="form-group row">
@@ -105,8 +109,8 @@
             <option value="remote">Remote</option>
             <option value="hybrid">Hybrid</option>
           </select>
-          <span v-if="errors.work_type" class="error">{{
-            errors.work_type[0]
+          <span v-if="v$.job.work_type.$error" class="error">{{
+            v$.job.work_type.$errors[0].$message
           }}</span>
         </div>
         <div class="col">
@@ -119,13 +123,25 @@
             class="form-control"
             v-model="job.application_deadline"
           />
-          <span v-if="errors.application_deadline" class="error">{{
-            errors.application_deadline[0]
+          <span v-if="v$.job.application_deadline.$error" class="error">{{
+            v$.job.application_deadline.$errors[0].$message
           }}</span>
         </div>
+        <div class="mb-3">
+          <label for="logo" class="form-label">Logo</label>
+          <input
+            type="file"
+            class="form-control"
+            id="logo"
+            @change="handleLogoUpload"
+          />
+        </div>
+        <span v-if="v$.job.logo.$error" class="error">{{
+          v$.job.logo.$errors[0].$message
+        }}</span>
       </div>
 
-      <button type="submit" class="btn btn-primary">Post Job</button>
+      <button type="submit" class="btn btn-primary">Update Job</button>
     </form>
   </div>
 </template>
@@ -134,8 +150,13 @@
 import axiosInstance from "../../axios";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import { useVuelidate } from "@vuelidate/core";
 
+import { helpers, required, maxLength, numeric } from "@vuelidate/validators";
 export default {
+  setup() {
+    return { v$: useVuelidate() };
+  },
   data() {
     return {
       job: {
@@ -148,15 +169,60 @@ export default {
         benefits: "",
         location: "",
         work_type: "",
+        logo: null,
         application_deadline: "",
       },
       errors: {},
     };
   },
+  validations() {
+    return {
+      job: {
+        title: { required, maxLength: maxLength(255) },
+        description: { required, maxLength: maxLength(255) },
+        responsibilities: { required, maxLength: maxLength(255) },
+        skills: { required, maxLength: maxLength(255) },
+        qualifications: { required, maxLength: maxLength(255) },
+        salary_range: { required, numeric },
+        benefits: { required, maxLength: maxLength(255) },
+        location: { required, maxLength: maxLength(100) },
+        work_type: { required, maxLength: maxLength(100) },
+        application_deadline: {
+          required,
+          futureDate: helpers.withMessage(
+            "Application deadline must be a future date",
+            (value) => {
+              if (!value) return true;
+              const selectedDate = new Date(value);
+              const currentDate = new Date();
+              return selectedDate >= currentDate;
+            }
+          ),
+        },
+        logo: {
+          isImage: helpers.withMessage(
+            "Please upload a valid image file (jpg, jpeg, png, gif)",
+            (value) => {
+              if (!value) return true;
+              const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
+              const extension = value.name.split(".").pop().toLowerCase();
+              return allowedExtensions.includes(extension);
+            }
+          ),
+        },
+      },
+    };
+  },
   async created() {
     const jobId = this.$route.params.id;
     try {
-      const response = await axiosInstance.get(`jobs/${jobId}`);
+      const response = await axiosInstance.get(`jobs/${jobId}`, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization:
+            "Bearer 5|yM0VwQcQexoiqA2sFvJdTe4yJ712aECxMR1NypZDcf7c40f0",
+        },
+      });
       if (response.data.application_deadline) {
         response.data.application_deadline =
           response.data.application_deadline.split(" ")[0];
@@ -170,6 +236,7 @@ export default {
   methods: {
     async updateJob() {
       try {
+        this.v$.$validate();
         const formData = new FormData();
         for (const key in this.job) {
           //skip appending logo if its null
@@ -180,9 +247,12 @@ export default {
         }
         formData.append("_method", "put");
         const jobId = this.$route.params.id;
+        if (this.v$.$error) return;
         await axiosInstance.post(`jobs/${jobId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization:
+              "Bearer 5|yM0VwQcQexoiqA2sFvJdTe4yJ712aECxMR1NypZDcf7c40f0",
           },
         });
         toast.success("Job Updated successfully");
@@ -194,6 +264,14 @@ export default {
           console.error("Error updating job:", error);
           toast.error("Error updating job. Please try again later.");
         }
+      }
+    },
+    handleLogoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.job.logo = file;
+      } else {
+        this.job.logo = null;
       }
     },
   },

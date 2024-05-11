@@ -1,28 +1,48 @@
 import { defineStore } from "pinia";
-import axios from 'axios';
+import axiosInstance from "../../axios";
 
-
-export const JobStore = defineStore("jobstore",{
-    state:()=>({
-        jobs:[]
+export const JobStore = defineStore("jobstore", {
+    state: () => ({
+        jobs: []
     }),
-    actions:{
+    actions: {
         async getAllJobs() {
             try {
-                const response = await axios.get("http://localhost:8000/api/jobs");
-                this.jobs = response.data;
+                const response = await axiosInstance.get("jobs");
+                this.jobs = response.data.data;
                 console.log(response);
             } catch (error) {
                 console.error("Error fetching jobs:", error);
             }
         },
+        async getJobs({ page, limit, order, search, filters }) {
+            try {
+                const response = await axiosInstance.get("jobs", {
+                    params: { page, limit, order, search, filters }
+                });
+                this.jobs = response.data.data;
+                console.log(this.jobs);
+
+            } catch (error) {
+                console.error("Error fetching jobs:", error);
+            }
+        },
+        async getJob(id) {
+            try {
+                const response = await axiosInstance.get(`jobs/${id}`);
+                return response.data;
+            } catch (error) {
+                console.error("Error fetching job:", error);
+                throw error; // Re-throw the error to handle it in the component
+            }
+        },
         async changeJobStatus(id, jobForm) {
             try {
-                const resp= await axios.put(`http://localhost:8000/api/jobs/${id}`,jobForm);
+                const resp = await axiosInstance.put(`jobs/${id}`, jobForm);
                 console.log(resp);
             } catch (error) {
-                console.log("Error change job status job:",error)
+                console.log("Error changing job status:", error)
             }
         },
     }
-})
+});
