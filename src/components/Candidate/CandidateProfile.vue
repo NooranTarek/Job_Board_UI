@@ -66,17 +66,15 @@ export default {
   setup() {
     const userStore = useUserStore();
     const user = ref(null);
-    const isLoading = ref(true); // Add a loading state
+    const isLoading = ref(true);
 
     onMounted(async () => {
       try {
-        // Fetch user data
         await userStore.fetchUser();
         user.value = userStore.user;
-        isLoading.value = false; // Update loading state when data is loaded
+        isLoading.value = false;
       } catch (error) {
         console.error('Error fetching user data:', error);
-        // Handle error, if any
       }
     });
 
