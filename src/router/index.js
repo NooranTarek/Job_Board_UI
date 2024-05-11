@@ -10,6 +10,8 @@ import CandidateProfileApplication from "../components/Candidate/CandidateProfil
 import CreateJob from "../components/job/CreateJob.vue";
 import UpdateJob from "../components/job/UpdateJob.vue";
 import WelcomeCandidate from "../components/Candidate/WelcomeCandidate.vue";
+
+import manageJobsComponent from "../components/admin/job/manageJobsComponent.vue";
 const routes = [
   {
     path: "/",
@@ -33,6 +35,7 @@ const routes = [
   { path: "/register", component: RegisterView },
   { path: "/job", component: CreateJob },
   { path: "/job/:id", component: UpdateJob },
+  { path: "/manageJobs", component: manageJobsComponent },
 ];
 
 const router = createRouter({
