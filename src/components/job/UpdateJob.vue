@@ -169,6 +169,7 @@ export default {
         benefits: "",
         location: "",
         work_type: "",
+        logo: null,
         application_deadline: "",
       },
       errors: {},
@@ -263,6 +264,14 @@ export default {
           console.error("Error updating job:", error);
           toast.error("Error updating job. Please try again later.");
         }
+      }
+    },
+    handleLogoUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.job.logo = file;
+      } else {
+        this.job.logo = null;
       }
     },
   },
