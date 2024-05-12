@@ -47,14 +47,14 @@
             <div class="tab-content">
               <div>
   <form @submit.prevent="updateUser" id="settings" role="form">
-                  <div class="form-group">
+                  <div  class="form-group">
                     <label for="Username">Name</label>
                     <input type="text" v-model="user.name" id="Username" class="form-control" />
                     <span v-if="v$.user.name.$error" class="error">{{
             v$.user.name.$errors[0].$message
           }}</span>
                   </div>
-                  <div class="form-group">
+                  <div style="margin-top:15px" class="form-group">
                     <label for="Email">Email</label>
                     <input
                       type="email"
@@ -66,7 +66,7 @@
             v$.user.email.$errors[0].$message
           }}</span>
                   </div>
-                  <button class="btn btn-primary waves-effect waves-light w-md" type="submit">Save</button>
+                  <button style="margin-top:15px" class="btn btn-primary waves-effect waves-light w-md" type="submit">Save</button>
                 </form>
               </div>
             </div>

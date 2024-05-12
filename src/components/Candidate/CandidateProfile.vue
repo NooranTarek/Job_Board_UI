@@ -1,20 +1,19 @@
 <template>
   <div>
     <div class="container">
-      <!-- Render loading state if data is loading -->
       <div v-if="isLoading" class="text-center card-box">
 <button class="btn btn-primary" type="button" disabled>
   <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
   Loading...
-</button>      </div>
-      <!-- Render user data if loading is complete -->
+</button>      
+</div>
       <div v-else>
         <div class="text-center card-box">
           <div class="member-card">
               <div class="thumb-xl member-thumb m-b-10 center-block">
                 <img
                   :src="user ? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
-                  class="img-circle img-thumbnail"
+                  style="width:150px"
                   alt="profile-image"
                 />
               </div>
