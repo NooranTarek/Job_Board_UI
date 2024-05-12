@@ -21,10 +21,10 @@
           <td style="vertical-align: middle;"><p  style="vertical-align: middle;" class="d-flex justify-content-center">{{ user.name }}</p></td>
 
           <td style="vertical-align: middle;"><p style="vertical-align: middle;" class="d-flex justify-content-center">{{ user.email }}</p></td>
-          <td style="vertical-align: middle;"><p  style="vertical-align: middle;" class="d-flex justify-content-center">{{user.application.length}}</p></td>
-          <td style="vertical-align: middle;"><p   style="vertical-align: middle;" class="d-flex justify-content-center">{{user.applications.approved?.length||0}}</p></td>
-          <td style="vertical-align: middle;"><p   style="vertical-align: middle;" class="d-flex justify-content-center">{{user.applications.rejected?.length||0}}</p></td>
-          <td style="vertical-align: middle;"><p   style="vertical-align: middle;" class="d-flex justify-content-center">{{user.applications.pending?.length||0}}</p></td>
+          <td style="vertical-align: middle;"><p  style="vertical-align: middle;" class="d-flex justify-content-center">{{user.applications.length}}</p></td>
+          <td style="vertical-align: middle;"><p style="vertical-align: middle;" class="d-flex justify-content-center">{{ user.applications.filter(app => app.status === 'approved').length }}</p></td>
+          <td style="vertical-align: middle;"><p style="vertical-align: middle;" class="d-flex justify-content-center">{{ user.applications.filter(app => app.status === 'rejected').length }}</p></td>
+          <td style="vertical-align: middle;"><p style="vertical-align: middle;" class="d-flex justify-content-center">{{ user.applications.filter(app => app.status === 'pending').length }}</p></td>
 
 
           <td> <img :src="user.image"  style="width: 50px" alt=""> </td>
@@ -57,6 +57,9 @@ export default {
     // console.log(this);
     localStorage.setItem('tempRole',this.$route.params.type); // Access route parameter
   },
+  data:()=>({
+    approved:[]
+  }),
   setup() {
     const userStore = useUserStore();
     let users = ref([]);
@@ -65,8 +68,8 @@ export default {
       if (localStorage.getItem('token')) {
         const userData = await reactiveUserStore.getUsersPaginated('1', 'candidate');
         // localStorage.removeItem('tempRole')
-        users.value = userData.data;
-        console.log(users.value);
+        users.value = userData;
+        console.log("users= ",users.value);
       }
     });
 
@@ -76,7 +79,7 @@ export default {
   async getMyPaginatedUser(pageNumber,role) {
     const reactiveUserStore = this.userStore; // Accessing userStore from component instance
     const userData = await reactiveUserStore.getUsersPaginated(pageNumber, role);
-    this.users = userData.data; // Assuming `users` is a data property in your component
+    this.users = userData; // Assuming `users` is a data property in your component
   }
 }
 
