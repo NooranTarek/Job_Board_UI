@@ -27,18 +27,18 @@ const routes = [
     path: "/",
     component: CandidateView,
     children: [
-      { path: "about", component: AboutView },
-      { path: "home", component: HomeView },
-      { path: "/profile", component: CandidateProfile },
+      { path: "/candidate/about", component: AboutView },
+      { path: "/candidate/home", component: HomeView },
+      { path: "/candidate/profile", component: CandidateProfile },
       {
-        path: "/CandidateProfileApplication",
+        path: "/candidate/CandidateProfileApplication",
         component: CandidateProfileApplication,
       },
       {
-        path: "/CandidateUpdateProfileForm",
+        path: "/candidate/CandidateUpdateProfileForm",
         component: CandidateUpdateProfileForm,
       },
-      { path: "/WelcomeCandidate", component: WelcomeCandidate },
+      { path: "/candidate/WelcomeCandidate", component: WelcomeCandidate },
     ],
     // meta: { requiresAuth: true, requiredRole: "candidate" },
   },
@@ -53,6 +53,10 @@ const routes = [
         name: "UserMonitor",
         component: UserMonitor,
         props: true, // This allows passing route params as props to the component
+      },
+      { path: "/admin/manageJobs", 
+        component: manageJobsComponent ,
+        name: "manageJobs",
       },
       {
         path: "employer", // Define the route with a parameter
@@ -81,7 +85,6 @@ const routes = [
   { path: "/register", component: RegisterView },
   { path: "/jobs/create", component: CreateJob },
   { path: "/jobs/update/:id", component: UpdateJob },
-  { path: "/manageJobs", component: manageJobsComponent },
   { path: "/job/:id", component: JobDetails, name: "JobDetails" },
   { path: "/jobs", component: JobList },
   { path: "/jobs/search", component: JobSearch },
