@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia';
 import axiosInstance from '../../axios';
+import { toast } from "vue3-toastify";
 
 export const useUserStore = defineStore({
   id: "user",
   state: () => ({
     user: null,
+    applications: [],
     error: null,
+
   }),
   actions: {
     async fetchUser() {
@@ -32,24 +35,33 @@ export const useUserStore = defineStore({
       }
     },
     async updateUser(userData) {
-      try {
-        const token = "1|U8YfsUZjei1VR8pr5nDz7N640qZdRLZNGZd5X6agb1b3c637";
-        const config = {
+      const token = localStorage.getItem("token");
+      let config = "";
+      if (token) {
+        config = {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         };
-        const response = await axiosInstance.put(
-          `/users/${userData.id}`,
-          userData,
-          config
-        );
-        this.user = response.data;
-      } catch (error) {
-        console.error("Error updating user:", error);
-        throw error;
       }
-    },
+      const response = await axiosInstance.put(`/users/${userData.id}`, userData, config);
+      this.user = response.data;
+      console.log(response.data);
+      if(response.data.success===true){
+        toast.success(response.data.message,"🤝");
+      }
+      else{
+        // console.log(response.data.errors.email[0]);
+        if(response.data.errors.name){
+          toast.error(response.data.errors.name[0],"👎");
+        }
+        else {
+        console.log("from email");
+        toast.error(response.data.errors.email[0],"👎");
+        }
+      }
+
+  },
 
     async register(userData) {
       try {
@@ -126,5 +138,50 @@ export const useUserStore = defineStore({
         throw error;
       }
     },
+    async fetchUserApplications(userId) {
+      try {
+        const token = localStorage.getItem("token");
+        let config = "";
+        if (token) {
+          config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+        }
+        const response = await axiosInstance.get(`/applications/users/${userId}`, config);
+        console.log("from pinia",response.data.applications);
+        return response.data.applications;
+      } catch (error) {
+        console.error("Error fetching user applications:", error);
+        throw error;
+      }
+    },
+    async cancelApplication(applicationId) {
+      try {
+        const token = localStorage.getItem("token");
+        let config = "";
+        if (token) {
+          config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+        }
+        const response = await axiosInstance.delete(`applications/${applicationId}`, config);
+        if (response.status === 204) {
+          this.applications = this.applications.filter(app => app.id !== applicationId);
+          toast.success("Application canceled successfully", "👍");
+        } else {
+          toast.error("Failed to cancel application", "👎");
+        }
+      } catch (error) {
+        console.error("Error canceling application:", error);
+        throw error;
+      }
+    },
   },
 });
+
+   
+   
