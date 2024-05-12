@@ -173,7 +173,11 @@ methods: {
       try {
          const response =  await this.userStore.register(formData)
           // console.log(response.data);
+          if(localStorage.getItem("role") == "admin"){
+            this.$router.push('/admin/candidate');
+          }else{
           this.$router.push('/login');
+          }
           // toast.success("User Created successfully");
       } catch (error) {
         toast.error(error.response.data.message);
