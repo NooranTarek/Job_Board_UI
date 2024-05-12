@@ -1,32 +1,22 @@
 <template>
-    <section class="container-fluid">
+  <section class="container-fluid">
     <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col"><p class="d-flex justify-content-center">Index</p></th>
           <th scope="col"><p class="d-flex justify-content-center">Name</p></th>
           <th scope="col"><p class="d-flex justify-content-center">Email</p></th>
-          <th scope="col"> <p class="d-flex justify-content-center">Number of Application</p>  </th>
-          <th scope="col"> <p class="d-flex justify-content-center">Accepted</p>  </th>
-          <th scope="col"> <p class="d-flex justify-content-center">Rejected</p>  </th>
-          <th scope="col"> <p class="d-flex justify-content-center">Pending</p>  </th>
-
-
+          <th scope="col"> <p class="d-flex justify-content-center">Jobs</p>  </th>
           <th scope="col"><p class="d-flex justify-content-center">Image</p></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(user, index) in users.data" :key="index">
           <th scope="row" style="vertical-align: middle;"><p class="d-flex justify-content-center">{{ index + 1 }}</p></th>
-          <td style="vertical-align: middle;"><p  style="vertical-align: middle;" class="d-flex justify-content-center">{{ user.name }}</p></td>
+          <td style="vertical-align: middle;"><p class="d-flex justify-content-center">{{ user.name }}</p></td>
 
-          <td style="vertical-align: middle;"><p style="vertical-align: middle;" class="d-flex justify-content-center">{{ user.email }}</p></td>
-          <td style="vertical-align: middle;"><p  style="vertical-align: middle;" class="d-flex justify-content-center">{{user.application.length}}</p></td>
-          <td style="vertical-align: middle;"><p   style="vertical-align: middle;" class="d-flex justify-content-center">{{user.applications.approved?.length||0}}</p></td>
-          <td style="vertical-align: middle;"><p   style="vertical-align: middle;" class="d-flex justify-content-center">{{user.applications.rejected?.length||0}}</p></td>
-          <td style="vertical-align: middle;"><p   style="vertical-align: middle;" class="d-flex justify-content-center">{{user.applications.pending?.length||0}}</p></td>
-
-
+          <td style="vertical-align: middle;"><p class="d-flex justify-content-center">{{ user.email }}</p></td>
+          <td><select  v-if="user.job_listings==0?null:true"  class="d-flex justify-content-center form-select"><option  class="d-flex justify-content-center" v-for="(job, index) in user.job_listings" :key="index">title: {{job.title}} | Number of application : {{job.application_count}}</option></select></td>
           <td> <img :src="user.image"  style="width: 50px" alt=""> </td>
         </tr>
       </tbody>
@@ -34,7 +24,7 @@
     <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
     <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item" v-for="(user, index) in users.last_page" :key="index"><a  @click="getMyPaginatedUser(index+1,'candidate')" class="page-link"  >{{index+1}}</a></li>
+    <li class="page-item" v-for="(user, index) in users.last_page" :key="index"><a  @click="getMyPaginatedUser(index+1,'candidate')" class="page-link" >{{index+1}}</a></li>
     <li class="page-item"><a class="page-link" href="#">Next</a></li>
   </ul>
 
@@ -54,8 +44,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 export default {
 
   created() {
-    // console.log(this);
-    localStorage.setItem('tempRole',this.$route.params.type); // Access route parameter
+    localStorage.setItem('tempRole',this.$route.params.type); 
   },
   setup() {
     const userStore = useUserStore();
@@ -63,8 +52,7 @@ export default {
     const reactiveUserStore = reactive(userStore);
     onMounted(async () => {
       if (localStorage.getItem('token')) {
-        const userData = await reactiveUserStore.getUsersPaginated('1', 'candidate');
-        // localStorage.removeItem('tempRole')
+        const userData = await reactiveUserStore.getUsersPaginated('1','employer');
         users.value = userData.data;
         console.log(users.value);
       }
