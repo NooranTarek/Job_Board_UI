@@ -23,9 +23,9 @@
     </table>
     <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" >Previous</a></li>
     <li class="page-item" v-for="(user, index) in users.last_page" :key="index"><a  @click="getMyPaginatedUser(index+1,'candidate')" class="page-link" >{{index+1}}</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    <li class="page-item"><a class="page-link" >Next</a></li>
   </ul>
 
 
@@ -53,7 +53,7 @@ export default {
     onMounted(async () => {
       if (localStorage.getItem('token')) {
         const userData = await reactiveUserStore.getUsersPaginated('1','employer');
-        users.value = userData.data;
+        users.value = userData;
         console.log(users.value);
       }
     });
@@ -64,7 +64,7 @@ export default {
   async getMyPaginatedUser(pageNumber,role) {
     const reactiveUserStore = this.userStore; // Accessing userStore from component instance
     const userData = await reactiveUserStore.getUsersPaginated(pageNumber, role);
-    this.users = userData.data; // Assuming `users` is a data property in your component
+    this.users = userData; // Assuming `users` is a data property in your component
   }
 }
 
