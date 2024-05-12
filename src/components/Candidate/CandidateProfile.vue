@@ -23,11 +23,9 @@
             </div>
             <div class="text-left m-t-40">
               <p class="text-muted font-13">
-                <strong>Email :</strong>
                 <span class="m-l-15">{{ user ? user.email : 'Loading...' }}</span>
               </p>
               <p class="text-muted font-13">
-                <strong>Role :</strong>
                 <span class="m-l-15">{{ user ? user.role : 'Loading...' }}</span>
               </p>
             </div>

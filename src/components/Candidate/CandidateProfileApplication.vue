@@ -1,5 +1,3 @@
-<!-- MyComponent.vue -->
-
 <template>
   <div class="container">
     <div class="row">
@@ -13,16 +11,14 @@
                 alt="profile-image"
               />
             </div>
-            <div class>
+            <div>
               <h4 class="m-b-5">{{ user ? user.name : 'Loading...' }}</h4>
             </div>
             <div class="text-left m-t-40">
               <p class="text-muted font-13">
-                <strong>Email :</strong>
                 <span class="m-l-15">{{ user ? user.email : 'Loading...' }}</span>
               </p>
               <p class="text-muted font-13">
-                <strong>Role :</strong>
                 <span class="m-l-15">{{ user ? user.role : 'Loading...' }}</span>
               </p>
             </div>
@@ -33,124 +29,52 @@
       <!-- end col -->
 
       <div class="col-md-8 col-lg-9">
-        <div class>
-          <div class>
+        <div>
+          <div>
             <ul class="nav nav-tabs navtab-custom">
               <li class>
-                <RouterLink class="nav-link" to="/WelcomeCandidate">Welcome</RouterLink>
+                <RouterLink class="nav-link" to="WelcomeCandidate">Welcome</RouterLink>
               </li>
               <li class>
-                <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Sittings</RouterLink>
+                <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Settings</RouterLink>
               </li>
-              <li class="active">
+              <li class>
                 <RouterLink class="nav-link" to="CandidateProfileApplication">Applications</RouterLink>
               </li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="profile">
+                <!-- Loop through user applications -->
                 <div class="row">
-                  <div class="col-sm-4">
-                    <div class="gal-detail thumb">
-                      <a href="#" class="image-popup" title="Screenshot-2">
-                        <img
-                          src="https://www.bootdey.com/image/400x300/008B8B/00000"
-                          class="thumb-img"
-                          alt="work-thumbnail"
-                        />
-                      </a>
-                      <h4 class="text-center">Gallary Image</h4>
-                      <div class="ga-border"></div>
-                      <p class="text-muted text-center">
-                        <small>Photography</small>
-                      </p>
-                    </div>
+                  <div class="col-sm-4" v-if="applications.length === 0">
+                    <p>No applications found.</p>
                   </div>
-
-                  <div class="col-sm-4">
-                    <div class="gal-detail thumb">
-                      <a href="#" class="image-popup" title="Screenshot-2">
-                        <img
-                          src="https://www.bootdey.com/image/400x300/FF7F50/00000"
-                          class="thumb-img"
-                          alt="work-thumbnail"
-                        />
-                      </a>
-                      <h4 class="text-center">Gallary Image</h4>
-                      <div class="ga-border"></div>
-                      <p class="text-muted text-center">
-                        <small>Photography</small>
-                      </p>
+                  <div class="col-sm-12" v-else>
+                    <!-- Loop through applications in groups of three -->
+                    <div v-for="(application, index) in applications" :key="application.id">
+                      <div v-if="index % 3 === 0" class="row mt-3">
+                        <div v-for="(app, i) in applications.slice(index, index + 3)" :key="app.id" class="col-sm-4">
+                          <div class="gal-detail thumb">
+                            <a :href="app.resume" class="image-popup" title="Application">
+                              <i :class="'resume fa fa-file ' + getColorClass(index + i)" aria-hidden="true"></i>
+                            </a>
+                            <h4 class="text-center">{{ app.id }}</h4>
+                            <div class="ga-border"></div>
+                            <p class="text-muted text-center">
+                              <small>{{ app.status }}</small>
+                            </p>
+                            <a style="text-decoration:none" :href="app.resume">
+                              <h5 :class="'text-center ' + getColorClass(index + i)" aria-hidden="true">See Resume</h5>
+                            </a>
+                              <button style="margin-left:75px" @click="cancelApplication(app.id)" type="button" class="icon-remove btn btn-danger">Cancel<i class="icon-remove"></i></button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-
-                  <div class="col-sm-4">
-                    <div class="gal-detail thumb">
-                      <a href="#" class="image-popup" title="Screenshot-2">
-                        <img
-                          src="https://www.bootdey.com/image/400x300/6495ED/00000"
-                          class="thumb-img"
-                          alt="work-thumbnail"
-                        />
-                      </a>
-                      <h4 class="text-center">Gallary Image</h4>
-                      <div class="ga-border"></div>
-                      <p class="text-muted text-center">
-                        <small>Photography</small>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-4">
-                    <div class="gal-detail thumb">
-                      <a href="#" class="image-popup" title="Screenshot-2">
-                        <img
-                          src="https://www.bootdey.com/image/400x300/4169E1/00000"
-                          class="thumb-img"
-                          alt="work-thumbnail"
-                        />
-                      </a>
-                      <h4 class="text-center">Gallary Image</h4>
-                      <div class="ga-border"></div>
-                      <p class="text-muted text-center">
-                        <small>Photography</small>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-4">
-                    <div class="gal-detail thumb">
-                      <a href="#" class="image-popup" title="Screenshot-2">
-                        <img
-                          src="https://www.bootdey.com/image/400x300/B0E0E6/00000"
-                          class="thumb-img"
-                          alt="work-thumbnail"
-                        />
-                      </a>
-                      <h4 class="text-center">Gallary Image</h4>
-                      <div class="ga-border"></div>
-                      <p class="text-muted text-center">
-                        <small>Photography</small>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-4">
-                    <div class="gal-detail thumb">
-                      <a href="#" class="image-popup" title="Screenshot-2">
-                        <img
-                          src="https://www.bootdey.com/image/400x300/4169E1/00000"
-                          class="thumb-img"
-                          alt="work-thumbnail"
-                        />
-                      </a>
-                      <h4 class="text-center">Gallary Image</h4>
-                      <div class="ga-border"></div>
-                      <p class="text-muted text-center">
-                        <small>Photography</small>
-                      </p>
-                    </div>
+                    <!-- End loop -->
                   </div>
                 </div>
+                <!-- End loop -->
               </div>
             </div>
           </div>
@@ -163,19 +87,66 @@
 </template>
 
 <script>
+import { ref } from 'vue'; // Import ref from Vue
 import { useUserStore } from "../../store/modules/UserProfilePinia";
 
 export default {
   setup() {
     const userStore = useUserStore();
-    console.log(userStore.user);
-    userStore.fetchUser();
-    return { user: userStore.user };
+    const user = userStore.user;
+
+    const applications = ref([]);
+
+    const fetchApplications = async () => {
+      return await userStore.fetchUserApplications(user.id);
+    };
+
+    const applicationsPromise = fetchApplications();
+    applicationsPromise.then(applicationsData => {
+      applications.value = applicationsData;
+      applicationsData.forEach(application => {
+        console.log("Application ID:", application.id);
+        console.log("Email:", application.email);
+        console.log("Resume URL:", application.resume);
+        console.log("Status:", application.status);
+      });
+    });
+
+    const getColorClass = (index) => {
+      const colors = ['color1', 'color2', 'color3'];
+      return colors[index % colors.length];
+    };
+    
+    const cancelApplication = async (applicationId) => {
+      try {
+        await userStore.cancelApplication(applicationId);
+      } catch (error) {
+        console.error("Error canceling application:", error);
+      }
+    };
+
+    return { applications, user, getColorClass, cancelApplication };
   }
 };
 </script>
 
+
 <style scoped>
+.resume{
+  font-size: 80px;
+  margin-left: 80px;
+}
+
+.color1 {
+  color: rgb(0, 174, 255);
+}
+.color2 {
+  color: rgb(255, 166, 0);
+}
+.color3 {
+  color: rgb(229, 255, 0);
+}
+
 .container {
   margin-top: 20px;
   padding-top: 50px;
