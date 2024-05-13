@@ -13,13 +13,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul  class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <RouterLink class="nav-link" to="home">Home</RouterLink>
+          <RouterLink class="nav-link" to="/candidate/home">Home</RouterLink>
         </li>
         <li v-if="specifyRole('candidate')" class="nav-item">
-          <RouterLink class="nav-link" to="about">My Application</RouterLink>
+          <RouterLink class="nav-link" to="/candidate/about">My Application</RouterLink>
         </li>
         <li v-if="specifyRole('any')" class="nav-item">
-          <RouterLink class="nav-link" to="profile">my-Profile</RouterLink>
+          <RouterLink class="nav-link" to="/candidate/profile">my-Profile</RouterLink>
         </li>
         <li v-if="specifyRole('admin')" class="nav-item">
           <RouterLink class="nav-link" to="user-monitor">user-monitor</RouterLink>

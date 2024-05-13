@@ -8,7 +8,7 @@
           <div class="member-card">
             <div class="thumb-xl member-thumb m-b-10 center-block">
               <img
-                :src="user? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
+                :src="user.image ? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
                 class="img-circle img-thumbnail"
                 alt="profile-image"
               />
@@ -35,13 +35,13 @@
           <div class>
             <ul class="nav nav-tabs navtab-custom">
               <li class>
-                <RouterLink class="nav-link" to="/WelcomeCandidate">Welcome</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
               </li>
               <li class="active">
-                <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Sittings</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Sittings</RouterLink>
               </li>
               <li>
-                <RouterLink class="nav-link" to="CandidateProfileApplication">Applications</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
               </li>
             </ul>
             <div class="tab-content">

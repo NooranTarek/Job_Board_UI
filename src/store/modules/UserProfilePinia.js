@@ -112,8 +112,9 @@ export const useUserStore = defineStore({
             },
           };
         }
-        const response = await axiosInstance.get(`/user?page=${pageNumber}&role=${role}`, config);
-        return response;
+        const response = await axiosInstance.get(`/users?page=${pageNumber}&role=${role}`, config);
+        console.log("res = ",response.data.data);
+        return response.data;
       } catch (error) {
         console.error("Error updating user:", error);
         throw error;

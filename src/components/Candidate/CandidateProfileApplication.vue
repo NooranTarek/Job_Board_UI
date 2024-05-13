@@ -33,13 +33,13 @@
           <div>
             <ul class="nav nav-tabs navtab-custom">
               <li class>
-                <RouterLink class="nav-link" to="WelcomeCandidate">Welcome</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
               </li>
               <li class>
-                <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Settings</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Settings</RouterLink>
               </li>
               <li class>
-                <RouterLink class="nav-link" to="CandidateProfileApplication">Applications</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
               </li>
             </ul>
             <div class="tab-content">

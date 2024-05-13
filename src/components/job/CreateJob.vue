@@ -227,12 +227,11 @@ export default {
         }
 
         if (this.v$.$error) return;
-
+        const token = localStorage.getItem("token");
         await axiosInstance.post("jobs", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "Bearer 5|yM0VwQcQexoiqA2sFvJdTe4yJ712aECxMR1NypZDcf7c40f0",
+            Authorization: `Bearer ${token}`,
           },
         });
         toast.success("Job Posted successfully");

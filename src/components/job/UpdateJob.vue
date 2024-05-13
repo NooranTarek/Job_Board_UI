@@ -213,14 +213,15 @@ export default {
       },
     };
   },
+
   async created() {
     const jobId = this.$route.params.id;
+    const token = localStorage.getItem("token");
     try {
       const response = await axiosInstance.get(`jobs/${jobId}`, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization:
-            "Bearer 5|yM0VwQcQexoiqA2sFvJdTe4yJ712aECxMR1NypZDcf7c40f0",
+          Authorization: `Bearer ${token}`,
         },
       });
       if (response.data.application_deadline) {
@@ -236,6 +237,7 @@ export default {
   methods: {
     async updateJob() {
       try {
+        const token = localStorage.getItem("token");
         this.v$.$validate();
         const formData = new FormData();
         for (const key in this.job) {
@@ -251,8 +253,7 @@ export default {
         await axiosInstance.post(`jobs/${jobId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "Bearer 5|yM0VwQcQexoiqA2sFvJdTe4yJ712aECxMR1NypZDcf7c40f0",
+            Authorization: `Bearer ${token}`,
           },
         });
         toast.success("Job Updated successfully");

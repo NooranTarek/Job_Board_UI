@@ -101,6 +101,7 @@ validations(){
     }
 }
 },
+
 methods: {
      async submitForm ()  {
         const result = this.v$.$validate();
@@ -114,7 +115,11 @@ methods: {
         })
         localStorage.setItem('token', response.data.token);
         localStorage.setItem("role", response.data.role);
-          this.$router.push('/');
+        if(response.data.role==='admin')  this.$router.push('admin/candidate');
+        else if(response.data.role==='candidate')  this.$router.push('/');
+        else if(response.data.role==='employer')  this.$router.push('/employer');
+
+
       } catch (error) {
         toast.error(error.response.data.error);
         console.error('Error updating user:', error);
