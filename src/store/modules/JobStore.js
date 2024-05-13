@@ -35,9 +35,9 @@ export const JobStore = defineStore("jobstore", {
                     },
                     };
                 }
-                const response = await axiosInstance.get("jobs", {
+                const response = await axiosInstance.get("jobs",config, {
                     params: { page, limit, order, search, filters }
-                },config);
+                });
                 this.jobs = response.data.data;
                 console.log(this.jobs);
 
