@@ -20,6 +20,7 @@ import JobList from "../components/job/JobList.vue";
 import JobDetails from "../components/job/JobDetails.vue";
 import JobSearch from "../components/job/JobSearch.vue";
 
+import CandidateStatistics from "../components/Candidate/CandidateStatistics.vue"
 const routes = [
   //! Candidate pages _______________________________________________________________
 
@@ -30,6 +31,7 @@ const routes = [
       { path: "/candidate/about", component: AboutView },
       { path: "/candidate/home", component: HomeView },
       { path: "/candidate/profile", component: CandidateProfile },
+      { path: "/candidate/CandidateStatistics", component: CandidateStatistics },
       {
         path: "/candidate/CandidateProfileApplication",
         component: CandidateProfileApplication,

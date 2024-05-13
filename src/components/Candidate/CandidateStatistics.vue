@@ -24,14 +24,12 @@
             </div>
           </div>
         </div>
-        <!-- end card-box -->
       </div>
-      <!-- end col -->
 
       <div class="col-md-8 col-lg-9">
         <div>
           <div>
-            <ul class="nav nav-tabs navtab-custom">
+ <ul class="nav nav-tabs navtab-custom">
               <li class>
                 <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
               </li>
@@ -45,96 +43,101 @@
                 <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
               </li>
             </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="profile">
-                <!-- Loop through user applications -->
-                <div class="row">
-                  <div class="col-sm-4" v-if="applications.length === 0">
-                    <p>No applications found.</p>
-                  </div>
-                  <div class="col-sm-12" v-else>
-                    <!-- Loop through applications in groups of three -->
-                    <div v-for="(application, index) in applications" :key="application.id">
-                      <div v-if="index % 3 === 0" class="row mt-3">
-                        <div v-for="(app, i) in applications.slice(index, index + 3)" :key="app.id" class="col-sm-4">
-                          <div class="gal-detail thumb">
-                            <a :href="app.resume" class="image-popup" title="Application">
-                              <i :class="'resume fa fa-file ' + getColorClass(index + i)" aria-hidden="true"></i>
-                            </a>
-                            <h4 class="text-center">{{ app.id }}</h4>
-                            <div class="ga-border"></div>
-                            <p class="text-muted text-center">
-                              <small>{{ app.status }}</small>
-                            </p>
-                            <a style="text-decoration:none" :href="app.resume">
-                              <h5 :class="'text-center ' + getColorClass(index + i)" aria-hidden="true">See Resume</h5>
-                            </a>
-                              <button style="margin-left:75px" @click="cancelApplication(app.id)" type="button" class="icon-remove btn btn-danger">Cancel<i class="icon-remove"></i></button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- End loop -->
-                  </div>
-                </div>
-                <!-- End loop -->
-              </div>
             </div>
-          </div>
         </div>
       </div>
-      <!-- end col -->
     </div>
-    <!-- end row -->
+    <div id="chart_container">
+        <div>
+            <img id="chart_image" src="https://www.recruiter.com/recruiting/wp-content/uploads/2022/03/recruiting-data.jpg">
+        </div>
+    <div id="chart"></div> 
+
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'; // Import ref from Vue
+import { ref, onMounted } from 'vue';
 import { useUserStore } from "../../store/modules/UserProfilePinia";
+import ApexCharts from 'apexcharts'
 
 export default {
   setup() {
     const userStore = useUserStore();
     const user = userStore.user;
-
     const applications = ref([]);
 
     const fetchApplications = async () => {
       return await userStore.fetchUserApplications(user.id);
     };
 
-    const applicationsPromise = fetchApplications();
-    applicationsPromise.then(applicationsData => {
-      applications.value = applicationsData;
-      applicationsData.forEach(application => {
-        console.log("Application ID:", application.id);
-        console.log("Email:", application.email);
-        console.log("Resume URL:", application.resume);
-        console.log("Status:", application.status);
-      });
+    onMounted(async () => {
+      applications.value = await fetchApplications();
+      renderChart(); 
     });
 
-    const getColorClass = (index) => {
-      const colors = ['color1', 'color2', 'color3'];
-      return colors[index % colors.length];
-    };
-    
-    const cancelApplication = async (applicationId) => {
-      try {
-        await userStore.cancelApplication(applicationId);
-      } catch (error) {
-        console.error("Error canceling application:", error);
+    const renderChart = () => {
+      const statusCounts = {};
+      applications.value.forEach(application => {
+        const status = application.status;
+        statusCounts[status] = (statusCounts[status] || 0) + 1;
+      });
+
+const chartOptions = {
+  series: Object.values(statusCounts),
+  chart: {
+    type: 'donut',
+    animations: {
+      enabled: true,
+      easing: 'easeinout',
+      speed: 800,
+      animateGradually: {
+        enabled: true,
+        delay: 150
+      },
+      dynamicAnimation: {
+        enabled: true,
+        speed: 350
       }
+    }
+  },
+  labels: Object.keys(statusCounts),
+  colors: ['#FAD223', '#75A338', '#CF4E53'] 
+};
+
+
+      const chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
+      chart.render();
     };
 
-    return { applications, user, getColorClass, cancelApplication };
+    return { applications, user };
   }
 };
 </script>
 
 
 <style scoped>
+#chart_image{
+    width: 420px;
+    height: 450px;
+    margin-left: 400px;
+
+}
+#chart_container{
+    width: 800px;
+    margin-left: 300px;
+    margin-top: -390px;
+    height: 400px;
+    background-color: white;
+}
+#chart{
+    width: 450px;
+    margin-top: -400px;
+    margin-left: -20px;
+
+
+}
 .resume{
   font-size: 80px;
   margin-left: 80px;

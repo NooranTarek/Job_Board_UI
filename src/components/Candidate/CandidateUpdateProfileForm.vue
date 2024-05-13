@@ -38,10 +38,13 @@
                 <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
               </li>
               <li class="active">
-                <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Sittings</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Settings</RouterLink>
               </li>
               <li>
                 <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
+              </li>
+                <li class>
+                <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
               </li>
             </ul>
             <div class="tab-content">
