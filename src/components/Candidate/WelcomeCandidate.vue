@@ -38,16 +38,19 @@
                 <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
               </li>
               <li class>
-                <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Sittings</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Settings</RouterLink>
               </li>
               <li class>
                 <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
+              </li>
+                <li class>
+                <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
               </li>
             </ul>
             <div class="welcome-message">
               <h2>
                 <i class="fa fa-fire"></i>
-                Are You Ready to update ans see your filled applications
+                Are You Ready to update and see your filled applications
                 <i
                   class="fa fa-fire"
                 ></i>

@@ -44,6 +44,9 @@
                 <li class>
                   <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
                 </li>
+                <li class>
+                <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
+              </li>
               </ul>
             </div>
           </div>
