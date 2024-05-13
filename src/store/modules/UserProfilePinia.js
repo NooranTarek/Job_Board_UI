@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import axiosInstance from '../../axios';
+import { defineStore } from "pinia";
+import axiosInstance from "../../axios";
 import { toast } from "vue3-toastify";
 
 export const useUserStore = defineStore({
@@ -8,7 +8,6 @@ export const useUserStore = defineStore({
     user: null,
     applications: [],
     error: null,
-
   }),
   actions: {
     async fetchUser() {
@@ -44,24 +43,25 @@ export const useUserStore = defineStore({
           },
         };
       }
-      const response = await axiosInstance.put(`/users/${userData.id}`, userData, config);
+      const response = await axiosInstance.put(
+        `/users/${userData.id}`,
+        userData,
+        config
+      );
       this.user = response.data;
       console.log(response.data);
-      if(response.data.success===true){
-        toast.success(response.data.message,"🤝");
-      }
-      else{
+      if (response.data.success === true) {
+        toast.success(response.data.message, "🤝");
+      } else {
         // console.log(response.data.errors.email[0]);
-        if(response.data.errors.name){
-          toast.error(response.data.errors.name[0],"👎");
-        }
-        else {
-        console.log("from email");
-        toast.error(response.data.errors.email[0],"👎");
+        if (response.data.errors.name) {
+          toast.error(response.data.errors.name[0], "👎");
+        } else {
+          console.log("from email");
+          toast.error(response.data.errors.email[0], "👎");
         }
       }
-
-  },
+    },
 
     async register(userData) {
       try {
@@ -90,7 +90,7 @@ export const useUserStore = defineStore({
     async login(userData) {
       try {
         //! if admin try add admin it must send token in register
-        
+
         const response = await axiosInstance.post(`/login`, userData);
         localStorage.setItem("token", response);
         localStorage.setItem("role", response.role);
@@ -101,7 +101,7 @@ export const useUserStore = defineStore({
       }
     },
 
-    async getUsersPaginated(pageNumber,role) {
+    async getUsersPaginated(pageNumber, role) {
       try {
         const token = localStorage.getItem("token");
         let config = "";
@@ -112,8 +112,11 @@ export const useUserStore = defineStore({
             },
           };
         }
-        const response = await axiosInstance.get(`/users?page=${pageNumber}&role=${role}`, config);
-        console.log("res = ",response.data.data);
+        const response = await axiosInstance.get(
+          `/users?page=${pageNumber}&role=${role}`,
+          config
+        );
+        console.log("res = ", response.data.data);
         return response.data;
       } catch (error) {
         console.error("Error updating user:", error);
@@ -150,8 +153,11 @@ export const useUserStore = defineStore({
             },
           };
         }
-        const response = await axiosInstance.get(`/applications/users/${userId}`, config);
-        console.log("from pinia",response.data.applications);
+        const response = await axiosInstance.get(
+          `/applications/users/${userId}`,
+          config
+        );
+        console.log("from pinia", response.data.applications);
         return response.data.applications;
       } catch (error) {
         console.error("Error fetching user applications:", error);
@@ -169,9 +175,14 @@ export const useUserStore = defineStore({
             },
           };
         }
-        const response = await axiosInstance.delete(`applications/${applicationId}`, config);
+        const response = await axiosInstance.delete(
+          `applications/${applicationId}`,
+          config
+        );
         if (response.status === 204) {
-          this.applications = this.applications.filter(app => app.id !== applicationId);
+          this.applications = this.applications.filter(
+            (app) => app.id !== applicationId
+          );
           toast.success("Application canceled successfully", "👍");
         } else {
           toast.error("Failed to cancel application", "👎");
@@ -181,8 +192,51 @@ export const useUserStore = defineStore({
         throw error;
       }
     },
+    async getEmployerApplications(user_id) {
+      try {
+        const token = localStorage.getItem("token");
+        let config = "";
+        if (token) {
+          config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+        }
+        const response = await axiosInstance.get(
+          `/applications/usersJobs/${user_id}`,
+          config
+        );
+        return response;
+      } catch (error) {
+        console.error("Error fetching employer applications", error);
+        throw error;
+      }
+    },
+    async modifyApplicationStatus(status, application_id) {
+      try {
+        const token = localStorage.getItem("token");
+        let config = {};
+        if (token) {
+          config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+        }
+        const requestBody = {
+          status: status,
+          _method: "PUT",
+        };
+        await axiosInstance.post(
+          `/applications/${application_id}`,
+          requestBody,
+          config
+        );
+      } catch (error) {
+        console.error("Error modifying application status", error);
+        throw error;
+      }
+    },
   },
 });
-
-   
-   
