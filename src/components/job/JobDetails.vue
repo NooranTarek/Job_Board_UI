@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-8 offset-md-2">
+      <div class="col-md-8 ">
         <div class="card">
           <div class="card-body">
             <img :src="job.logo" alt="Company Logo" class="img-fluid mb-3">
@@ -22,51 +22,62 @@
           </div>
         </div>
       </div>
+
+      <div v-if="!userApplied" class="col-md-4 applyform">
+        <h3>Apply for the job</h3>
+        <form @submit.prevent="createApllication">
+          <label for="email">Email</label>
+          <input type="email" v-model="email" required id="email" class="form-control mt-2" name="email" placeholder="Enter your email" />
+
+          <label for="phoneNumber">Phone Number</label>
+          <input type="text" v-model="phoneNumber" required id="phoneNumber" class="form-control mt-2" name="phoneNumber" placeholder="Enter your phone number" />
+
+          <label for="resume">Upload your resume</label>
+          <div class="custom-file mt-2">
+            <input required @change="handleFileChange" type="file" id="resume" name="resume" class="custom-file-input">
+            <label class="custom-file-label" for="resume">{{ resumeName || 'Choose file' }}</label>
+          </div>
+          <button class="btn btn-dark mt-3 w-100">Apply</button>
+      </form>
+
+      </div>
+
+      <div v-else class="col-md-4">
+        <div class="alert alert-secondary" style="margin-top: 20px;">you have applied for this job
+          &nbsp; <font-awesome-icon :icon="['fas', 'check']" style="color: green;" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
-<!-- <script>
-export default {
-  name: 'JobDetails',
-  props: {
-    job: {
-      type: Object,
-      required: true
-    }
-  },
-  methods: {
-    goBack() {
-      this.$router.push('/job-list');
-    }
-  }
-};
-</script> -->
-<!-- <script>
-// Import the JobStore
-import { JobStore } from '../../store/modules/JobStore';
 
-export default {
-  name: 'JobList',
-  
-  data: () => ({
-    joblist: JobStore(),
-  }),
-
-  async created() {
-    // Call the getJobs action with pagination parameters
-    await this.joblist.getJobs({ page: 1, limit: 6 });
-  },
-};
-</script> -->
 <script>
 import { JobStore } from '../../store/modules/JobStore';
+import { useUserStore } from '../../store/modules/UserProfilePinia';
+import axiosInstance from '../../axios';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCheck ,faXmark} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { toast } from "vue3-toastify";
+
 
 export default {
   name: 'JobDetails',
+  setup() {
+    const userStore = useUserStore();
+    userStore.fetchUser();
+    // Return userStore, user, and Vuelidate instance
+    return { userStore, user: userStore.user};
+  },
   data() {
     return {
-      job: null
+      job: null,
+      userApplied: false,
+      email:"",
+      phoneNumber:"",
+      resume:null,
+      resumeName:""
     };
   },
   methods: {
@@ -76,20 +87,88 @@ export default {
       // Call the getJob action with the id parameter
       this.job = await JobStore().getJob(id);
     },
+    async checkIfUserApplied() {
+      try {
+        const token = localStorage.getItem("token");
+        let config = "";
+        if (token) {
+          config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+        }
+        const response = await axiosInstance.get('/applications/',config);
+        if (!response.status == 200) {
+          throw new Error('Failed to fetch user applications');
+        }
+        const applications = await response.data;
+        const userId = this.user.id;
+        const jobId = this.$route.params.id;
+        this.userApplied = applications.some(application => 
+          application.job_listings_id == jobId && application.user_id == userId
+        );
+      } catch (error) {
+        console.error('Error checking if user applied:', error);
+        // Handle error, e.g., show an error message to the user
+      }
+    },
     goBack() {
       // Navigate back to the job list page
-      this.$router.push({ path: '/jobs' });
+      this.$router.push({ path: '/candidate/home' });
+    },
+    handleFileChange(event) {
+      this.resume = event.target.files[0];
+      this.resumeName = event.target.files[0].name;
+    },
+    async createApllication(){
+      const token = localStorage.getItem("token");
+        let config = "";
+        if (token) {
+          config = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          };
+        }
+        const application = {
+          email : this.email,
+          phoneNumber:this.phoneNumber,
+          resume:this.resume,
+          job_listings_id:Number(this.$route.params.id)
+        }
+        try{
+          await axiosInstance.post("/applications/",application,config);
+          this.$router.push({ path: '/candidate/home' });
+          toast.success("Job Posted successfully");
+        }catch(err){
+          console.log("error posting = ",err);
+          toast.error("Error Posting application. Please try again later.");
+        }
+
     }
   },
-  created() {
-    // Call the getJobDetails method when the component is created
+  beforeMount() {
+    // Call the getJobDetails and checkIfUserApplied methods before mounting the component
     this.getJobDetails();
+    this.checkIfUserApplied();
   }
 };
 </script>
 
+
 <style scoped>
-.card {
+.card{
   margin-top: 20px;
+}
+.applyform{
+  margin-top: 22px;
+  box-shadow: 3px 3px 5px 5px rgb(240, 240, 240);
+  height: 100%;
+  padding: 20px;
+}
+label{
+  margin-top: 10px;
 }
 </style>

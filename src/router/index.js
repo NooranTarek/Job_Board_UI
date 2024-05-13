@@ -20,6 +20,8 @@ import JobList from "../components/job/JobList.vue";
 import JobDetails from "../components/job/JobDetails.vue";
 import JobSearch from "../components/job/JobSearch.vue";
 
+import NavbarEmployer from "../components/employer/navbarEmployer.vue";
+
 import CandidateStatistics from "../components/Candidate/CandidateStatistics.vue"
 const routes = [
   //! Candidate pages _______________________________________________________________
@@ -29,7 +31,7 @@ const routes = [
     component: CandidateView,
     children: [
       { path: "/candidate/about", component: AboutView },
-      { path: "/candidate/home", component: HomeView },
+      { path: "/candidate/home", component: JobList },
       { path: "/candidate/profile", component: CandidateProfile },
       { path: "/candidate/CandidateStatistics", component: CandidateStatistics },
       {
@@ -42,7 +44,7 @@ const routes = [
       },
       { path: "/candidate/WelcomeCandidate", component: WelcomeCandidate },
     ],
-    // meta: { requiresAuth: true, requiredRole: "candidate" },
+    meta: { requiresAuth: true, requiredRole: "candidate" },
   },
 
   //! Admin pages _______________________________________________________________
@@ -72,21 +74,30 @@ const routes = [
   },
   //! Employer pages _______________________________________________________________
 
-  // {
-  //   path: "/employer",
-  //   component: NavbarEmployer,
-  //   children: [
-  //     { path: "UserMonitor", name: "UserMonitor", component: UserMonitor },
-  //   ],
-  //   meta: { requiresAuth: true, requiredRole: "employer" },
-  // },
+  {
+    path: "/employer",
+    component: NavbarEmployer,
+    children: [
+      { path: "/employer/add", 
+        component: CreateJob ,
+        name: "addJob",
+      },
+      // { path: "/employer/managejobs", 
+      // component:  ,
+      // name: "manageJobs",
+      // },
+      { path: "/employer/update/:id", 
+      component: UpdateJob ,
+      name: "updateJob",
+      },
+    ],
+    meta: { requiresAuth: true, requiredRole: "employer" },
+  },
 
   //! Unautjorized pages _______________________________________________________________
 
   { path: "/login", component: LoginView },
   { path: "/register", component: RegisterView },
-  { path: "/jobs/create", component: CreateJob },
-  { path: "/jobs/update/:id", component: UpdateJob },
   { path: "/job/:id", component: JobDetails, name: "JobDetails" },
   { path: "/jobs", component: JobList },
   { path: "/jobs/search", component: JobSearch },
