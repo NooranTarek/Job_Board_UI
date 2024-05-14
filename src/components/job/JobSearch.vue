@@ -132,16 +132,22 @@
           this.loading = true;
           try {
             let params = { page: this.currentPage, limit: this.limit };
+            params.filters = {};
+
             const token = localStorage.getItem("token");
+            
             if (this.specifyRole("employer") && token) {
               // console.log(`Employer: ${token}`);
               const loggedUser = await useUserStore().fetchUser();
               if (loggedUser) {
-                params.filters = {};
                 params.filters.user_id = loggedUser.id;
               }
             }
-          
+
+            if (this.specifyRole("candidate") && token) {
+              params.filters.status = 'approved';
+            }
+
             if (this.searchTerm.trim() === "") {
               // If searchTerm is empty, fetch all jobs
               // console.log(`params.filters:`, params.filters);

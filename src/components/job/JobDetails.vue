@@ -14,10 +14,10 @@
             <p><strong>Benefits:</strong> {{ job.benefits }}</p>
             <p><strong>Location:</strong> {{ job.location }}</p>
             <p><strong>Work Type:</strong> {{ job.work_type }}</p>
-            <p><strong>Application Deadline:</strong> {{ job.application_deadline }}</p>
-            <p><strong>Status:</strong> {{ job.status }}</p>
-            <p><strong>Created At:</strong> {{ job.created_at }}</p>
-            <p><strong>Updated At:</strong> {{ job.updated_at }}</p>
+            <p class="card-text"><strong>Application Deadline:</strong> {{ job.application_deadline.slice(0, 10) }}</p>
+            <!-- <p><strong>Status:</strong> {{ job.status }}</p> -->
+            <p class="card-text"><strong>Created At:</strong> {{ job.created_at.slice(0, 10) }}</p>
+            <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>    
             <button class="btn btn-primary" @click="goBack">Back to Job List</button>
           </div>
         </div>
