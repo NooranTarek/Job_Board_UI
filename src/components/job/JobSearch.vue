@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
-    <h1>Job Search</h1>
+    <!-- <h1>Job Search</h1> -->
 
-    <div class="row">
+    <div class="row pt-3">
       <div class="col-md-6">
         <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Search term" v-model="searchTerm" @input="searchJobs">
@@ -36,7 +36,7 @@
                 <p class="card-text"><strong>Responsibilities:</strong> {{ job.responsibilities }}</p>
                 <p class="card-text"><strong>Skills:</strong> {{ job.skills }}</p>
                 <p class="card-text"><strong>Qualifications:</strong> {{ job.qualifications }}</p>
-                <p class="card-text"><strong>Salary Range:</strong> {{ job.salary_range }}</p>
+                <p class="card-text"><strong>Salary Range:</strong> {{ job.salary_range }} $</p>
                 <p class="card-text"><strong>Benefits:</strong> {{ job.benefits }}</p>
                 <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
                 <p class="card-text"><strong>Work Type:</strong> {{ job.work_type }}</p>
