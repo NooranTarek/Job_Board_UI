@@ -79,7 +79,6 @@
             // Fetch the jobs data to get searchFields
             await this.joblist.getFirstJob();
             const firstJob = this.joblist.firstJob;
-            console.log(`firstJob: ${firstJob}`);
             if (firstJob) {
               const allFields = Object.keys(firstJob); // Extract all fields from the first job object
               // Exclude specific fields like "id"
@@ -94,14 +93,21 @@
         async searchJobs() {
           this.loading = true;
           try {
-            console.log(`Searching = '${this.searchTerm}' by '${this.searchBy}'`);
-            await this.joblist.getJobs({ page: 1, limit: 2, searchField: this.searchBy, search: this.searchTerm });
+            if (this.searchTerm.trim() === '') {
+              // If searchTerm is empty, fetch all jobs
+              await this.joblist.getJobs({ page: 1, limit: 2 });
+            } else {
+              // If searchTerm is not empty, perform search based on searchTerm and searchBy
+              console.log(`Searching = '${this.searchTerm}' by '${this.searchBy}'`);
+              await this.joblist.getJobs({ page: 1, limit: 2, searchField: this.searchBy, search: this.searchTerm });
+            }
           } catch (error) {
             console.error('Error searching for jobs:', error);
           } finally {
             this.loading = false;
           }
         },
+
       },
     
       watch: {
@@ -110,6 +116,7 @@
       },
     
       created() {
+        this.searchJobs();
         this.fetchSearchFields();
       },
     };
