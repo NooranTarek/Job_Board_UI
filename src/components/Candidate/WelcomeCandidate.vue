@@ -18,11 +18,9 @@
             </div>
             <div class="text-left m-t-40">
               <p class="text-muted font-13">
-                <strong>Email :</strong>
                 <span class="m-l-15">{{ user ? user.email : 'Loading...' }}</span>
               </p>
               <p class="text-muted font-13">
-                <strong>Role :</strong>
                 <span class="m-l-15">{{ user ? user.role : 'Loading...' }}</span>
               </p>
             </div>
@@ -37,19 +35,22 @@
           <div class>
             <ul class="nav nav-tabs navtab-custom">
               <li class="active">
-                <RouterLink class="nav-link" to="/WelcomeCandidate">Welcome</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
               </li>
               <li class>
-                <RouterLink class="nav-link" to="/CandidateUpdateProfileForm">Sittings</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Settings</RouterLink>
               </li>
               <li class>
-                <RouterLink class="nav-link" to="/CandidateProfileApplication">Applications</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
+              </li>
+                <li class>
+                <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
               </li>
             </ul>
             <div class="welcome-message">
               <h2>
                 <i class="fa fa-fire"></i>
-                Are You Ready to update ans see your filled applications
+                Are You Ready to update and see your filled applications
                 <i
                   class="fa fa-fire"
                 ></i>

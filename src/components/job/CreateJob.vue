@@ -1,148 +1,156 @@
 <template>
-  <div class="job-form">
-    <form @submit.prevent="createJob" class="form">
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          v-model="job.title"
-        />
-        <span v-if="v$.job.title.$error" class="error">{{
-          v$.job.title.$errors[0].$message
-        }}</span>
-      </div>
-      <div class="form-group row">
-        <div class="col">
-          <label for="description" class="form-label">Description</label>
-          <textarea
-            class="form-control"
-            id="description"
-            v-model="job.description"
-          ></textarea>
-          <span v-if="v$.job.description.$error" class="error">{{
-            v$.job.description.$errors[0].$message
-          }}</span>
-        </div>
-        <div class="col">
-          <label for="responsibilities" class="form-label"
-            >Responsibilities</label
-          >
-          <textarea
-            class="form-control"
-            id="responsibilities"
-            v-model="job.responsibilities"
-          ></textarea>
-          <span v-if="v$.job.responsibilities.$error" class="error">{{
-            v$.job.responsibilities.$errors[0].$message
-          }}</span>
-        </div>
-      </div>
-      <div class="form-group row">
-        <div class="col">
-          <label for="skills" class="form-label">Skills</label>
-          <textarea
-            class="form-control"
-            id="skills"
-            v-model="job.skills"
-          ></textarea>
-          <span v-if="v$.job.skills.$error" class="error">{{
-            v$.job.skills.$errors[0].$message
-          }}</span>
-        </div>
-        <div class="col">
-          <label for="qualifications" class="form-label">Qualifications</label>
-          <textarea
-            class="form-control"
-            id="qualifications"
-            v-model="job.qualifications"
-          ></textarea>
-          <span v-if="v$.job.qualifications.$error" class="error">{{
-            v$.job.qualifications.$errors[0].$message
-          }}</span>
-        </div>
-      </div>
-      <div class="form-group row">
-        <div class="col">
-          <label for="salary_range" class="form-label">Salary</label>
-          <input
-            type="number"
-            class="form-control"
-            id="salary_range"
-            v-model="job.salary_range"
-          />
-          <span v-if="v$.job.salary_range.$error" class="error">{{
-            v$.job.salary_range.$errors[0].$message
-          }}</span>
-        </div>
-        <div class="col">
-          <label for="location" class="form-label">Location</label>
+  <div class="job-form-container">
+    <div class="job-form">
+      <form @submit.prevent="createJob" class="form">
+        <h1 class="m-2">Create Job</h1>
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
           <input
             type="text"
             class="form-control"
-            id="location"
-            v-model="job.location"
+            id="title"
+            v-model="job.title"
           />
-          <span v-if="v$.job.location.$error" class="error">{{
-            v$.job.location.$errors[0].$message
+          <span v-if="v$.job.title.$error" class="error">{{
+            v$.job.title.$errors[0].$message
           }}</span>
         </div>
-      </div>
-      <div class="mb-3">
-        <label for="benefits" class="form-label">Benefits</label>
-        <textarea
-          class="form-control"
-          id="benefits"
-          v-model="job.benefits"
-        ></textarea>
-        <span v-if="v$.job.benefits.$error" class="error">{{
-          v$.job.benefits.$errors[0].$message
-        }}</span>
-      </div>
-      <div class="form-group row">
-        <div class="col">
-          <label for="workType" class="form-label">Work Type</label>
-          <select id="workType" class="form-select" v-model="job.work_type">
-            <option disabled value="">Please select work type</option>
-            <option value="on-site">On-site</option>
-            <option value="remote">Remote</option>
-            <option value="hybrid">Hybrid</option>
-          </select>
-          <span v-if="v$.job.work_type.$error" class="error">{{
-            v$.job.work_type.$errors[0].$message
-          }}</span>
+        <div class="form-group row">
+          <div class="col">
+            <label for="description" class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              id="description"
+              v-model="job.description"
+            ></textarea>
+            <span v-if="v$.job.description.$error" class="error">{{
+              v$.job.description.$errors[0].$message
+            }}</span>
+          </div>
+          <div class="col">
+            <label for="responsibilities" class="form-label"
+              >Responsibilities</label
+            >
+            <textarea
+              class="form-control"
+              id="responsibilities"
+              v-model="job.responsibilities"
+            ></textarea>
+            <span v-if="v$.job.responsibilities.$error" class="error">{{
+              v$.job.responsibilities.$errors[0].$message
+            }}</span>
+          </div>
         </div>
-        <div class="col">
-          <label for="application_deadline" class="form-label"
-            >Application Deadline</label
-          >
-          <input
-            type="date"
-            id="application_deadline"
-            class="form-control"
-            v-model="job.application_deadline"
-          />
-          <span v-if="v$.job.application_deadline.$error" class="error">{{
-            v$.job.application_deadline.$errors[0].$message
-          }}</span>
+        <div class="form-group row">
+          <div class="col">
+            <label for="skills" class="form-label">Skills</label>
+            <textarea
+              class="form-control"
+              id="skills"
+              v-model="job.skills"
+            ></textarea>
+            <span v-if="v$.job.skills.$error" class="error">{{
+              v$.job.skills.$errors[0].$message
+            }}</span>
+          </div>
+          <div class="col">
+            <label for="qualifications" class="form-label"
+              >Qualifications</label
+            >
+            <textarea
+              class="form-control"
+              id="qualifications"
+              v-model="job.qualifications"
+            ></textarea>
+            <span v-if="v$.job.qualifications.$error" class="error">{{
+              v$.job.qualifications.$errors[0].$message
+            }}</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col">
+            <label for="salary_range" class="form-label">Salary</label>
+            <input
+              type="number"
+              class="form-control"
+              id="salary_range"
+              v-model="job.salary_range"
+            />
+            <span v-if="v$.job.salary_range.$error" class="error">{{
+              v$.job.salary_range.$errors[0].$message
+            }}</span>
+          </div>
+          <div class="col">
+            <label for="location" class="form-label">Location</label>
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              v-model="job.location"
+            />
+            <span v-if="v$.job.location.$error" class="error">{{
+              v$.job.location.$errors[0].$message
+            }}</span>
+          </div>
         </div>
         <div class="mb-3">
-          <label for="logo" class="form-label">Logo</label>
-          <input
-            type="file"
+          <label for="benefits" class="form-label">Benefits</label>
+          <textarea
             class="form-control"
-            id="logo"
-            @change="handleLogoUpload"
-          />
+            id="benefits"
+            v-model="job.benefits"
+          ></textarea>
+          <span v-if="v$.job.benefits.$error" class="error">{{
+            v$.job.benefits.$errors[0].$message
+          }}</span>
         </div>
-        <span v-if="v$.job.logo.$error" class="error">{{
-          v$.job.logo.$errors[0].$message
-        }}</span>
-      </div>
+        <div class="form-group row">
+          <div class="col">
+            <label for="workType" class="form-label">Work Type</label>
+            <select id="workType" class="form-select" v-model="job.work_type">
+              <option disabled value="">Please select work type</option>
+              <option value="on-site">On-site</option>
+              <option value="remote">Remote</option>
+              <option value="hybrid">Hybrid</option>
+            </select>
+            <span v-if="v$.job.work_type.$error" class="error">{{
+              v$.job.work_type.$errors[0].$message
+            }}</span>
+          </div>
+          <div class="col">
+            <label for="application_deadline" class="form-label"
+              >Application Deadline</label
+            >
+            <input
+              type="date"
+              id="application_deadline"
+              class="form-control"
+              v-model="job.application_deadline"
+            />
+            <span v-if="v$.job.application_deadline.$error" class="error">{{
+              v$.job.application_deadline.$errors[0].$message
+            }}</span>
+          </div>
+          <div class="mb-3">
+            <label for="logo" class="form-label">Logo</label>
+            <input
+              type="file"
+              class="form-control"
+              id="logo"
+              @change="handleLogoUpload"
+            />
+          </div>
+          <span v-if="v$.job.logo.$error" class="error">{{
+            v$.job.logo.$errors[0].$message
+          }}</span>
+        </div>
 
-      <button type="submit" class="btn btn-primary">Post Job</button>
-    </form>
+        <button type="submit" class="btn btn-primary">Post Job</button>
+      </form>
+    </div>
+    <div class="image-container">
+      <img src="../../assets/job.jpg" alt="Image" class="image" />
+    </div>
   </div>
 </template>
 
@@ -227,12 +235,11 @@ export default {
         }
 
         if (this.v$.$error) return;
-
+        const token = localStorage.getItem("token");
         await axiosInstance.post("jobs", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization:
-              "Bearer 5|yM0VwQcQexoiqA2sFvJdTe4yJ712aECxMR1NypZDcf7c40f0",
+            Authorization: `Bearer ${token}`,
           },
         });
         toast.success("Job Posted successfully");
@@ -260,10 +267,16 @@ export default {
 </script>
 
 <style scoped>
+.job-form-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
 .job-form {
   max-width: 700px;
   margin: 0 auto;
   margin-left: 30px;
+  flex: 1;
 }
 
 .form {
@@ -320,6 +333,18 @@ export default {
 
 .form-group.row .col {
   flex: 1;
+}
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-top: 100px;
+}
+
+.image {
+  width: 650px;
+  height: auto;
 }
 .error {
   color: red;

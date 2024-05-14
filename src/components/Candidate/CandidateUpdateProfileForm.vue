@@ -8,7 +8,7 @@
           <div class="member-card">
             <div class="thumb-xl member-thumb m-b-10 center-block">
               <img
-                :src="user.image? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
+                :src="user.image ? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
                 class="img-circle img-thumbnail"
                 alt="profile-image"
               />
@@ -18,11 +18,9 @@
             </div>
             <div class="text-left m-t-40">
               <p class="text-muted font-13">
-                <strong>Email :</strong>
                 <span class="m-l-15">{{ user ? user.email : 'Loading...' }}</span>
               </p>
               <p class="text-muted font-13">
-                <strong>Role :</strong>
                 <span class="m-l-15">{{ user ? user.role : 'Loading...' }}</span>
               </p>
             </div>
@@ -37,23 +35,29 @@
           <div class>
             <ul class="nav nav-tabs navtab-custom">
               <li class>
-                <RouterLink class="nav-link" to="/WelcomeCandidate">Welcome</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
               </li>
               <li class="active">
-                <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Sittings</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Settings</RouterLink>
               </li>
               <li>
-                <RouterLink class="nav-link" to="CandidateProfileApplication">Applications</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
+              </li>
+                <li class>
+                <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
               </li>
             </ul>
             <div class="tab-content">
               <div>
   <form @submit.prevent="updateUser" id="settings" role="form">
-                  <div class="form-group">
+                  <div  class="form-group">
                     <label for="Username">Name</label>
                     <input type="text" v-model="user.name" id="Username" class="form-control" />
+                    <span v-if="v$.user.name.$error" class="error">{{
+            v$.user.name.$errors[0].$message
+          }}</span>
                   </div>
-                  <div class="form-group">
+                  <div style="margin-top:15px" class="form-group">
                     <label for="Email">Email</label>
                     <input
                       type="email"
@@ -61,8 +65,11 @@
                       id="Email"
                       class="form-control"
                     />
+                  <span v-if="v$.user.email.$error" class="error">{{
+            v$.user.email.$errors[0].$message
+          }}</span>
                   </div>
-                  <button class="btn btn-primary waves-effect waves-light w-md" type="submit">Save</button>
+                  <button style="margin-top:15px" class="btn btn-primary waves-effect waves-light w-md" type="submit">Save</button>
                 </form>
               </div>
             </div>
@@ -77,36 +84,52 @@
 
 <script>
 import { useUserStore } from "../../store/modules/UserProfilePinia";
+import { useVuelidate } from '@vuelidate/core'
+import { required, email, minLength, maxLength , alpha} from '@vuelidate/validators'
+import { toast } from "vue3-toastify";
 
 export default {
   setup() {
     const userStore = useUserStore();
-    console.log(userStore.user);
     userStore.fetchUser();
-    return { user: userStore.user, userStore }; // Include userStore in the return object
+    const v$ = useVuelidate(); // Initialize Vuelidate
+
+    // Return userStore, user, and Vuelidate instance
+    return { userStore, user: userStore.user, v$ };
+  },
+  validations() {
+    return {
+      user: {
+        name: { required, minLength: minLength(3), maxLength: maxLength(100), alpha },
+        email: { required, email, minLength: minLength(3), maxLength: maxLength(100) },
+      },
+    };
   },
   methods: {
     async updateUser() {
-      console.log(this.user.id);
-      try {
-        await this.userStore.updateUser({ 
-          id: this.user.id,
-          name: this.user.name,
-          email: this.user.email,
-        });
-
-        console.log('User updated successfully');
-      } catch (error) {
-        console.error('Error updating user:', error);
-      }
-    }
-  }
+        this.v$.$validate(); // Validate the form fields
+        // Check if the form is valid
+        if (!this.v$.$error) {
+          await this.userStore.updateUser({
+            id: this.user.id,
+            name: this.user.name,
+            email: this.user.email,
+          });
+          this.errors = {}; // Clear any previous errors
+        }
+    },
+  },
 };
 </script>
 
 
 
+
 <style scoped>
+.error {
+  color: red;
+  font-size: 0.8rem;
+}
 .container {
   margin-top: 20px;
   padding-top: 50px;

@@ -1,66 +1,89 @@
 <template>
   <div>
     <div class="container">
-      <!-- Your existing HTML code -->
-      <div class="text-center card-box">
-        <div class="member-card">
-            <div class="thumb-xl member-thumb m-b-10 center-block">
-              <img
-                :src="user? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
-                class="img-circle img-thumbnail"
-                alt="profile-image"
-              />
+      <div v-if="isLoading" class="text-center card-box">
+<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+  Loading...
+</button>      
+</div>
+      <div v-else>
+        <div class="text-center card-box">
+          <div class="member-card">
+              <div class="thumb-xl member-thumb m-b-10 center-block">
+                <img
+                  :src="user ? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
+                  style="width:150px"
+                  alt="profile-image"
+                />
+              </div>
+            <div class>
+              <h4 class="m-b-5">{{ user ? user.name : 'Loading...' }}</h4>
             </div>
-          <div class>
-            <h4 class="m-b-5">{{ user ? user.name : 'Loading...' }}</h4>
-          </div>
-          <div class="text-left m-t-40">
-            <p class="text-muted font-13">
-              <strong>Email :</strong>
-              <span class="m-l-15">{{ user ? user.email : 'Loading...' }}</span>
-            </p>
-            <p class="text-muted font-13">
-              <strong>Role :</strong>
-              <span class="m-l-15">{{ user ? user.role : 'Loading...' }}</span>
-            </p>
+            <div class="text-left m-t-40">
+              <p class="text-muted font-13">
+                <span class="m-l-15">{{ user ? user.email : 'Loading...' }}</span>
+              </p>
+              <p class="text-muted font-13">
+                <span class="m-l-15">{{ user ? user.role : 'Loading...' }}</span>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- end card-box -->
-      <div class="col-md-8 col-lg-9">
-        <div class>
+        <!-- end card-box -->
+        <div class="col-md-8 col-lg-9">
           <div class>
-            <ul class="nav nav-tabs navtab-custom">
-              <li class>
-                <RouterLink class="nav-link" to="WelcomeCandidate">Welcome</RouterLink>
+            <div class>
+              <ul class="nav nav-tabs navtab-custom">
+                <li class>
+                  <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
+                </li>
+                <li class>
+                  <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Settings</RouterLink>
+                </li>
+                <li class>
+                  <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
+                </li>
+                <li class>
+                <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
               </li>
-              <li class>
-                <RouterLink class="nav-link" to="CandidateUpdateProfileForm">Settings</RouterLink>
-              </li>
-              <li class>
-                <RouterLink class="nav-link" to="CandidateProfileApplication">Applications</RouterLink>
-              </li>
-            </ul>
+              </ul>
+            </div>
           </div>
         </div>
+        <!-- end col -->
       </div>
-      <!-- end col -->
     </div>
   </div>
 </template>
 
+
 <script>
 import { useUserStore } from "../../store/modules/UserProfilePinia";
+import { onMounted, ref } from 'vue';
 
 export default {
   setup() {
     const userStore = useUserStore();
-    console.log(userStore.user);
-    userStore.fetchUser();
-    return { user: userStore.user };
-  }
+    const user = ref(null);
+    const isLoading = ref(true);
+
+    onMounted(async () => {
+      try {
+        await userStore.fetchUser();
+        user.value = userStore.user;
+        isLoading.value = false;
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    });
+
+    return { user, isLoading };
+  },
 };
 </script>
+
+
 
 <style scoped>
 .container {

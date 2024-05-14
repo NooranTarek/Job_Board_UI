@@ -8,7 +8,16 @@ export const JobStore = defineStore("jobstore", {
     actions: {
         async getAllJobs() {
             try {
-                const response = await axiosInstance.get("jobs");
+                const token = localStorage.getItem("token");
+                let config = "";
+                if (token) {
+                    config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    };
+                }
+                const response = await axiosInstance.get("jobs",config);
                 this.jobs = response.data.data;
                 console.log(response);
             } catch (error) {
@@ -17,7 +26,16 @@ export const JobStore = defineStore("jobstore", {
         },
         async getJobs({ page, limit, order, search, filters }) {
             try {
-                const response = await axiosInstance.get("jobs", {
+                const token = localStorage.getItem("token");
+                let config = "";
+                if (token) {
+                    config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    };
+                }
+                const response = await axiosInstance.get("jobs",config, {
                     params: { page, limit, order, search, filters }
                 });
                 this.jobs = response.data.data;
@@ -29,7 +47,16 @@ export const JobStore = defineStore("jobstore", {
         },
         async getJob(id) {
             try {
-                const response = await axiosInstance.get(`jobs/${id}`);
+                const token = localStorage.getItem("token");
+                let config = "";
+                if (token) {
+                    config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    };
+                }
+                const response = await axiosInstance.get(`jobs/${id}`,config);
                 return response.data;
             } catch (error) {
                 console.error("Error fetching job:", error);
@@ -38,7 +65,16 @@ export const JobStore = defineStore("jobstore", {
         },
         async changeJobStatus(id, jobForm) {
             try {
-                const resp = await axiosInstance.put(`jobs/${id}`, jobForm);
+                const token = localStorage.getItem("token");
+                let config = "";
+                if (token) {
+                    config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    };
+                }
+                const resp = await axiosInstance.put(`jobs/${id}`, jobForm,config);
                 console.log(resp);
             } catch (error) {
                 console.log("Error changing job status:", error)
