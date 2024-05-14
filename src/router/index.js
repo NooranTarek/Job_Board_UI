@@ -30,7 +30,9 @@ const routes = [
     path: "/",
     component: CandidateView,
     children: [
-      { path: "/candidate/home", component: JobList },
+      { path: "/candidate/home", component: JobSearch },
+      { path: "/candidate/jobs/:id", component: JobDetails, name: "CandidateJobDetails" },
+
       { path: "/candidate/profile", component: CandidateProfile },
       { path: "/candidate/CandidateStatistics", component: CandidateStatistics },
       {
@@ -77,6 +79,9 @@ const routes = [
     path: "/employer",
     component: NavbarEmployer,
     children: [
+      { path: "/employer/home", component: JobSearch },
+      { path: "/employer/jobs/:id", component: JobDetails, name: "EmployerJobDetails" },
+
       { path: "/employer/add", 
         component: CreateJob ,
         name: "addJob",
@@ -102,9 +107,8 @@ const routes = [
 
   { path: "/login", component: LoginView },
   { path: "/register", component: RegisterView },
-  { path: "/job/:id", component: JobDetails, name: "JobDetails" },
-  { path: "/jobs", component: JobList },
-  { path: "/jobs/search", component: JobSearch },
+  // { path: "/jobs", component: JobList },
+  // { path: "/jobs/search", component: JobSearch },
 ];
 
 const router = createRouter({
@@ -121,6 +125,22 @@ router.beforeEach(async (to, from, next) => {
       next({ path: "/login", query: { redirect: to.fullPath } });
       return;
     }
+  }
+  
+  if (to.path === '/') {
+    // Redirect based on the user's role
+    const user = await userStore.fetchUser();
+    if (user.role === 'candidate') {
+        next('/candidate/home');
+    } else if (user.role === 'employer') {
+        next('/employer/home');
+    } else if (user.role === 'admin') {
+        next('/admin');
+    } else {
+        // Redirect to login if role not specified
+        next('/login');
+    }
+    return;
   }
 
   if (to.matched.some((record) => record.meta.requiredRole)) {

@@ -27,7 +27,7 @@
               <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at }}</p>
             </div>
             <!-- <button class="btn btn-primary mt-auto">View Details</button> -->
-            <router-link :to="{ name: 'JobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto">View Details</router-link>
+            <router-link v-if="specifyRole('candidate')" :to="{ name: 'JobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto">View Details</router-link>
           </div>
         </div>
       </div>
@@ -51,6 +51,14 @@ export default {
     // Call the getJobs action with pagination parameters
     await this.joblist.getJobs({ page: 1, limit: 6 });
   },
+
+  methods: {
+    specifyRole(role) {
+      if (role === localStorage.getItem('role')) return true;
+      else if (role === 'any' && localStorage.getItem('token')) return true;
+      return false;
+    }
+  } 
 };
 </script>
 
