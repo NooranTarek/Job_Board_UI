@@ -66,16 +66,15 @@ const routes = [
         props: true, // This allows passing route params as props to the component
       },
       { path: "/admin/manageJobs", 
-        component: manageJobsComponent ,
-        name: "manageJobs",
-      },
+      component: manageJobsComponent ,
+      name: "manageJobsComponent",
+    },
       {
         path: "employer", // Define the route with a parameter
         name: "EmployerMonitor",
         component: EmployerMonitor,
         props: true, // This allows passing route params as props to the component
       },
-      
     ],
     props: true,
     meta: { requiresAuth: true, requiredRole: "admin" },
@@ -97,6 +96,10 @@ const routes = [
         path: '/employer/dashboard/:id',
         component: EmployerDashboard,
         name: 'dashboards',
+      },
+      { path: "/employer/managejobs", 
+      component:  JobSearch,
+      name: "manageJobs",
       },
       { path: "/employer/update/:id", 
       component: UpdateJob ,

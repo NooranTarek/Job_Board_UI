@@ -117,7 +117,7 @@ methods: {
         localStorage.setItem("role", response.data.role);
         if(response.data.role==='admin')  this.$router.push('admin/candidate');
         else if(response.data.role==='candidate')  this.$router.push('/');
-        else if(response.data.role==='employer')  this.$router.push('/employer');
+        else if(response.data.role==='employer')  this.$router.push('/employer/managejobs');
 
 
       } catch (error) {
