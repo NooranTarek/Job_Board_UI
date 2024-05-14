@@ -4,7 +4,7 @@
 
     <div class="row pt-2">
       <div class="col-md-6">
-        <div class="input-group mb-2">
+        <div class="input-group mb-2 shadow-sm">
           <input type="text" class="form-control" placeholder="Search term" v-model="searchTerm" @input="searchJobs">
           <div class="input-group-append rounded-0">
             <span class="input-group-text rounded-0">Search by:</span>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-10">
                   <!-- Wrap the title within the same router-link -->
-                  <router-link :to="{ name: 'CandidateJobDetails', params: { id: job.id } }" class="text-decoration-none text-black bg-danger">
+                  <router-link :to="{ name: 'CandidateJobDetails', params: { id: job.id } }" class="text-decoration-none text-black">
                     <h5 class="card-title">{{ job.title }}</h5>
                   </router-link>
                 </div>
@@ -66,8 +66,15 @@
               </div>
               <!-- <button class="btn btn-primary mt-auto">View Details</button> -->
               <router-link v-show="specifyRole('candidate')" :to="{ name: 'CandidateJobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto mb-1">View Details</router-link>
-              <router-link v-show="specifyRole('employer')" :to="{ name: 'updateJob', params: { id: job.id } }" class="btn btn-primary mt-auto mb-1">Update Job</router-link>
-              <button v-show="specifyRole('employer')" class="btn btn-danger mt-auto mb-1" @click="deleteJob(job.id)">Delete Job</button>
+              <!-- <router-link v-show="specifyRole('employer')" :to="{ name: 'EmployerJobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto mb-1">View Details</router-link> -->
+              <div class="d-flex justify-content-between">
+                <div class="col-6 pe-1">
+                  <router-link v-show="specifyRole('employer')" :to="{ name: 'updateJob', params: { id: job.id } }" class="w-100 btn btn-info mt-auto mb-1">Update Job</router-link>
+                </div>
+                <div class="col-6 ps-1">
+                  <button v-show="specifyRole('employer')" class="w-100 btn btn-danger mt-auto mb-1" @click="deleteJob(job.id)">Delete Job</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

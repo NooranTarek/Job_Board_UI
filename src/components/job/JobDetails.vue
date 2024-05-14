@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div v-if="!userApplied" class="col-md-4 applyform">
+      <div v-show="specifyRole('candidate')" v-if="!userApplied" class="col-md-4 applyform">
         <h3>Apply for the job</h3>
         <form @submit.prevent="createApllication">
           <label for="email">Email</label>
