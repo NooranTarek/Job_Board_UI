@@ -144,11 +144,11 @@
           
             if (this.searchTerm.trim() === "") {
               // If searchTerm is empty, fetch all jobs
-              console.log(`params.filters:`, params.filters);
+              // console.log(`params.filters:`, params.filters);
               await this.joblist.getJobs(params);
             } else {
               // If searchTerm is not empty, perform search based on searchTerm and searchBy
-              console.log(`Searching = '${this.searchTerm}' by '${this.searchBy}'`);
+              // console.log(`Searching = '${this.searchTerm}' by '${this.searchBy}'`);
               await this.joblist.getJobs({
                 ...params,
                 searchField: this.searchBy,

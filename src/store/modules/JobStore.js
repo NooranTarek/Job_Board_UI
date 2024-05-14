@@ -28,7 +28,7 @@ export const JobStore = defineStore("jobstore", {
             }
         },
         async getJobs({ page, limit, order, searchField, search, filters }) {
-            console.log(`page: ${page} limit: ${limit} order: ${order} search: ${search} filters: ${filters}`);
+            // console.log(`page: ${page} limit: ${limit} order: ${order} search: ${search} filters: ${filters}`);
             try {
                 const token = localStorage.getItem("token");
                 let config = {};
