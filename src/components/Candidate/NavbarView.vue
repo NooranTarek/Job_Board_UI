@@ -15,9 +15,6 @@
         <li class="nav-item active">
           <RouterLink class="nav-link" to="/candidate/home">Home</RouterLink>
         </li>
-        <li v-if="specifyRole('candidate')" class="nav-item">
-          <RouterLink class="nav-link" to="/candidate/about">My Application</RouterLink>
-        </li>
         <li v-if="specifyRole('any')" class="nav-item">
           <RouterLink class="nav-link" to="/candidate/profile">my-Profile</RouterLink>
         </li>
