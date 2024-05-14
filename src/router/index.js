@@ -23,6 +23,12 @@ import NavbarEmployer from "../components/employer/navbarEmployer.vue";
 
 import CandidateStatistics from "../components/Candidate/CandidateStatistics.vue"
 import EmployerDashboard from "../components/employer/EmployerDashboard.vue";
+import monitorApplications from "../components/employer/monitorApplications.vue";
+import pendingApplications from '../components/employer/pendingApplications.vue';
+import approvedApplications from '../components/employer/approvedApplications.vue';
+import rejectedApplications from '../components/employer/rejectedApplications.vue';
+
+
 const routes = [
   //! Candidate pages _______________________________________________________________
 
@@ -60,9 +66,9 @@ const routes = [
         props: true, // This allows passing route params as props to the component
       },
       { path: "/admin/manageJobs", 
-        component: manageJobsComponent ,
-        name: "manageJobs",
-      },
+      component: manageJobsComponent ,
+      name: "manageJobsComponent",
+    },
       {
         path: "employer", // Define the route with a parameter
         name: "EmployerMonitor",
@@ -98,6 +104,26 @@ const routes = [
       { path: "/employer/update/:id", 
       component: UpdateJob ,
       name: "updateJob",
+      },
+      {
+        path: '/employer/applications',
+        component: monitorApplications,
+        name: 'monitorApplications',
+      },
+      {
+        path: '/employer/pendingApplications',
+        component: pendingApplications,
+        name: 'pendingApplications',
+      },
+      {
+        path: '/employer/approvedApplications',
+        component: approvedApplications,
+        name: 'approvedApplications',
+      },
+      {
+        path: '/employer/rejectedApplications',
+        component: rejectedApplications,
+        name: 'rejectedApplications',
       },
     ],
     meta: { requiresAuth: true, requiredRole: "employer" },
