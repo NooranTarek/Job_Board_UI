@@ -1,6 +1,5 @@
 import { createWebHistory, createRouter, RouterLink } from "vue-router";
 import HomeView from "../components/Candidate/HomeView.vue";
-import AboutView from "../components/Candidate/AboutView.vue";
 import CandidateView from "../components/Candidate/CandidateView.vue";
 import LoginView from "../components/LoginView.vue";
 import RegisterView from "../components/RegisterView.vue";
@@ -23,6 +22,7 @@ import JobSearch from "../components/job/JobSearch.vue";
 import NavbarEmployer from "../components/employer/navbarEmployer.vue";
 
 import CandidateStatistics from "../components/Candidate/CandidateStatistics.vue"
+import EmployerDashboard from "../components/employer/EmployerDashboard.vue";
 const routes = [
   //! Candidate pages _______________________________________________________________
 
@@ -30,7 +30,6 @@ const routes = [
     path: "/",
     component: CandidateView,
     children: [
-      { path: "/candidate/about", component: AboutView },
       { path: "/candidate/home", component: JobList },
       { path: "/candidate/profile", component: CandidateProfile },
       { path: "/candidate/CandidateStatistics", component: CandidateStatistics },
@@ -81,6 +80,11 @@ const routes = [
       { path: "/employer/add", 
         component: CreateJob ,
         name: "addJob",
+      },
+      {
+        path: '/employer/dashboard/:id',
+        component: EmployerDashboard,
+        name: 'dashboards',
       },
       // { path: "/employer/managejobs", 
       // component:  ,

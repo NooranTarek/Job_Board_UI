@@ -58,7 +58,7 @@
                       <div v-if="index % 3 === 0" class="row mt-3">
                         <div v-for="(app, i) in applications.slice(index, index + 3)" :key="app.id" class="col-sm-4">
                           <div class="gal-detail thumb">
-                            <a :href="app.resume" class="image-popup" title="Application">
+                            <a :href="app.resume" target="_blank" class="image-popup" title="Application">
                               <i :class="'resume fa fa-file ' + getColorClass(index + i)" aria-hidden="true"></i>
                             </a>
                             <h4 class="text-center">{{ app.id }}</h4>
@@ -66,7 +66,7 @@
                             <p class="text-muted text-center">
                               <small>{{ app.status }}</small>
                             </p>
-                            <a style="text-decoration:none" :href="app.resume">
+                            <a style="text-decoration:none" :href="app.resume" target="_blank">
                               <h5 :class="'text-center ' + getColorClass(index + i)" aria-hidden="true">See Resume</h5>
                             </a>
                               <button style="margin-left:75px" @click="cancelApplication(app.id)" type="button" class="icon-remove btn btn-danger">Cancel<i class="icon-remove"></i></button>

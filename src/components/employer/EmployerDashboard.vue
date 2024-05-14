@@ -49,8 +49,9 @@
             </table>
           </div>
         </div>
-        <div v-else class="text-center mt-5">
+        <div v-else class="text-center mt-1">
           <p class="text-muted">There are currently no applications to monitor.</p>
+          <img src="../../assets/no_applications.png" alt="No Applications Found">
         </div>
       </div>
     </div>

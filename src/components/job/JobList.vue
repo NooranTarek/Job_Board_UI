@@ -1,7 +1,6 @@
 <template>
-  <div class="container-fluid">
-    <h1>Job List</h1>
-    <div class="row g-3 ">
+  <div class="container-fluid my-3">
+    <div class="row g-3">
       <div v-for="job in joblist.jobs" :key="job.id" class="col-md-4">
         <div class="card mb-4" style="height: 100%;">
           <div class="card-body d-flex flex-column">
