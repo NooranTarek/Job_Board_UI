@@ -41,7 +41,7 @@
               <li class>
                 <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
               </li>
-                <li class>
+              <li class>
                 <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
               </li>
             </ul>
@@ -69,7 +69,15 @@
                             <a style="text-decoration:none" :href="app.resume" target="_blank">
                               <h5 :class="'text-center ' + getColorClass(index + i)" aria-hidden="true">See Resume</h5>
                             </a>
-                              <button style="margin-left:75px" @click="cancelApplication(app.id)" type="button" class="icon-remove btn btn-danger">Cancel<i class="icon-remove"></i></button>
+                            <button
+                              style="margin-left:75px"
+                              @click="cancelApplication(app.id)"
+                              type="button"
+                              class="icon-remove btn btn-danger"
+                              :disabled="app.status === 'rejected' || app.status === 'approved'"
+                            >
+                              Cancel<i class="icon-remove"></i>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -119,7 +127,7 @@ export default {
       const colors = ['color1', 'color2', 'color3'];
       return colors[index % colors.length];
     };
-    
+
     const cancelApplication = async (applicationId) => {
       try {
         await userStore.cancelApplication(applicationId);
