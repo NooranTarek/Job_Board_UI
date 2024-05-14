@@ -10,19 +10,7 @@
             <span class="input-group-text rounded-0">Search by:</span>
           </div>
           <select class="form-select" v-model="searchBy" @change="searchJobs">
-            <option value="title">Title</option>
-            <option value="description">Description</option>
-            <option value="responsibilities">Responsibilities</option>
-            <option value="skills">Skills</option>
-            <option value="qualifications">Qualifications</option>
-            <option value="salary_range">Salary Range</option>
-            <option value="benefits">Benefits</option>
-            <option value="location">Location</option>
-            <option value="work_type">Work Type</option>
-            <option value="application_deadline">Application Deadline</option>
-            <option value="status">Status</option>
-            <option value="created_at">Created At</option>
-            <option value="updated_at">Updated At</option>
+            <option v-for="field in searchFields" :value="field">{{ field }}</option>
           </select>
         </div>
       </div>
@@ -68,40 +56,64 @@
     </template>
     
 
-<script>
-import { ref } from 'vue';
-import { JobStore } from '../../store/modules/JobStore';
-
-export default {
-  name: 'JobSearch',
-
-  data: () => ({
-    joblist: JobStore(),
-    searchTerm: '',
-    searchBy: 'title',
-    loading: false,
-  }),
-
-  methods: {
-    async searchJobs() {
-      this.loading = true;
-      try {
-        console.log(`Searching = '${this.searchTerm}' by '${this.searchBy}'`);
-        await this.joblist.getJobs({ page: 1, limit: 2, searchField: this.searchBy, search: this.searchTerm });
-      } catch (error) {
-        console.error('Error searching for jobs:', error);
-      } finally {
-        this.loading = false;
-      }
-    },
-  },
-
-  watch: {
-    searchTerm: 'searchJobs', // Watch for changes in searchTerm and call searchJobs method
-    searchBy: 'searchJobs',   // Watch for changes in searchBy and call searchJobs method
-  },
-};
-</script>
+    <script>
+    import { ref } from 'vue';
+    import { JobStore } from '../../store/modules/JobStore';
+    
+    export default {
+      name: 'JobSearch',
+    
+      data() {
+        return {
+          joblist: JobStore(),
+          searchTerm: '',
+          searchBy: 'title',
+          loading: false,
+          searchFields: [],
+        };
+      },
+    
+      methods: {
+        async fetchSearchFields() {
+          try {
+            // Fetch the jobs data to get searchFields
+            await this.joblist.getFirstJob();
+            const firstJob = this.joblist.firstJob;
+            console.log(`firstJob: ${firstJob}`);
+            if (firstJob) {
+              const allFields = Object.keys(firstJob); // Extract all fields from the first job object
+              // Exclude specific fields like "id"
+              const excludedFields = ['id', 'logo', 'user_id'];
+              this.searchFields = allFields.filter(field => !excludedFields.includes(field));
+            }
+          } catch (error) {
+            console.error('Error fetching searchFields:', error);
+          }
+        },
+      
+        async searchJobs() {
+          this.loading = true;
+          try {
+            console.log(`Searching = '${this.searchTerm}' by '${this.searchBy}'`);
+            await this.joblist.getJobs({ page: 1, limit: 2, searchField: this.searchBy, search: this.searchTerm });
+          } catch (error) {
+            console.error('Error searching for jobs:', error);
+          } finally {
+            this.loading = false;
+          }
+        },
+      },
+    
+      watch: {
+        searchTerm: 'searchJobs',
+        searchBy: 'searchJobs',
+      },
+    
+      created() {
+        this.fetchSearchFields();
+      },
+    };
+    </script>
 
 <style scoped>
 .card {

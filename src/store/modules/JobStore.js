@@ -36,13 +36,35 @@ export const JobStore = defineStore("jobstore", {
                 }
                 config.params = { page, limit, order, searchField, search, filters };
         
-                console.log("Request being sent:", config);
+                // console.log("Request being sent:", config);
         
                 const response = await axiosInstance.get("jobs", config);
                 this.jobs = response.data.data;
                 console.log("Response:", this.jobs);
             } catch (error) {
                 console.error("Error fetching jobs:", error);
+            }
+        },
+
+        async getFirstJob() {
+            try {
+                const token = localStorage.getItem("token");
+                let config = {};
+                if (token) {
+                    config.headers = {
+                        Authorization: `Bearer ${token}`,
+                    };
+                }
+                const page = 1;
+                const limit = 1;
+                config.params = { page, limit};
+        
+                // console.log("Request being sent:", config);
+        
+                const response = await axiosInstance.get("jobs", config);
+                this.firstJob = response.data.data[0];
+            } catch (error) {
+                console.error("Error fetching firstJob:", error);
             }
         },
         
