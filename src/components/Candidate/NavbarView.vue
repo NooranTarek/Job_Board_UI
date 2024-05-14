@@ -13,10 +13,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul  class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <RouterLink class="nav-link" to="/candidate/home">Home</RouterLink>
-        </li>
-        <li v-if="specifyRole('candidate')" class="nav-item">
-          <RouterLink class="nav-link" to="/candidate/about">My Application</RouterLink>
+          <RouterLink class="nav-link" to="/">Home</RouterLink>
         </li>
         <li v-if="specifyRole('any')" class="nav-item">
           <RouterLink class="nav-link" to="/candidate/profile">my-Profile</RouterLink>
@@ -90,6 +87,7 @@ export default {
 }
 </script>
 <style>
+
 #navbar-brand{
   color:rgb(140,66,53);
   font-weight: bolder;
