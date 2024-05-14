@@ -3,7 +3,10 @@ import axiosInstance from "../../axios";
 
 export const JobStore = defineStore("jobstore", {
     state: () => ({
-        jobs: []
+        jobs: [],
+        currentPage : 1,
+        totalPages : 0,
+        totalCount : 0,
     }),
     actions: {
         async getAllJobs() {
@@ -19,13 +22,13 @@ export const JobStore = defineStore("jobstore", {
                 }
                 const response = await axiosInstance.get("jobs",config);
                 this.jobs = response.data.data;
-                console.log(response);
+                // console.log(response);
             } catch (error) {
                 console.error("Error fetching jobs:", error);
             }
         },
         async getJobs({ page, limit, order, searchField, search, filters }) {
-            console.log(`page: ${page} limit: ${limit} order: ${order} search: ${search} filters: ${filters}`);
+            // console.log(`page: ${page} limit: ${limit} order: ${order} search: ${search} filters: ${filters}`);
             try {
                 const token = localStorage.getItem("token");
                 let config = {};
@@ -40,7 +43,11 @@ export const JobStore = defineStore("jobstore", {
         
                 const response = await axiosInstance.get("jobs", config);
                 this.jobs = response.data.data;
-                console.log("Response:", this.jobs);
+                this.currentPage = response.data.current_page;
+                this.totalPages = response.data.total_pages;
+                this.totalCount = response.data.total_count;
+                // console.log(`totalPages==========================: ${this.totalPages}`);
+                // console.log("Response:", this.jobs);
             } catch (error) {
                 console.error("Error fetching jobs:", error);
             }
