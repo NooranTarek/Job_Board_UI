@@ -24,7 +24,7 @@ export const JobStore = defineStore("jobstore", {
                 console.error("Error fetching jobs:", error);
             }
         },
-        async getJobs({ page, limit, order, search, filters }) {
+        async getJobs({ page, limit, order, searchField, search, filters }) {
             console.log(`page: ${page} limit: ${limit} order: ${order} search: ${search} filters: ${filters}`);
             try {
                 const token = localStorage.getItem("token");
@@ -34,7 +34,7 @@ export const JobStore = defineStore("jobstore", {
                         Authorization: `Bearer ${token}`,
                     };
                 }
-                config.params = { page, limit, order, search, filters };
+                config.params = { page, limit, order, searchField, search, filters };
         
                 console.log("Request being sent:", config);
         
