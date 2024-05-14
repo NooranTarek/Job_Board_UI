@@ -210,6 +210,8 @@
 }
 
 .card-text {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
+
+
 </style>
