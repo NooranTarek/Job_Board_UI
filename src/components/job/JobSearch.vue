@@ -2,9 +2,9 @@
   <div class="container-fluid">
     <!-- <h1>Job Search</h1> -->
 
-    <div class="row pt-3">
+    <div class="row pt-2">
       <div class="col-md-6">
-        <div class="input-group mb-3">
+        <div class="input-group mb-2">
           <input type="text" class="form-control" placeholder="Search term" v-model="searchTerm" @input="searchJobs">
           <div class="input-group-append rounded-0">
             <span class="input-group-text rounded-0">Search by:</span>
@@ -18,20 +18,39 @@
     <!-- Display job list or loading indicator -->
     <div v-if="loading">Loading...</div>
     <div v-else>
-      <!-- <JobList :jobs="jobs" /> -->
       <div class="row g-3 ">
         <div v-for="job in joblist.jobs" :key="job.id" class="col-md-3">
           <div class="card mb-4" style="height: 100%;">
             <div class="card-body d-flex flex-column">
-              <div class="row align-items-center">
+              <div v-show="specifyRole('candidate')" class="row align-items-center my-0">
                 <div class="col-2">
-                  <img :src="job.logo" alt="Company Logo" style="width: 70px; height: 70px;" class="rounded-circle">
+                  <!-- Wrap the logo within the router-link -->
+                  <router-link :to="{ name: 'CandidateJobDetails', params: { id: job.id } }">
+                    <img :src="job.logo" alt="Company Logo" style="width: 70px; height: 70px;" class="rounded-circle">
+                  </router-link>
                 </div>
                 <div class="col-10">
-                  <h5 class="card-title">{{ job.title }}</h5>
+                  <!-- Wrap the title within the same router-link -->
+                  <router-link :to="{ name: 'CandidateJobDetails', params: { id: job.id } }" class="text-decoration-none text-black bg-danger">
+                    <h5 class="card-title">{{ job.title }}</h5>
+                  </router-link>
                 </div>
               </div>
-              <div class="flex-grow-1">
+              <div v-show="specifyRole('employer')" class="row align-items-center my-0">
+                <div class="col-2">
+                  <!-- Wrap the logo within the router-link -->
+                  <router-link :to="{ name: 'EmployerJobDetails', params: { id: job.id } }">
+                    <img :src="job.logo" alt="Company Logo" style="width: 70px; height: 70px;" class="rounded-circle">
+                  </router-link>
+                </div>
+                <div class="col-10">
+                  <!-- Wrap the title within the same router-link -->
+                  <router-link :to="{ name: 'EmployerJobDetails', params: { id: job.id } }" class="text-decoration-none text-black">
+                    <h5 class="card-title">{{ job.title }}</h5>
+                  </router-link>
+                </div>
+              </div>
+              <div class="flex-grow-1 my-0">
                 <!-- <p class="card-text"><strong>Description:</strong> {{ job.description }}</p> -->
                 <!-- <p class="card-text"><strong>Responsibilities:</strong> {{ job.responsibilities }}</p> -->
                 <p class="card-text"><strong>Skills:</strong> {{ job.skills }}</p>
@@ -40,7 +59,7 @@
                 <!-- <p class="card-text"><strong>Benefits:</strong> {{ job.benefits }}</p> -->
                 <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
                 <p class="card-text"><strong>Work Type:</strong> {{ job.work_type }}</p>
-                <p class="card-text"><strong>Application Deadline:</strong> {{ job.application_deadline.slice(0, 10) }}</p>
+                <p class="card-text mb-0"><strong>Application Deadline:</strong> {{ job.application_deadline.slice(0, 10) }}</p>
                 <!-- <p class="card-text"><strong>Status:</strong> {{ job.status }}</p> -->
                 <!-- <p class="card-text"><strong>Created At:</strong> {{ job.created_at.slice(0, 10) }}</p>
                 <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>                     -->
