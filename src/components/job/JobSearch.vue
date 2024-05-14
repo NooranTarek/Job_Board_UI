@@ -41,9 +41,9 @@
                     <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
                     <p class="card-text"><strong>Work Type:</strong> {{ job.work_type }}</p>
                     <p class="card-text"><strong>Application Deadline:</strong> {{ job.application_deadline }}</p>
-                    <p class="card-text"><strong>Status:</strong> {{ job.status }}</p>
-                    <p class="card-text"><strong>Created At:</strong> {{ job.created_at }}</p>
-                    <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at }}</p>
+                    <!-- <p class="card-text"><strong>Status:</strong> {{ job.status }}</p> -->
+                    <p class="card-text"><strong>Created At:</strong> {{ job.created_at.slice(0, 10) }}</p>
+                    <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>                    
                   </div>
                   <!-- <button class="btn btn-primary mt-auto">View Details</button> -->
                   <router-link :to="{ name: 'JobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto">View Details</router-link>
@@ -70,6 +70,8 @@
           searchBy: 'title',
           loading: false,
           searchFields: [],
+          page: 1,
+          limit: 3,
         };
       },
     
@@ -95,7 +97,7 @@
           try {
             if (this.searchTerm.trim() === '') {
               // If searchTerm is empty, fetch all jobs
-              await this.joblist.getJobs({ page: 1, limit: 2 });
+              await this.joblist.getJobs({ page: this.page, limit: this.limit });
             } else {
               // If searchTerm is not empty, perform search based on searchTerm and searchBy
               console.log(`Searching = '${this.searchTerm}' by '${this.searchBy}'`);
