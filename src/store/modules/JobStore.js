@@ -25,26 +25,27 @@ export const JobStore = defineStore("jobstore", {
             }
         },
         async getJobs({ page, limit, order, search, filters }) {
+            console.log(`page: ${page} limit: ${limit} order: ${order} search: ${search} filters: ${filters}`);
             try {
                 const token = localStorage.getItem("token");
-                let config = "";
+                let config = {};
                 if (token) {
-                    config = {
-                    headers: {
+                    config.headers = {
                         Authorization: `Bearer ${token}`,
-                    },
                     };
                 }
-                const response = await axiosInstance.get("jobs",config, {
-                    params: { page, limit, order, search, filters }
-                });
+                config.params = { page, limit, order, search, filters };
+        
+                console.log("Request being sent:", config);
+        
+                const response = await axiosInstance.get("jobs", config);
                 this.jobs = response.data.data;
-                console.log(this.jobs);
-
+                console.log("Response:", this.jobs);
             } catch (error) {
                 console.error("Error fetching jobs:", error);
             }
         },
+        
         async getJob(id) {
             try {
                 const token = localStorage.getItem("token");

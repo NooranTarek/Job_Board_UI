@@ -49,9 +49,14 @@ import JobList from "../job/JobList.vue";
 
 export default {
   name: 'JobSearch',
-  components: {
-    JobList
-  },
+
+  data: () => ({
+    joblist: JobStore(),
+  }),
+
+  // components: {
+  //   JobList
+  // },
   setup() {
     const searchTerm = ref('');
     const loading = ref(false);
@@ -60,7 +65,8 @@ export default {
     const searchJobs = async () => {
       loading.value = true;
       try {
-        await joblist.getJobs({ page: 1, limit: 6, search: searchTerm.value });
+        console.log(`Searching = '${searchTerm.value}'`);
+        await joblist.getJobs({ page: 1, limit: 2, search: searchTerm.value });
       } catch (error) {
         console.error('Error searching for jobs:', error);
       } finally {
