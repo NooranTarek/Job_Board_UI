@@ -78,6 +78,7 @@
     import { ref } from 'vue';
     import { JobStore } from '../../store/modules/JobStore';
     import Pagination from '../reusable/Pagination.vue';
+    import { useUserStore } from '../../store/modules/UserProfilePinia';
     
     export default {
       name: 'JobSearch',
@@ -88,6 +89,7 @@
 
       data() {
         return {
+          loggedUser: null,
           joblist: JobStore(),
           searchTerm: '',
           searchBy: 'title',
@@ -129,27 +131,41 @@
         async searchJobs() {
           this.loading = true;
           try {
-
-            if (this.searchTerm.trim() === '') {
+            let params = { page: this.currentPage, limit: this.limit };
+            const token = localStorage.getItem("token");
+            if (this.specifyRole("employer") && token) {
+              // console.log(`Employer: ${token}`);
+              const loggedUser = await useUserStore().fetchUser();
+              if (loggedUser) {
+                params.filters = {};
+                params.filters.user_id = loggedUser.id;
+              }
+            }
+          
+            if (this.searchTerm.trim() === "") {
               // If searchTerm is empty, fetch all jobs
-              await this.joblist.getJobs({ page: this.currentPage, limit: this.limit });
+              console.log(`params.filters:`, params.filters);
+              await this.joblist.getJobs(params);
             } else {
               // If searchTerm is not empty, perform search based on searchTerm and searchBy
               console.log(`Searching = '${this.searchTerm}' by '${this.searchBy}'`);
-              await this.joblist.getJobs({ page: this.currentPage, limit: this.limit, searchField: this.searchBy, search: this.searchTerm });
+              await this.joblist.getJobs({
+                ...params,
+                searchField: this.searchBy,
+                search: this.searchTerm,
+              });
             }
-
+          
             this.currentPage = this.joblist.currentPage;
             this.totalPages = this.joblist.totalPages;
             this.totalCount = this.joblist.totalCount;
-            // console.log(`totalPages==========================: ${this.totalPages}`);
-
           } catch (error) {
-            console.error('Error searching for jobs:', error);
+            console.error("Error searching for jobs:", error);
           } finally {
             this.loading = false;
           }
         },
+
 
       },
     
@@ -172,9 +188,12 @@
         },
       },
     
-      created() {
+      async created() {
         this.searchJobs();
         this.fetchSearchFields();
+        this.loggedUser = await useUserStore().fetchUser();
+        // console.log(`loggedUser: ${this.loggedUser}`);
+        // console.log(`user_id: ${this.loggedUser.id}`);
       },
     };
     </script>
