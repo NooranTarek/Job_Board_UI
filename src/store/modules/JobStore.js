@@ -93,6 +93,26 @@ export const JobStore = defineStore("jobstore", {
                 throw error; // Re-throw the error to handle it in the component
             }
         },
+
+        async deleteJob(id) {
+            try {
+                const token = localStorage.getItem("token");
+                let config = "";
+                if (token) {
+                    config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    };
+                }
+                const response = await axiosInstance.delete(`jobs/${id}`,config);
+                return response.data;
+            } catch (error) {
+                console.error("Error deleting job:", error);
+                throw error; // Re-throw the error to handle it in the component
+            }
+        },
+
         async changeJobStatus(id, jobForm) {
             try {
                 const token = localStorage.getItem("token");

@@ -35,7 +35,7 @@
                 <!-- <p class="card-text"><strong>Description:</strong> {{ job.description }}</p> -->
                 <!-- <p class="card-text"><strong>Responsibilities:</strong> {{ job.responsibilities }}</p> -->
                 <p class="card-text"><strong>Skills:</strong> {{ job.skills }}</p>
-                <p class="card-text"><strong>Qualifications:</strong> {{ job.qualifications }}</p>
+                <!-- <p class="card-text"><strong>Qualifications:</strong> {{ job.qualifications }}</p> -->
                 <p class="card-text"><strong>Salary Range:</strong> {{ job.salary_range }} $</p>
                 <!-- <p class="card-text"><strong>Benefits:</strong> {{ job.benefits }}</p> -->
                 <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
@@ -46,8 +46,9 @@
                 <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>                     -->
               </div>
               <!-- <button class="btn btn-primary mt-auto">View Details</button> -->
-              <router-link v-show="specifyRole('candidate')" :to="{ name: 'CandidateJobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto">View Details</router-link>
-              <router-link v-show="specifyRole('employer')" :to="{ name: 'updateJob', params: { id: job.id } }" class="btn btn-primary mt-auto">Update Job</router-link>
+              <router-link v-show="specifyRole('candidate')" :to="{ name: 'CandidateJobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto mb-1">View Details</router-link>
+              <router-link v-show="specifyRole('employer')" :to="{ name: 'updateJob', params: { id: job.id } }" class="btn btn-primary mt-auto mb-1">Update Job</router-link>
+              <button v-show="specifyRole('employer')" class="btn btn-danger mt-auto mb-1" @click="deleteJob(job.id)">Delete Job</button>
             </div>
           </div>
         </div>
@@ -172,6 +173,19 @@
           }
         },
 
+        async deleteJob(jobId) {
+          try {
+            const confirmed = confirm("Are you sure you want to delete this job?");
+            if (!confirmed) {
+              return;
+            }
+          
+            await this.joblist.deleteJob(jobId);
+            this.searchJobs();
+          } catch (error) {
+            console.error("Error deleting job:", error);
+          }
+        }
 
       },
     
