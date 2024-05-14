@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-8 ">
+      <div v-if="job" class="col-md-8">
         <div class="card">
           <div class="card-body">
             <img :src="job.logo" alt="Company Logo" class="img-fluid mb-3">
@@ -17,13 +17,16 @@
             <p class="card-text"><strong>Application Deadline:</strong> {{ job.application_deadline.slice(0, 10) }}</p>
             <!-- <p><strong>Status:</strong> {{ job.status }}</p> -->
             <p class="card-text"><strong>Created At:</strong> {{ job.created_at.slice(0, 10) }}</p>
-            <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>    
-            <button class="btn btn-primary" @click="goBack">Back to Job List</button>
+            <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>
+            <div class="d-flex justify-content-between">
+              <button v-show="specifyRole('employer')" class="btn btn-danger mt-auto mb-1 mx-2" @click="deleteJobById(job.id)">Delete Job</button> 
+              <button class="btn btn-primary mx-2" @click="goBack">Back to Job List</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div v-if="!userApplied" class="col-md-4 applyform">
+      <div v-show="specifyRole('candidate')" v-if="!userApplied" class="col-md-4 applyform">
         <h3>Apply for the job</h3>
         <form @submit.prevent="createApllication">
           <label for="email">Email</label>
@@ -158,12 +161,29 @@ export default {
           toast.error("Error Posting application. Please try again later.");
         }
 
+    },
+
+  async deleteJobById(jobId) {
+    try {
+      const confirmed = confirm("Are you sure you want to delete this job?");
+      if (!confirmed) {
+        return;
+      }
+      
+      await JobStore().deleteJob(jobId);
+      this.$router.push({ path: '/employer/home' });
+
+    } catch (error) {
+      console.error("Error deleting job:", error);
     }
   },
-  beforeMount() {
+
+},
+
+  async beforeMount() {
     // Call the getJobDetails and checkIfUserApplied methods before mounting the component
-    this.getJobDetails();
-    this.checkIfUserApplied();
+    await this.getJobDetails();
+    await this.checkIfUserApplied();
   }
 };
 </script>
