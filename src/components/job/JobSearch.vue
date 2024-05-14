@@ -1,69 +1,77 @@
 <template>
   <div class="container-fluid">
-    <div class="row pt-3">
-      <!-- Input fields -->
-      <div class="col-md-3">
-        <input type="text" class="form-control mb-3" placeholder="Search term" v-model="searchTerm" @input="searchJobs">
-        <span class="d-block mb-2">Search by:</span>
-        <select class="form-select" v-model="searchBy" @change="searchJobs">
-          <option v-for="field in searchFields" :value="field">{{ field }}</option>
-        </select>
-        <!-- Add more content here if needed -->
-      </div>
-      
+    <!-- <h1>Job Search</h1> -->
 
-      <!-- Display job list or loading indicator -->
-      <div class="col-md-9">
-        <div v-if="loading">Loading...</div>
-        <div v-else>
-          <div class="row g-3">
-            <div v-for="job in joblist.jobs" :key="job.id" class="col-md-12">
-              <div class="card mb-4" style="height: 100%;">
-                <div class="card-body d-flex flex-column">
-                  <div class="row align-items-center">
-                    <div class="col-2">
-                      <img :src="job.logo" alt="Company Logo" style="width: 70px; height: 70px;" class="rounded-circle">
-                    </div>
-                    <div class="col-10">
-                      <h5 class="card-title">{{ job.title }}</h5>
-                    </div>
-                  </div>
-                  <div class="flex-grow-1">
-                    <p class="card-text"><strong>Description:</strong> {{ job.description }}</p>
-                    <p class="card-text"><strong>Skills:</strong> {{ job.skills }}</p>
-                    <p class="card-text"><strong>Salary Range:</strong> {{ job.salary_range }} $</p>
-                    <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
-                    <p class="card-text"><strong>Work Type:</strong> {{ job.work_type }}</p>
-                    <p class="card-text"><strong>Application Deadline:</strong> {{ job.application_deadline.slice(0, 10) }}</p>
-                  </div>
-                  <router-link v-show="specifyRole('candidate')" :to="{ name: 'CandidateJobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto">View Details</router-link>
-                  <router-link v-show="specifyRole('employer')" :to="{ name: 'updateJob', params: { id: job.id } }" class="btn btn-primary mt-auto">Update Job</router-link>
+    <div class="row pt-3">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Search term" v-model="searchTerm" @input="searchJobs">
+          <div class="input-group-append rounded-0">
+            <span class="input-group-text rounded-0">Search by:</span>
+          </div>
+          <select class="form-select" v-model="searchBy" @change="searchJobs">
+            <option v-for="field in searchFields" :value="field">{{ field }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- Display job list or loading indicator -->
+    <div v-if="loading">Loading...</div>
+    <div v-else>
+      <!-- <JobList :jobs="jobs" /> -->
+      <div class="row g-3 ">
+        <div v-for="job in joblist.jobs" :key="job.id" class="col-md-3">
+          <div class="card mb-4" style="height: 100%;">
+            <div class="card-body d-flex flex-column">
+              <div class="row align-items-center">
+                <div class="col-2">
+                  <img :src="job.logo" alt="Company Logo" style="width: 70px; height: 70px;" class="rounded-circle">
+                </div>
+                <div class="col-10">
+                  <h5 class="card-title">{{ job.title }}</h5>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div v-if="totalCount > 0">
-            <Pagination
-              :currentPage="currentPage"
-              :totalPages="totalPages"
-              :totalCount="totalCount"
-              @page-changed="handlePageChange"
-            />
-          </div>
-          <div v-else class="row py-3">
-            <div class="col-md-12">
-              <div class="alert alert-warning" role="alert">
-                No results found.
+              <div class="flex-grow-1">
+                <!-- <p class="card-text"><strong>Description:</strong> {{ job.description }}</p> -->
+                <!-- <p class="card-text"><strong>Responsibilities:</strong> {{ job.responsibilities }}</p> -->
+                <p class="card-text"><strong>Skills:</strong> {{ job.skills }}</p>
+                <p class="card-text"><strong>Qualifications:</strong> {{ job.qualifications }}</p>
+                <p class="card-text"><strong>Salary Range:</strong> {{ job.salary_range }} $</p>
+                <!-- <p class="card-text"><strong>Benefits:</strong> {{ job.benefits }}</p> -->
+                <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
+                <p class="card-text"><strong>Work Type:</strong> {{ job.work_type }}</p>
+                <p class="card-text"><strong>Application Deadline:</strong> {{ job.application_deadline.slice(0, 10) }}</p>
+                <!-- <p class="card-text"><strong>Status:</strong> {{ job.status }}</p> -->
+                <!-- <p class="card-text"><strong>Created At:</strong> {{ job.created_at.slice(0, 10) }}</p>
+                <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>                     -->
               </div>
+              <!-- <button class="btn btn-primary mt-auto">View Details</button> -->
+              <router-link v-show="specifyRole('candidate')" :to="{ name: 'CandidateJobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto">View Details</router-link>
+              <router-link v-show="specifyRole('employer')" :to="{ name: 'updateJob', params: { id: job.id } }" class="btn btn-primary mt-auto">Update Job</router-link>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div v-if="totalCount>0">
+      <Pagination
+        :currentPage="currentPage"
+        :totalPages="totalPages"
+        :totalCount="totalCount"
+        @page-changed="handlePageChange"
+      />
+    </div>
+    <div v-else class="row py-3">
+      <div class="col-md-12">
+        <div class="alert alert-warning" role="alert">
+          No results found.
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
-
     
 
     <script>
@@ -112,7 +120,7 @@
             if (firstJob) {
               const allFields = Object.keys(firstJob); // Extract all fields from the first job object
               // Exclude specific fields like "id"
-              const excludedFields = ['id', 'logo', 'user_id', 'status'];
+              const excludedFields = ['id', 'logo', 'user_id'];
               this.searchFields = allFields.filter(field => !excludedFields.includes(field));
             }
           } catch (error) {
