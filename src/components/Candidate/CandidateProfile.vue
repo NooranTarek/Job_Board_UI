@@ -1,6 +1,27 @@
 <template>
   <div>
     <div class="container">
+              <div class="col-md-8 col-lg-9">
+          <div class>
+            <div class>
+              <ul class="nav nav-tabs navtab-custom">
+                <li class>
+                  <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
+                </li>
+                <li class>
+                  <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Settings</RouterLink>
+                </li>
+                <li class>
+                  <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
+                </li>
+                <li class>
+                <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
+              </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
       <div v-if="isLoading" class="text-center card-box">
 <button class="btn btn-primary" type="button" disabled>
   <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
@@ -31,27 +52,7 @@
           </div>
         </div>
         <!-- end card-box -->
-        <div class="col-md-8 col-lg-9">
-          <div class>
-            <div class>
-              <ul class="nav nav-tabs navtab-custom">
-                <li class>
-                  <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
-                </li>
-                <li class>
-                  <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Settings</RouterLink>
-                </li>
-                <li class>
-                  <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
-                </li>
-                <li class>
-                <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
-              </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <!-- end col -->
+
       </div>
     </div>
   </div>
@@ -88,7 +89,6 @@ export default {
 <style scoped>
 .container {
   margin-top: 20px;
-  padding-top: 50px;
   background: rgb(248, 249, 250);
 }
 
