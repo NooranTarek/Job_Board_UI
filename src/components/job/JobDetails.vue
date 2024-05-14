@@ -81,6 +81,11 @@ export default {
     };
   },
   methods: {
+    specifyRole(role) {
+      if (role === localStorage.getItem('role')) return true;
+      else if (role === 'any' && localStorage.getItem('token')) return true;
+      return false;
+    },
     async getJobDetails() {
       // Get the id parameter from the route
       const id = this.$route.params.id;
@@ -115,7 +120,13 @@ export default {
     },
     goBack() {
       // Navigate back to the job list page
-      this.$router.push({ path: '/candidate/home' });
+      if (this.specifyRole('candidate')) {
+        this.$router.push({ path: '/candidate/home' });
+      } else if (this.specifyRole('employer')) {
+        this.$router.push({ path: '/employer/home' });
+      } else {
+        this.$router.push({ path: '/' });
+      }
     },
     handleFileChange(event) {
       this.resume = event.target.files[0];

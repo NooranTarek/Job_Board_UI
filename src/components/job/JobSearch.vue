@@ -40,13 +40,14 @@
                 <p class="card-text"><strong>Benefits:</strong> {{ job.benefits }}</p>
                 <p class="card-text"><strong>Location:</strong> {{ job.location }}</p>
                 <p class="card-text"><strong>Work Type:</strong> {{ job.work_type }}</p>
-                <p class="card-text"><strong>Application Deadline:</strong> {{ job.application_deadline }}</p>
+                <p class="card-text"><strong>Application Deadline:</strong> {{ job.application_deadline.slice(0, 10) }}</p>
                 <!-- <p class="card-text"><strong>Status:</strong> {{ job.status }}</p> -->
                 <p class="card-text"><strong>Created At:</strong> {{ job.created_at.slice(0, 10) }}</p>
                 <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>                    
               </div>
               <!-- <button class="btn btn-primary mt-auto">View Details</button> -->
-              <router-link :to="{ name: 'JobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto">View Details</router-link>
+              <router-link v-show="specifyRole('candidate')" :to="{ name: 'CandidateJobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto">View Details</router-link>
+              <router-link v-show="specifyRole('employer')" :to="{ name: 'updateJob', params: { id: job.id } }" class="btn btn-primary mt-auto">Update Job</router-link>
             </div>
           </div>
         </div>
@@ -100,6 +101,11 @@
       },
     
       methods: {
+        specifyRole(role) {
+          if (role === localStorage.getItem('role')) return true;
+          else if (role === 'any' && localStorage.getItem('token')) return true;
+          return false;
+        },
         async handlePageChange(page) {
           this.currentPage = page;
           await this.searchJobs();

@@ -30,7 +30,9 @@ const routes = [
     path: "/",
     component: CandidateView,
     children: [
-      { path: "/candidate/home", component: JobList },
+      { path: "/candidate/home", component: JobSearch },
+      { path: "/candidate/jobs/:id", component: JobDetails, name: "CandidateJobDetails" },
+
       { path: "/candidate/profile", component: CandidateProfile },
       { path: "/candidate/CandidateStatistics", component: CandidateStatistics },
       {
@@ -77,6 +79,9 @@ const routes = [
     path: "/employer",
     component: NavbarEmployer,
     children: [
+      { path: "/employer/home", component: JobSearch },
+      { path: "/employer/jobs/:id", component: JobDetails, name: "EmployerJobDetails" },
+
       { path: "/employer/add", 
         component: CreateJob ,
         name: "addJob",
@@ -102,9 +107,8 @@ const routes = [
 
   { path: "/login", component: LoginView },
   { path: "/register", component: RegisterView },
-  { path: "/job/:id", component: JobDetails, name: "JobDetails" },
-  { path: "/jobs", component: JobList },
-  { path: "/jobs/search", component: JobSearch },
+  // { path: "/jobs", component: JobList },
+  // { path: "/jobs/search", component: JobSearch },
 ];
 
 const router = createRouter({
