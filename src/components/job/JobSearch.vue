@@ -147,9 +147,23 @@
 
       },
     
+      // watch: {
+      //   searchTerm: 'searchJobs',
+      //   searchBy: 'searchJobs',
+      // },
       watch: {
-        searchTerm: 'searchJobs',
-        searchBy: 'searchJobs',
+        searchTerm(newValue, oldValue) {
+          if (newValue !== oldValue) {
+            this.currentPage = 1;
+            this.searchJobs();
+          }
+        },
+        searchBy(newValue, oldValue) {
+          if (newValue !== oldValue) {
+            this.currentPage = 1;
+            this.searchJobs();
+          }
+        },
       },
     
       created() {
