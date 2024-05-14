@@ -126,6 +126,22 @@ router.beforeEach(async (to, from, next) => {
       return;
     }
   }
+  
+  if (to.path === '/') {
+    // Redirect based on the user's role
+    const user = await userStore.fetchUser();
+    if (user.role === 'candidate') {
+        next('/candidate/home');
+    } else if (user.role === 'employer') {
+        next('/employer/home');
+    } else if (user.role === 'admin') {
+        next('/admin');
+    } else {
+        // Redirect to login if role not specified
+        next('/login');
+    }
+    return;
+  }
 
   if (to.matched.some((record) => record.meta.requiredRole)) {
     try {
