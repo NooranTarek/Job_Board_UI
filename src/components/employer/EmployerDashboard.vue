@@ -101,11 +101,12 @@ export default {
     };
   },
   methods: {
-    async getEmployerApplications(pageNumber = 1, user_id) {
+    async getEmployerApplications(pageNumber = 1) {
       try {
+        const id = this.$route.params.id;
         const response = await useUserStore().getEmployerApplications(
           pageNumber,
-          1
+          id
         );
         this.data = response.data;
         console.log(this.data);
