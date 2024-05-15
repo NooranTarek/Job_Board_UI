@@ -51,7 +51,7 @@
         </div>
         <div v-else class="text-center mt-1">
           <p class="text-muted">There are currently no applications to monitor.</p>
-          <img src="../../assets/no_applications.png" alt="No Applications Found">
+          <img src="../../assets/no_applications.png" alt="No Applications Found" />
         </div>
       </div>
     </div>
@@ -60,6 +60,28 @@
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" :class="{ disabled: data.applications.current_page === 1 }">
+          <a
+            class="page-link"
+            @click.prevent="getEmployerApplications(data.applications.current_page - 1)"
+          >Previous</a>
+        </li>
+        <li class="page-item" v-for="page in data.applications.last_page" :key="page">
+          <a class="page-link" @click.prevent="getEmployerApplications(page)">{{ page }}</a>
+        </li>
+        <li
+          class="page-item"
+          :class="{ disabled: data.applications.current_page === data.applications.last_page }"
+        >
+          <a
+            class="page-link"
+            @click.prevent="getEmployerApplications(data.applications.current_page + 1)"
+          >Next</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -79,27 +101,30 @@ export default {
     };
   },
   methods: {
-    async getEmployerApplications() {
+    async getEmployerApplications(pageNumber = 1, user_id) {
       try {
-        const id = this.$route.params.id;
-        const response = await useUserStore().getEmployerApplications(id);
+        const response = await useUserStore().getEmployerApplications(
+          pageNumber,
+          1
+        );
         this.data = response.data;
-        this.loading = false;
         console.log(this.data);
+        this.loading = false;
       } catch (error) {
         console.error("Error fetching employer applications", error);
         this.loading = false;
       }
     },
+
     async approveResume(status, application_id) {
       try {
         await useUserStore().modifyApplicationStatus(status, application_id);
         toast.success("Application approved");
-        const index = this.data.applications.findIndex(
+        const index = this.data.applications.data.findIndex(
           application => application.id === application_id
         );
         if (index !== -1) {
-          this.data.applications.splice(index, 1);
+          this.data.applications.data.splice(index, 1);
         }
       } catch (error) {
         console.error("Error while accepting the resume", error);
@@ -110,11 +135,11 @@ export default {
       try {
         await useUserStore().modifyApplicationStatus(status, application_id);
         toast.info("Application rejected");
-        const index = this.data.applications.findIndex(
+        const index = this.data.applications.data.findIndex(
           application => application.id === application_id
         );
         if (index !== -1) {
-          this.data.applications.splice(index, 1);
+          this.data.applications.data.splice(index, 1);
         }
       } catch (error) {
         console.error("Error while rejecting the resume", error);
@@ -127,11 +152,20 @@ export default {
   },
   computed: {
     filteredApplications() {
-      return this.data.applications.filter(
-        application => application.status === "pending"
-      );
+      console.log("55555", this.data.applications);
+      if (
+        this.data.applications.data &&
+        this.data.applications.data.length > 0
+      ) {
+        return this.data.applications.data.filter(
+          application => application.status === "pending"
+        );
+      } else {
+        return [];
+      }
     }
   },
+
   created() {
     this.getEmployerApplications();
   }
@@ -139,4 +173,35 @@ export default {
 </script>
 
 <style scoped>
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-item {
+  margin: 0 5px;
+}
+
+.page-link {
+  padding: 5px 10px;
+  border: 1px solid #dee2e6;
+  background-color: #fff;
+  color: #007bff;
+}
+
+.page-link:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.page-link:focus {
+  box-shadow: none;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  cursor: not-allowed;
+}
 </style>

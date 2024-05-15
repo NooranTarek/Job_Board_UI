@@ -192,7 +192,7 @@ export const useUserStore = defineStore({
         throw error;
       }
     },
-    async getEmployerApplications(user_id) {
+    async getEmployerApplications(pageNumber, user_id) {
       try {
         const token = localStorage.getItem("token");
         let config = "";
@@ -204,7 +204,7 @@ export const useUserStore = defineStore({
           };
         }
         const response = await axiosInstance.get(
-          `/applications/usersJobs/${user_id}`,
+          `/applications/usersJobs/${user_id}?page=${pageNumber}`,
           config
         );
         return response;
