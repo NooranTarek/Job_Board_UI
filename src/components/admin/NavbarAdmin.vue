@@ -1,7 +1,29 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Wuzzufny</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <img class="img1" src="https://cdn-icons-png.freepik.com/512/6134/6134762.png" />
+    <div class="div1">
+      <a id="navbar-brand" href="#">
+        A
+        <span>-</span>M
+        <span>-</span>N
+        <span>-</span>H
+      </a>
+      <p id="navbar-brand2" href="#">
+        <span id="letter">A</span>spire
+        <span id="letter">M</span>atch
+        <span id="letter">N</span>etwork
+        <span id="letter">H</span>ub
+      </p>
+    </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
 

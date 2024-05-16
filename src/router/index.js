@@ -18,7 +18,7 @@ import manageJobsComponent from "../components/admin/job/manageJobsComponent.vue
 import JobList from "../components/job/JobList.vue";
 import JobDetails from "../components/job/JobDetails.vue";
 import JobSearch from "../components/job/JobSearch.vue";
-
+import NavbarView from "../components/Candidate/NavbarView.vue";
 import NavbarEmployer from "../components/employer/navbarEmployer.vue";
 
 import CandidateStatistics from "../components/Candidate/CandidateStatistics.vue"
@@ -131,9 +131,16 @@ const routes = [
 
   //! Unautjorized pages _______________________________________________________________
 
-  { path: "/login", component: LoginView },
-  { path: "/register", component: RegisterView },
-  { path: "/", component: JobSearch },
+  { 
+    path: "/", 
+    component: NavbarView,
+    children: [
+      { path: "", component: JobSearch },
+      { path: "login", component: LoginView },
+      { path: "register", component: RegisterView },
+
+    ]
+  },
 
   // { path: "/jobs", component: JobList },
   // { path: "/jobs/search", component: JobSearch },

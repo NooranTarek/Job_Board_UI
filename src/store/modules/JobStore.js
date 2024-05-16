@@ -125,7 +125,7 @@ export const JobStore = defineStore("jobstore", {
                     };
                 }
                 const resp = await axiosInstance.put(`jobs/${id}`, jobForm,config);
-                console.log(resp);
+                // console.log(resp);
             } catch (error) {
                 console.log("Error changing job status:", error)
             }
