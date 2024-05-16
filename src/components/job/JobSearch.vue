@@ -114,15 +114,23 @@
                   <p class="card-text">
                     <strong>Work Type:</strong> {{ job.work_type }}
                   </p>
+                  <p class="card-text mb-0">
+                    <strong>Application Deadline:</strong>
+                    {{ job.application_deadline.slice(0, 10) }}
+                  </p>
+                  <!-- <p class="card-text"><strong>Created At:</strong> {{ job.created_at.slice(0, 10) }}</p>
+                  <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>                     -->
                   <div style="
                       display: flex;
                       justify-content: space-between;
                       align-items: center;
                     ">
                     <div>
-                      <p class="card-text mb-0">
-                        <strong>Application Deadline:</strong>
-                        {{ job.application_deadline.slice(0, 10) }}
+                      <p v-show="specifyRole('employer')" class="card-text">
+                        <strong>Status: </strong>
+                        <span :class="getStatusClass(job.status)">
+                          {{ job.status }}
+                        </span>
                       </p>
                     </div>
 
@@ -135,9 +143,7 @@
                       </div>
                       <div class="d-flex justify-content-between" style="width: 220px">
                         <div class="col-6 pe-1">
-                          <router-link v-show="specifyRole('employer')"
-                            :to="{ name: 'updateJob', params: { id: job.id } }"
-                            class="w-100 btn btn-info mt-auto mb-1">Update</router-link>
+                          <router-link v-show="!['approved', 'rejected'].includes(job.status)" :to="{ name: 'updateJob', params: { id: job.id } }" class="w-100 btn btn-info mt-auto mb-1">Update</router-link>
                         </div>
                         <div class="col-6 ps-1">
                           <button v-show="specifyRole('employer')" class="w-100 btn btn-danger mt-auto mb-1"
@@ -148,13 +154,9 @@
                       </div>
                     </div>
                   </div>
-                  <!-- <p class="card-text"><strong>Status:</strong> {{ job.status }}</p> -->
-                  <!-- <p class="card-text"><strong>Created At:</strong> {{ job.created_at.slice(0, 10) }}</p>
-                <p class="card-text"><strong>Updated At:</strong> {{ job.updated_at.slice(0, 10) }}</p>                     -->
-                </div>
-                <!-- <button class="btn btn-primary mt-auto">View Details</button> -->
 
-                <!-- <router-link v-show="specifyRole('employer')" :to="{ name: 'EmployerJobDetails', params: { id: job.id } }" class="btn btn-primary mt-auto mb-1">View Details</router-link> -->
+                </div>
+
               </div>
             </div>
           </div>
@@ -300,6 +302,16 @@ export default {
         console.error("Error deleting job:", error);
       }
     },
+
+    getStatusClass(status) {
+      // Define classes based on status value
+      return {
+        'p-1 rounded text-bg-success': status === 'approved',
+        'p-1 rounded text-bg-danger': status === 'rejected',
+        'p-1 rounded text-bg-warning': status === 'pending',
+      };
+    },
+
   },
 
   // watch: {
