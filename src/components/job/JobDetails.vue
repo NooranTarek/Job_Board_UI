@@ -1,6 +1,12 @@
 <template>
   <div class="container">
-    <div class="row">
+  <div v-if="loaded==false" style="text-align: center;">
+    <button style="margin: 30px auto;" class="btn btn-primary" type="button" disabled>
+        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+  </div>
+    <div class="row" v-else>
       <div v-if="job" class="col-md-8">
         <div class="card">
           <div class="card-body">
@@ -123,6 +129,7 @@ export default {
       phoneNumber: "",
       resume: null,
       resumeName: "",
+      loaded:false
     };
   },
   methods: {
@@ -160,6 +167,7 @@ export default {
             application.job_listings_id == jobId &&
             application.user_id == userId
         );
+        this.loaded = true;
       } catch (error) {
         console.error("Error checking if user applied:", error);
         // Handle error, e.g., show an error message to the user
