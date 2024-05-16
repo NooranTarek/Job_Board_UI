@@ -2,8 +2,12 @@
   <div class="container-fluid">
     <div class="row pt-3 px-5">
       <!-- Input fields -->
-      <div class="inputFields col-lg-6 col-xl-3 ps-5">
-        <div class="p-5 bg-body-emphasis border rounded-3 shadow-sm my-2">
+      <div class="inputFields col-lg-6 col-xl-3 ps-5" >
+        <div class="p-5 border rounded-3 shadow-sm my-2" style="
+        box-shadow: 3px 3px 3px 5px #f3f3f3;
+        /* Add background image */
+        background-color: rgba(0, 0, 0, 0.02);
+        ">
           <div class="gx-5 gy-3">
             <h4 class="text-info-emphasis">Search</h4>
             <div class="searchArea p-5 border rounded-3">
@@ -15,21 +19,30 @@
                   {{ field }}
                 </option>
               </select>
-              <!-- Add more content here if needed -->
             </div>
           </div>
 
           <div class="gx-5 gy-3 pt-5">
             <h4 class="text-info-emphasis">Filters</h4>
-            <div class="searchArea p-5 border rounded-3">
-              <span class="d-block mb-2">Work Place:</span>
-              <select class="form-select" v-model="workPlace" @change="searchJobs">
-                <option value="" selected>Unselected</option>
-                <option value="remote">Remote</option>
-                <option value="on-site">On-site</option>
-                <option value="hybrid">Hybrid</option>
-              </select>
-              <!-- Add more content here if needed -->
+            <div class="p-5 border rounded-3">
+              <div v-show="specifyRole('employer')" class="py-2">
+                <span class="d-block mb-2">Status:</span>
+                <select class="form-select" v-model="jobStatus" @change="searchJobs">
+                  <option value="" selected>Unselected</option>
+                  <option value="pending">Pending</option>
+                  <option value="approved">Approved</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+              <div class="py-2">
+                <span class="d-block mb-2">Work Place:</span>
+                <select class="form-select" v-model="workPlace" @change="searchJobs">
+                  <option value="" selected>Unselected</option>
+                  <option value="remote">Remote</option>
+                  <option value="on-site">On-site</option>
+                  <option value="hybrid">Hybrid</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
@@ -45,8 +58,14 @@
                 width: 90%;
                 margin: 10px auto;
                 box-shadow: 3px 3px 3px 5px #f3f3f3;
-              ">
-              <div class="card-body d-flex flex-column">
+                /* Add background image */
+                background-image: url('https://onlinepngtools.com/images/png/illustrations/change-png-opacity.png');
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-color: rgba(0, 0, 0, 0.02);
+                ">
+                <div class="card-body d-flex flex-column">
                 <div v-show="specifyRole('candidate')" class="row align-items-center my-0">
                   <div class="col-10">
                     <!-- Wrap the title within the same router-link -->
@@ -68,7 +87,7 @@
                     class=""
                     >
                       <img :src="job.logo" alt="Company Logo" style="width: 150px; height: 150px"
-                        class="rounded-circle pe-5" />
+                        class="rounded-circle " />
                     </router-link>
                   </div>
                 </div>
@@ -93,7 +112,7 @@
                     class=""
                     >
                       <img :src="job.logo" alt="Company Logo" style="width: 150px; height: 150px"
-                        class="rounded-circle pe-5" />
+                        class="rounded-circle " />
                     </router-link>
                   </div>
                 </div>
@@ -200,6 +219,7 @@ export default {
       loading: false,
       searchFields: [],
       workPlace: "",
+      jobStatus: "",
       limit: 8,
       currentPage: 1,
       totalPages: 0,
@@ -263,6 +283,10 @@ export default {
             params.filters.work_type = this.workPlace;
           }
 
+          if (this.jobStatus !== "") {
+            params.filters.status = this.jobStatus;
+          }
+
           await this.joblist.getJobs(params);
         } else {
           // If searchTerm is not empty, perform search based on searchTerm and searchBy
@@ -270,6 +294,10 @@ export default {
 
           if (this.workPlace !== "") {
             params.filters.work_type = this.workPlace;
+          }
+
+          if (this.jobStatus !== "") {
+            params.filters.status = this.jobStatus;
           }
 
           await this.joblist.getJobs({
