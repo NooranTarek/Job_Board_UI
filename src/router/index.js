@@ -111,17 +111,17 @@ const routes = [
         name: 'monitorApplications',
       },
       {
-        path: '/employer/pendingApplications',
+        path: '/employer/pendingApplications/:id',
         component: pendingApplications,
         name: 'pendingApplications',
       },
       {
-        path: '/employer/approvedApplications',
+        path: '/employer/approvedApplications/:id',
         component: approvedApplications,
         name: 'approvedApplications',
       },
       {
-        path: '/employer/rejectedApplications',
+        path: '/employer/rejectedApplications/:id',
         component: rejectedApplications,
         name: 'rejectedApplications',
       },

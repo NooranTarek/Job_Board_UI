@@ -20,17 +20,20 @@
         <div>
           <ul class="nav nav-tabs navtab-custom">
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/employer/pendingApplications">Pending</RouterLink>
+              <RouterLink class="nav-link" :to="`/employer/pendingApplications/${user_id}`">Pending</RouterLink>
             </li>
             <li class="nav-item">
               <RouterLink
                 class="nav-link"
-                to="/employer/approvedApplications"
                 style="color: rgb(0, 119, 255) !important;font-weight: 700;"
+                :to="`/employer/approvedApplications/${user_id}`"
               >Approved</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/employer/rejectedApplications">Rejected</RouterLink>
+              <RouterLink
+                class="nav-link"
+                :to="`/employer/rejectedApplications/${user_id}`"
+              >Rejected</RouterLink>
             </li>
           </ul>
           <div class="tab-content">
@@ -151,7 +154,8 @@ export default {
       loading: true,
       data: {
         applications: []
-      }
+      },
+      user_id: 0
     };
   },
   methods: {
@@ -160,11 +164,10 @@ export default {
         const id = this.$route.params.id;
         const response = await useUserStore().getEmployerApplications(
           pageNumber,
-          1
+          id
         );
         this.data = response.data;
         this.loading = false;
-        console.log(this.data);
       } catch (error) {
         console.error("Error fetching employer applications", error);
         this.loading = false;
@@ -176,7 +179,6 @@ export default {
   },
   computed: {
     filteredApplications() {
-      console.log("55555", this.data.applications);
       if (
         this.data.applications.data &&
         this.data.applications.data.length > 0
@@ -189,8 +191,12 @@ export default {
       }
     }
   },
-  created() {
+  async created() {
     this.getEmployerApplications();
+    if (localStorage.getItem("token")) {
+      const user = await useUserStore().fetchUser();
+      this.user_id = user.id;
+    }
   }
 };
 </script>

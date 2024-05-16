@@ -39,7 +39,7 @@
           <RouterLink class="nav-link" to="/employer/add">Add Job</RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink class="nav-link" to="/employer/pendingApplications">Monitor Applications</RouterLink>
+          <RouterLink class="nav-link" :to="`/employer/pendingApplications/${user_id}`">Monitor Applications</RouterLink>
         </li>
       </ul>
 
@@ -82,7 +82,7 @@ export default {
       }
       user.value = reactiveUserStore.user;
       // console.log(user.value);
-      user_id.value = user.value.id; // Update user_id value
+      user_id.value = user.value.id; 
       console.log(user_id.value);
     });
 
