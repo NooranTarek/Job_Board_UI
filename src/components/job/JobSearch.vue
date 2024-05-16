@@ -6,7 +6,7 @@
         <div class="p-5 border rounded-3 shadow-sm my-2" style="
         box-shadow: 3px 3px 3px 5px #f3f3f3;
         /* Add background image */
-        background-color: rgba(0, 0, 0, 0.02);
+        background-color: rgba(0, 0, 0, 0.01);
         ">
           <div class="gx-5 gy-3">
             <h4 class="text-info-emphasis">Search</h4>
@@ -54,18 +54,20 @@
         <div class="row g-3">
           <div v-for="job in joblist.jobs" :key="job.id" class="col-md-12 mt-3 overflow-hidden">
             <div class="card mb-4 px-5" style="
-                height: 100%;
-                width: 90%;
-                margin: 10px auto;
-                box-shadow: 3px 3px 3px 5px #f3f3f3;
-                /* Add background image */
-                background-image: url('https://onlinepngtools.com/images/png/illustrations/change-png-opacity.png');
-                background-size: contain;
-                background-position: center;
-                background-repeat: no-repeat;
-                background-color: rgba(0, 0, 0, 0.02);
-                ">
-                <div class="card-body d-flex flex-column">
+            height: 100%;
+            width: 90%;
+            margin: 10px auto;
+            box-shadow: 3px 3px 3px 5px #f3f3f3;
+            position: relative;"
+          >
+
+          <!-- Background Image -->
+          <div class="background-image"></div>
+          
+          <!-- Overlay -->
+          <div class="overlay"></div>
+          
+              <div class="card-body d-flex flex-column">
                 <div v-show="specifyRole('candidate')" class="row align-items-center my-0">
                   <div class="col-10">
                     <!-- Wrap the title within the same router-link -->
@@ -87,7 +89,7 @@
                     class=""
                     >
                       <img :src="job.logo" alt="Company Logo" style="width: 150px; height: 150px"
-                        class="rounded-circle " />
+                        class="rounded-circle" />
                     </router-link>
                   </div>
                 </div>
@@ -112,7 +114,7 @@
                     class=""
                     >
                       <img :src="job.logo" alt="Company Logo" style="width: 150px; height: 150px"
-                        class="rounded-circle " />
+                        class="rounded-circle" />
                     </router-link>
                   </div>
                 </div>
@@ -384,5 +386,31 @@ export default {
 
 .card-text {
   margin-bottom: 0.5rem;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://onlinepngtools.com/images/png/illustrations/change-png-opacity.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, .75);
+}
+
+.card-body {
+  z-index: 1;
 }
 </style>
