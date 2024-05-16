@@ -247,7 +247,7 @@ export default {
         if (firstJob) {
           const allFields = Object.keys(firstJob); // Extract all fields from the first job object
           // Exclude specific fields like "id"
-          const excludedFields = ["id", "logo", "user_id", "work_type"];
+          const excludedFields = ["id", "logo", "user_id", "work_type", "status"];
           this.searchFields = allFields.filter(
             (field) => !excludedFields.includes(field)
           );
