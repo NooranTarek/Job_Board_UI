@@ -244,6 +244,7 @@ export default {
         });
         toast.success("Job Posted successfully");
         this.errors = {};
+        this.resetForm();
       } catch (error) {
         if (error.response && error.response.status === 422) {
           this.errors = error.response.data.errors;
@@ -253,6 +254,22 @@ export default {
           toast.error("Error Posting job. Please try again later.");
         }
       }
+    },
+    resetForm() {
+      this.job = {
+        title: "",
+        description: "",
+        responsibilities: "",
+        skills: "",
+        qualifications: "",
+        salary_range: "",
+        benefits: "",
+        location: "",
+        work_type: "",
+        logo: null,
+        application_deadline: "",
+      };
+      this.v$.$reset();
     },
     handleLogoUpload(event) {
       const file = event.target.files[0];

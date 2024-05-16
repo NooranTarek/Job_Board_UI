@@ -23,27 +23,33 @@ import NavbarEmployer from "../components/employer/navbarEmployer.vue";
 
 import CandidateStatistics from "../components/Candidate/CandidateStatistics.vue"
 import EmployerDashboard from "../components/employer/EmployerDashboard.vue";
+import monitorApplications from "../components/employer/monitorApplications.vue";
+import pendingApplications from '../components/employer/pendingApplications.vue';
+import approvedApplications from '../components/employer/approvedApplications.vue';
+import rejectedApplications from '../components/employer/rejectedApplications.vue';
+
+
 const routes = [
   //! Candidate pages _______________________________________________________________
 
   {
-    path: "/",
+    path: "/candidate",
     component: CandidateView,
     children: [
-      { path: "/candidate/home", component: JobSearch },
-      { path: "/candidate/jobs/:id", component: JobDetails, name: "CandidateJobDetails" },
+      { path: "home", component: JobSearch },
+      { path: "jobs/:id", component: JobDetails, name: "CandidateJobDetails" },
 
-      { path: "/candidate/profile", component: CandidateProfile },
-      { path: "/candidate/CandidateStatistics", component: CandidateStatistics },
+      { path: "profile", component: CandidateProfile },
+      { path: "CandidateStatistics", component: CandidateStatistics },
       {
-        path: "/candidate/CandidateProfileApplication",
+        path: "CandidateProfileApplication",
         component: CandidateProfileApplication,
       },
       {
-        path: "/candidate/CandidateUpdateProfileForm",
+        path: "CandidateUpdateProfileForm",
         component: CandidateUpdateProfileForm,
       },
-      { path: "/candidate/WelcomeCandidate", component: WelcomeCandidate },
+      { path: "WelcomeCandidate", component: WelcomeCandidate },
     ],
     meta: { requiresAuth: true, requiredRole: "candidate" },
   },
@@ -60,9 +66,9 @@ const routes = [
         props: true, // This allows passing route params as props to the component
       },
       { path: "/admin/manageJobs", 
-        component: manageJobsComponent ,
-        name: "manageJobs",
-      },
+      component: manageJobsComponent ,
+      name: "manageJobsComponent",
+    },
       {
         path: "employer", // Define the route with a parameter
         name: "EmployerMonitor",
@@ -79,25 +85,45 @@ const routes = [
     path: "/employer",
     component: NavbarEmployer,
     children: [
-      { path: "/employer/home", component: JobSearch },
-      { path: "/employer/jobs/:id", component: JobDetails, name: "EmployerJobDetails" },
+      { path: "home", component: JobSearch },
+      { path: "jobs/:id", component: JobDetails, name: "EmployerJobDetails" },
 
-      { path: "/employer/add", 
+      { path: "add", 
         component: CreateJob ,
         name: "addJob",
       },
       {
-        path: '/employer/dashboard/:id',
+        path: 'dashboard/:id',
         component: EmployerDashboard,
         name: 'dashboards',
       },
-      { path: "/employer/managejobs", 
+      { path: "managejobs", 
       component:  JobSearch,
       name: "manageJobs",
       },
-      { path: "/employer/update/:id", 
+      { path: "update/:id", 
       component: UpdateJob ,
       name: "updateJob",
+      },
+      {
+        path: '/employer/applications',
+        component: monitorApplications,
+        name: 'monitorApplications',
+      },
+      {
+        path: '/employer/pendingApplications',
+        component: pendingApplications,
+        name: 'pendingApplications',
+      },
+      {
+        path: '/employer/approvedApplications',
+        component: approvedApplications,
+        name: 'approvedApplications',
+      },
+      {
+        path: '/employer/rejectedApplications',
+        component: rejectedApplications,
+        name: 'rejectedApplications',
       },
     ],
     meta: { requiresAuth: true, requiredRole: "employer" },
@@ -107,6 +133,8 @@ const routes = [
 
   { path: "/login", component: LoginView },
   { path: "/register", component: RegisterView },
+  { path: "/", component: JobSearch },
+
   // { path: "/jobs", component: JobList },
   // { path: "/jobs/search", component: JobSearch },
 ];
@@ -127,21 +155,21 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   
-  if (to.path === '/') {
-    // Redirect based on the user's role
-    const user = await userStore.fetchUser();
-    if (user.role === 'candidate') {
-        next('/candidate/home');
-    } else if (user.role === 'employer') {
-        next('/employer/home');
-    } else if (user.role === 'admin') {
-        next('/admin');
-    } else {
-        // Redirect to login if role not specified
-        next('/login');
-    }
-    return;
-  }
+  // if (to.path === '/') {
+  //   // Redirect based on the user's role
+  //   const user = await userStore.fetchUser();
+  //   if (user.role === 'candidate') {
+  //       next('/candidate/home');
+  //   } else if (user.role === 'employer') {
+  //       next('/employer/home');
+  //   } else if (user.role === 'admin') {
+  //       next('/admin');
+  //   } else {
+  //       // Redirect to login if role not specified
+  //       next('/login');
+  //   }
+  //   return;
+  // }
 
   if (to.matched.some((record) => record.meta.requiredRole)) {
     try {

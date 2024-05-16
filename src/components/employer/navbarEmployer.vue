@@ -33,10 +33,13 @@
           <RouterLink class="nav-link" :to="`/employer/dashboard/${user_id}`">Dashboard</RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink class="nav-link" to="/employer/managejobs">manage jobs</RouterLink>
+          <RouterLink class="nav-link" to="/employer/home">manage jobs</RouterLink>
         </li>
         <li class="nav-item">
           <RouterLink class="nav-link" to="/employer/add">Add Job</RouterLink>
+        </li>
+        <li class="nav-item">
+          <RouterLink class="nav-link" to="/employer/pendingApplications">Monitor Applications</RouterLink>
         </li>
       </ul>
 

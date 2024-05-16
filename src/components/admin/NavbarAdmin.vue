@@ -17,7 +17,7 @@
             <router-link class="nav-link" :to="{ name: 'EmployerMonitor' }">Monitor Employers</router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link" :to="{ name: 'manageJobs' }">Monitor Jobs</router-link>
+            <router-link class="nav-link" :to="{ name: 'manageJobsComponent' }">Monitor Jobs</router-link>
         </li>
 
 

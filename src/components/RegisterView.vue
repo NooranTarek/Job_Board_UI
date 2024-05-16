@@ -66,7 +66,7 @@
                       <font-awesome-icon icon="key" class="me-3 mt-4" />
                         <div data-mdb-input-init class="form-outline flex-fill mb-0">
                       <label class="form-label" for="form3Example4cd" >Image</label>
-                      <input type="file" id="form3Example4cd" class="form-control" name="file_upload" accept=".jpg" @change="onChange($event)" />
+                      <input type="file" id="form3Example4cd" class="form-control" name="file_upload" accept=".jpg" @change="onChangeImage($event)" />
                       <!-- <span v-if="v$.password.confirm.$error" class="text-danger"> {{ v$.image.$error.$message }} </span> -->
                     </div>
                   </div>
@@ -145,7 +145,7 @@ methods: {
   onChange(event){
       this.role = event.target.value;
   },
-  onChange(event){
+  onChangeImage(event){
     console.log(event.target.files[0]);
       this.image = event.target.files[0];
 
