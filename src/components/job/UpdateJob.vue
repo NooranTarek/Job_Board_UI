@@ -159,11 +159,13 @@ import axiosInstance from "../../axios";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { useVuelidate } from "@vuelidate/core";
-
+import { useUserStore } from "../../store/modules/UserProfilePinia";
 import { helpers, required, maxLength, numeric } from "@vuelidate/validators";
 export default {
   setup() {
-    return { v$: useVuelidate() };
+    const userStore = useUserStore();
+    userStore.fetchUser();
+    return { v$: useVuelidate(), userStore, user: userStore.user };
   },
   data() {
     return {
@@ -232,11 +234,15 @@ export default {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (response.data.application_deadline) {
-        response.data.application_deadline =
-          response.data.application_deadline.split(" ")[0];
+      if (this.user.id === response.data.user_id) {
+        if (response.data.application_deadline) {
+          response.data.application_deadline =
+            response.data.application_deadline.split(" ")[0];
+        }
+        this.job = response.data;
+      } else {
+        this.$router.push("/employer/home");
       }
-      this.job = response.data;
     } catch (error) {
       console.error("Error fetching job:", error);
       toast.error("Error fetching job data. Please try again later.");
