@@ -1,18 +1,17 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <img class="img1" src="https://cdn-icons-png.freepik.com/512/6134/6134762.png" />
+    <img
+      class="img1"
+      src="https://cdn-icons-png.freepik.com/512/6134/6134762.png"
+    />
     <div class="div1">
       <a id="navbar-brand" href="#">
         A
-        <span>-</span>M
-        <span>-</span>N
-        <span>-</span>H
+        <span>-</span>M <span>-</span>N <span>-</span>H
       </a>
-      <p id="navbar-brand2" >
-        <span id="letter">A</span>spire
-        <span id="letter">M</span>atch
-        <span id="letter">N</span>etwork
-        <span id="letter">H</span>ub
+      <p id="navbar-brand2">
+        <span id="letter">A</span>spire <span id="letter">M</span>atch
+        <span id="letter">N</span>etwork <span id="letter">H</span>ub
       </p>
     </div>
     <button
@@ -33,33 +32,35 @@
           <RouterLink class="nav-link" to="/candidate/home">Home</RouterLink>
         </li>
         <li v-if="specifyRole('any')" class="nav-item">
-          <RouterLink class="nav-link" to="/candidate/profile">my-Profile</RouterLink>
+          <RouterLink class="nav-link" to="/candidate/profile"
+            >my-Profile</RouterLink
+          >
         </li>
-        <li v-if="specifyRole('admin')" class="nav-item">
+        <!-- <li v-if="specifyRole('admin')" class="nav-item">
           <RouterLink class="nav-link" to="user-monitor">user-monitor</RouterLink>
-        </li>
+        </li> -->
       </ul>
 
-        <ul class="navbar-nav">
-          <li v-if="!specifyRole('any')" class="nav-item active">
-            <RouterLink class="nav-link" to="/">Home</RouterLink>
-          </li>
-        </ul>
-        <ul class="navbar-nav ms-auto">
-          <li v-if="specifyRole('any')" class="nav-item">
-            <img v-if="user" style="width:50px;" :src="user.image" alt />
-          </li>
-          <li v-if="!specifyRole('any')" class="nav-item active">
-            <RouterLink class="nav-link" to="/login">Login</RouterLink>
-          </li>
-          <li v-if="!specifyRole('any')" class="nav-item">
-            <RouterLink class="nav-link" to="/register">Register</RouterLink>
-          </li>
-          <li v-if="specifyRole('any')" class="nav-item" @click="logout">
-            <span style="cursor: pointer;" class="nav-link">Logout</span>
-          </li>
-        </ul>
-      </div>
+      <ul class="navbar-nav">
+        <li v-if="!specifyRole('any')" class="nav-item active">
+          <RouterLink class="nav-link" to="/">Home</RouterLink>
+        </li>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <li v-if="specifyRole('any')" class="nav-item">
+          <img v-if="user" style="width: 50px" :src="user.image" alt />
+        </li>
+        <li v-if="!specifyRole('any')" class="nav-item active">
+          <RouterLink class="nav-link" to="/login">Login</RouterLink>
+        </li>
+        <li v-if="!specifyRole('any')" class="nav-item">
+          <RouterLink class="nav-link" to="/register">Register</RouterLink>
+        </li>
+        <li v-if="specifyRole('any')" class="nav-item" @click="logout">
+          <span style="cursor: pointer" class="nav-link">Logout</span>
+        </li>
+      </ul>
+    </div>
   </nav>
   <section>
     <router-view></router-view>
@@ -103,8 +104,8 @@ export default {
         toast.error(error.response?.data.error);
         console.error("Error updating user:", error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

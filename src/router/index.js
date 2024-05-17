@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter, RouterLink } from "vue-router";
+import { createWebHistory, createRouter } from "vue-router";
 import HomeView from "../components/Candidate/HomeView.vue";
 import CandidateView from "../components/Candidate/CandidateView.vue";
 import LoginView from "../components/LoginView.vue";
@@ -11,34 +11,30 @@ import UpdateJob from "../components/job/UpdateJob.vue";
 import WelcomeCandidate from "../components/Candidate/WelcomeCandidate.vue";
 import UserMonitor from "../components/admin/UserMonitor.vue";
 import EmployerMonitor from "../components/admin/EmployerMonitor.vue";
-
+import NotFound from "../components/NotFound.vue"; // Import the NotFound component
 import NavbarAdmin from "../components/admin/NavbarAdmin.vue";
-import { useUserStore } from "../store/modules/UserProfilePinia"; 
+import { useUserStore } from "../store/modules/UserProfilePinia";
 import manageJobsComponent from "../components/admin/job/manageJobsComponent.vue";
 import JobList from "../components/job/JobList.vue";
 import JobDetails from "../components/job/JobDetails.vue";
 import JobSearch from "../components/job/JobSearch.vue";
 import NavbarView from "../components/Candidate/NavbarView.vue";
 import NavbarEmployer from "../components/employer/navbarEmployer.vue";
-
-import CandidateStatistics from "../components/Candidate/CandidateStatistics.vue"
+import CandidateStatistics from "../components/Candidate/CandidateStatistics.vue";
 import EmployerDashboard from "../components/employer/EmployerDashboard.vue";
 import monitorApplications from "../components/employer/monitorApplications.vue";
-import pendingApplications from '../components/employer/pendingApplications.vue';
-import approvedApplications from '../components/employer/approvedApplications.vue';
-import rejectedApplications from '../components/employer/rejectedApplications.vue';
-
+import pendingApplications from "../components/employer/pendingApplications.vue";
+import approvedApplications from "../components/employer/approvedApplications.vue";
+import rejectedApplications from "../components/employer/rejectedApplications.vue";
 
 const routes = [
-  //! Candidate pages _______________________________________________________________
-
+  // Candidate pages
   {
     path: "/candidate",
     component: CandidateView,
     children: [
       { path: "home", component: JobSearch },
       { path: "jobs/:id", component: JobDetails, name: "CandidateJobDetails" },
-
       { path: "profile", component: CandidateProfile },
       { path: "CandidateStatistics", component: CandidateStatistics },
       {
@@ -53,98 +49,87 @@ const routes = [
     ],
     meta: { requiresAuth: true, requiredRole: "candidate" },
   },
-
-  //! Admin pages _______________________________________________________________
+  // Admin pages
   {
     path: "/admin",
     component: NavbarAdmin,
     children: [
       { path: "jobs/:id", component: JobDetails, name: "AdminJobDetails" },
       {
-        path: "candidate", // Define the route with a parameter
+        path: "candidate",
         name: "UserMonitor",
         component: UserMonitor,
-        props: true, // This allows passing route params as props to the component
+        props: true,
       },
-      { path: "/admin/manageJobs", 
-      component: manageJobsComponent ,
-      name: "manageJobsComponent",
-    },
       {
-        path: "employer", // Define the route with a parameter
+        path: "manageJobs",
+        component: manageJobsComponent,
+        name: "manageJobsComponent",
+      },
+      {
+        path: "employer",
         name: "EmployerMonitor",
         component: EmployerMonitor,
-        props: true, // This allows passing route params as props to the component
+        props: true,
       },
     ],
     props: true,
     meta: { requiresAuth: true, requiredRole: "admin" },
   },
-  //! Employer pages _______________________________________________________________
-
+  // Employer pages
   {
     path: "/employer",
     component: NavbarEmployer,
     children: [
       { path: "home", component: JobSearch },
       { path: "jobs/:id", component: JobDetails, name: "EmployerJobDetails" },
-
-      { path: "add", 
-        component: CreateJob ,
-        name: "addJob",
-      },
+      { path: "add", component: CreateJob, name: "addJob" },
       {
-        path: 'dashboard/:id',
+        path: "dashboard/:id",
         component: EmployerDashboard,
-        name: 'dashboards',
+        name: "dashboards",
       },
-      { path: "managejobs", 
-      component:  JobSearch,
-      name: "manageJobs",
-      },
-      { path: "update/:id", 
-      component: UpdateJob ,
-      name: "updateJob",
-      },
+      { path: "managejobs", component: JobSearch, name: "manageJobs" },
+      { path: "update/:id", component: UpdateJob, name: "updateJob" },
       {
-        path: '/employer/applications',
+        path: "applications",
         component: monitorApplications,
-        name: 'monitorApplications',
+        name: "monitorApplications",
       },
       {
-        path: '/employer/pendingApplications/:id',
+        path: "pendingApplications/:id",
         component: pendingApplications,
-        name: 'pendingApplications',
+        name: "pendingApplications",
       },
       {
-        path: '/employer/approvedApplications/:id',
+        path: "approvedApplications/:id",
         component: approvedApplications,
-        name: 'approvedApplications',
+        name: "approvedApplications",
       },
       {
-        path: '/employer/rejectedApplications/:id',
+        path: "rejectedApplications/:id",
         component: rejectedApplications,
-        name: 'rejectedApplications',
+        name: "rejectedApplications",
       },
     ],
     meta: { requiresAuth: true, requiredRole: "employer" },
   },
-
-  //! Unautjorized pages _______________________________________________________________
-
-  { 
-    path: "/", 
+  // Unauthorized pages
+  {
+    path: "/",
     component: NavbarView,
     children: [
       { path: "", component: JobSearch },
       { path: "login", component: LoginView },
       { path: "register", component: RegisterView },
-
-    ]
+    ],
   },
-
-  // { path: "/jobs", component: JobList },
-  // { path: "/jobs/search", component: JobSearch },
+  // Catch-all route for 404 Not Found page
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: NotFound,
+  },
 ];
 
 const router = createRouter({
@@ -156,28 +141,30 @@ router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
 
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-
     if (!localStorage.getItem("token")) {
       next({ path: "/login", query: { redirect: to.fullPath } });
       return;
     }
   }
-  
-  // if (to.path === '/') {
-  //   // Redirect based on the user's role
-  //   const user = await userStore.fetchUser();
-  //   if (user.role === 'candidate') {
-  //       next('/candidate/home');
-  //   } else if (user.role === 'employer') {
-  //       next('/employer/home');
-  //   } else if (user.role === 'admin') {
-  //       next('/admin');
-  //   } else {
-  //       // Redirect to login if role not specified
-  //       next('/login');
-  //   }
-  //   return;
-  // }
+  const user = await userStore.fetchUser();
+  if (
+    to.path === "/" &&
+    localStorage.getItem("token") &&
+    user.role === "admin"
+  ) {
+    // Redirect logged-in users trying to access the login page
+    next({ path: "/admin/candidate", query: { redirect: to.fullPath } });
+    return;
+  }
+  if (
+    to.path === "/login" &&
+    localStorage.getItem("token") &&
+    user.role === "admin"
+  ) {
+    // Redirect logged-in users trying to access the login page
+    next({ path: "/admin/candidate", query: { redirect: to.fullPath } });
+    return;
+  }
 
   if (to.matched.some((record) => record.meta.requiredRole)) {
     try {
@@ -195,12 +182,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  // Proceed to the next route
   next();
 });
-
-
-
-
 
 export default router;
