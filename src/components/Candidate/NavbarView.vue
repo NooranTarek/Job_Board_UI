@@ -8,7 +8,7 @@
         <span>-</span>N
         <span>-</span>H
       </a>
-      <p id="navbar-brand2" href="#">
+      <p id="navbar-brand2" >
         <span id="letter">A</span>spire
         <span id="letter">M</span>atch
         <span id="letter">N</span>etwork
