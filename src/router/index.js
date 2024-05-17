@@ -73,7 +73,7 @@ const routes = [
         props: true, // This allows passing route params as props to the component
       },
       {
-        path: "/admin/manageJobs",
+        path: "manageJobs",
         component: manageJobsComponent,
         name: "manageJobs",
       },
