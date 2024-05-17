@@ -36,18 +36,11 @@ const routes = [
     path: "/candidate",
     component: CandidateView,
     children: [
-      { path: "/candidate/home", component: JobSearch },
-      {
-        path: "/candidate/jobs/:id",
-        component: JobDetails,
-        name: "CandidateJobDetails",
-      },
+      { path: "home", component: JobSearch },
+      { path: "jobs/:id", component: JobDetails, name: "CandidateJobDetails" },
 
-      { path: "/candidate/profile", component: CandidateProfile },
-      {
-        path: "/candidate/CandidateStatistics",
-        component: CandidateStatistics,
-      },
+      { path: "profile", component: CandidateProfile },
+      { path: "CandidateStatistics", component: CandidateStatistics },
       {
         path: "CandidateProfileApplication",
         component: CandidateProfileApplication,
@@ -72,11 +65,10 @@ const routes = [
         component: UserMonitor,
         props: true, // This allows passing route params as props to the component
       },
-      {
-        path: "manageJobs",
-        component: manageJobsComponent,
-        name: "manageJobsComponent",
-      },
+      { path: "/admin/manageJobs", 
+      component: manageJobsComponent ,
+      name: "manageJobsComponent",
+    },
       {
         path: "employer", // Define the route with a parameter
         name: "EmployerMonitor",
@@ -93,41 +85,61 @@ const routes = [
     path: "/employer",
     component: NavbarEmployer,
     children: [
-      { path: "/employer/home", component: JobSearch },
-      {
-        path: "/employer/jobs/:id",
-        component: JobDetails,
-        name: "EmployerJobDetails",
-      },
+      { path: "home", component: JobSearch },
+      { path: "jobs/:id", component: JobDetails, name: "EmployerJobDetails" },
 
-      { path: "/employer/add", component: CreateJob, name: "addJob" },
+      { path: "add", 
+        component: CreateJob ,
+        name: "addJob",
+      },
       {
-        path: "dashboard/:id",
+        path: 'dashboard/:id',
         component: EmployerDashboard,
-        name: "dashboards",
+        name: 'dashboards',
+      },
+      { path: "managejobs", 
+      component:  JobSearch,
+      name: "manageJobs",
+      },
+      { path: "update/:id", 
+      component: UpdateJob ,
+      name: "updateJob",
       },
       {
-        path: "/employer/managejobs",
-        component: JobSearch,
-        name: "manageJobs",
+        path: '/employer/applications',
+        component: monitorApplications,
+        name: 'monitorApplications',
       },
-      { path: "/employer/update/:id", component: UpdateJob, name: "updateJob" },
+      {
+        path: '/employer/pendingApplications/:id',
+        component: pendingApplications,
+        name: 'pendingApplications',
+      },
+      {
+        path: '/employer/approvedApplications/:id',
+        component: approvedApplications,
+        name: 'approvedApplications',
+      },
+      {
+        path: '/employer/rejectedApplications/:id',
+        component: rejectedApplications,
+        name: 'rejectedApplications',
+      },
     ],
     meta: { requiresAuth: true, requiredRole: "employer" },
   },
 
   //! Unautjorized pages _______________________________________________________________
 
-  //! Unautjorized pages _______________________________________________________________
-
-  {
-    path: "/",
+  { 
+    path: "/", 
     component: NavbarView,
     children: [
       { path: "", component: JobSearch },
       { path: "login", component: LoginView },
       { path: "register", component: RegisterView },
-    ],
+
+    ]
   },
 
   // { path: "/jobs", component: JobList },
@@ -149,7 +161,22 @@ router.beforeEach(async (to, from, next) => {
       return;
     }
   }
-
+  
+  // if (to.path === '/') {
+  //   // Redirect based on the user's role
+  //   const user = await userStore.fetchUser();
+  //   if (user.role === 'candidate') {
+  //       next('/candidate/home');
+  //   } else if (user.role === 'employer') {
+  //       next('/employer/home');
+  //   } else if (user.role === 'admin') {
+  //       next('/admin');
+  //   } else {
+  //       // Redirect to login if role not specified
+  //       next('/login');
+  //   }
+  //   return;
+  // }
 
   if (to.matched.some((record) => record.meta.requiredRole)) {
     try {
@@ -166,6 +193,8 @@ router.beforeEach(async (to, from, next) => {
       return;
     }
   }
+
+  // Proceed to the next route
   next();
 });
 
