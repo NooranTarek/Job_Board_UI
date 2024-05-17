@@ -115,7 +115,7 @@ methods: {
         })
         localStorage.setItem('token', response.data.token);
         localStorage.setItem("role", response.data.role);
-        if(response.data.role==='admin')  this.$router.push('admin/candidate');
+        if(response.data.role==='admin')  this.$router.push('candidate');
         else if(response.data.role==='candidate')  this.$router.push('/candidate/home');
         else if(response.data.role==='employer')  this.$router.push('/employer/home');
 
