@@ -68,6 +68,31 @@
           <div class="overlay"></div>
           
               <div class="card-body d-flex flex-column">
+                <div v-show="specifyRole('admin')" class="row align-items-center my-0">
+                  <div class="col-10">
+                    <!-- Wrap the title within the same router-link -->
+                    <router-link :to="{
+                      name: 'AdminJobDetails',
+                      params: { id: job.id },
+                    }" class="text-decoration-none text-black">
+                      <h2 class="card-title text-primary" style="font-size: 25px">
+                        {{ job.title }}
+                      </h2>
+                    </router-link>
+                  </div>
+                  <div class="col-2 overflow-hidden" style="text-align: center">
+                    <!-- Wrap the logo within the router-link -->
+                    <router-link :to="{
+                      name: 'AdminJobDetails',
+                      params: { id: job.id },
+                    }"
+                    class=""
+                    >
+                      <img v-show="job.logo" :src="job.logo" alt="Company Logo" style="width: 150px; height: 150px"
+                        class="rounded-circle" />
+                    </router-link>
+                  </div>
+                </div>
                 <div v-show="specifyRole('candidate')" class="row align-items-center my-0">
                   <div class="col-10">
                     <!-- Wrap the title within the same router-link -->
@@ -157,8 +182,14 @@
 
                     <div>
                       <div>
-                        <router-link v-show="!specifyRole('employer')" style="width: 150px" :to="{
+                        <router-link v-show="specifyRole('candidate')" style="width: 150px" :to="{
                           name: 'CandidateJobDetails',
+                          params: { id: job.id },
+                        }" class="btn btn-primary mt-auto mb-1">View Details</router-link>
+                      </div>
+                      <div>
+                        <router-link v-show="specifyRole('admin')" style="width: 150px" :to="{
+                          name: 'AdminJobDetails',
                           params: { id: job.id },
                         }" class="btn btn-primary mt-auto mb-1">View Details</router-link>
                       </div>
