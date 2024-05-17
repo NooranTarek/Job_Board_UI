@@ -118,9 +118,17 @@ const routes = [
 
   //! Unautjorized pages _______________________________________________________________
 
-  { path: "/login", component: LoginView },
-  { path: "/register", component: RegisterView },
-  { path: "/", component: JobSearch },
+  //! Unautjorized pages _______________________________________________________________
+
+  {
+    path: "/",
+    component: NavbarView,
+    children: [
+      { path: "", component: JobSearch },
+      { path: "login", component: LoginView },
+      { path: "register", component: RegisterView },
+    ],
+  },
 
   // { path: "/jobs", component: JobList },
   // { path: "/jobs/search", component: JobSearch },
@@ -141,22 +149,7 @@ router.beforeEach(async (to, from, next) => {
       return;
     }
   }
-  
-  // // if (to.path === '/') {
-  // //   // Redirect based on the user's role
-  // //   const user = await userStore.fetchUser();
-  // //   if (user.role === 'candidate') {
-  // //       next('/candidate/home');
-  // //   } else if (user.role === 'employer') {
-  // //       next('/employer/home');
-  // //   } else if (user.role === 'admin') {
-  // //       next('/admin');
-  // //   } else {
-  // //       // Redirect to login if role not specified
-  // //       next('/');
-  // //   }
-  // //   return;
-  // // }
+
 
   if (to.matched.some((record) => record.meta.requiredRole)) {
     try {
@@ -173,8 +166,6 @@ router.beforeEach(async (to, from, next) => {
       return;
     }
   }
-
-  // Proceed to the next route
   next();
 });
 
