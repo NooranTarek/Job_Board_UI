@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row pt-3 px-5">
       <!-- Input fields -->
-      <div class="inputFields col-lg-6 col-xl-3 ps-5" >
+      <div class="inputFields col-lg-6 col-xxl-3 ps-5" >
         <div class="p-5 border rounded-3 shadow-sm my-2" style="
         box-shadow: 3px 3px 3px 5px #f3f3f3;
         /* Add background image */
@@ -50,7 +50,7 @@
 
       <!-- Display job list or loading indicator -->
       <div v-if="loading">Loading...</div>
-      <div v-else class="col-lg-6 col-xl-9">
+      <div v-else class="col-lg-6 col-xxl-9">
         <div class="row g-3">
           <div v-for="job in joblist.jobs" :key="job.id" class="col-md-12 mt-3 overflow-hidden">
             <div class="card mb-4 px-5" style="
@@ -88,7 +88,7 @@
                     }"
                     class=""
                     >
-                      <img :src="job.logo" alt="Company Logo" style="width: 150px; height: 150px"
+                      <img v-show="job.logo" :src="job.logo" alt="Company Logo" style="width: 150px; height: 150px"
                         class="rounded-circle" />
                     </router-link>
                   </div>
@@ -113,7 +113,7 @@
                     }"
                     class=""
                     >
-                      <img :src="job.logo" alt="Company Logo" style="width: 150px; height: 150px"
+                      <img v-show="job.logo" :src="job.logo" alt="Company Logo" style="width: 150px; height: 150px"
                         class="rounded-circle" />
                     </router-link>
                   </div>
@@ -164,7 +164,9 @@
                       </div>
                       <div class="d-flex justify-content-between" style="width: 220px">
                         <div class="col-6 pe-1">
-                          <router-link v-show="!['approved', 'rejected'].includes(job.status)" :to="{ name: 'updateJob', params: { id: job.id } }" class="w-100 btn btn-info mt-auto mb-1">Update</router-link>
+                          <div v-show="specifyRole('employer')">
+                            <router-link v-show="!['approved', 'rejected'].includes(job.status)" :to="{ name: 'updateJob', params: { id: job.id } }" class="w-100 btn btn-info mt-auto mb-1">Update</router-link>
+                          </div>
                         </div>
                         <div class="col-6 ps-1">
                           <button v-show="specifyRole('employer')" class="w-100 btn btn-danger mt-auto mb-1"
