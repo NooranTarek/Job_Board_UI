@@ -24,6 +24,14 @@
               <strong>Application Deadline:</strong>
               {{ job.application_deadline.slice(0, 10) }}
             </p>
+            <div>
+              <p v-show="specifyRole('employer')" class="card-text mb-2">
+                <strong>Status: </strong>
+                <span :class="getStatusClass(job.status)">
+                  {{ job.status }}
+                </span>
+              </p>
+            </div>
             <!-- <p><strong>Status:</strong> {{ job.status }}</p> -->
             <p class="card-text">
               <strong>Created At:</strong> {{ job.created_at.slice(0, 10) }}
@@ -227,6 +235,16 @@ export default {
         console.error("Error deleting job:", error);
       }
     },
+
+    getStatusClass(status) {
+      // Define classes based on status value
+      return {
+        'p-1 rounded text-bg-success': status === 'approved',
+        'p-1 rounded text-bg-danger': status === 'rejected',
+        'p-1 rounded text-bg-warning': status === 'pending',
+      };
+    },
+    
   },
 
   async beforeMount() {
