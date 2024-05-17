@@ -144,6 +144,7 @@ validations(){
 methods: {
   onChange(event){
       this.role = event.target.value;
+      console.log(this.role);
   },
   onChangeImage(event){
     console.log(event.target.files[0]);

@@ -36,11 +36,18 @@ const routes = [
     path: "/candidate",
     component: CandidateView,
     children: [
-      { path: "home", component: JobSearch },
-      { path: "jobs/:id", component: JobDetails, name: "CandidateJobDetails" },
+      { path: "/candidate/home", component: JobSearch },
+      {
+        path: "/candidate/jobs/:id",
+        component: JobDetails,
+        name: "CandidateJobDetails",
+      },
 
-      { path: "profile", component: CandidateProfile },
-      { path: "CandidateStatistics", component: CandidateStatistics },
+      { path: "/candidate/profile", component: CandidateProfile },
+      {
+        path: "/candidate/CandidateStatistics",
+        component: CandidateStatistics,
+      },
       {
         path: "CandidateProfileApplication",
         component: CandidateProfileApplication,
@@ -65,10 +72,11 @@ const routes = [
         component: UserMonitor,
         props: true, // This allows passing route params as props to the component
       },
-      { path: "/admin/manageJobs", 
-      component: manageJobsComponent ,
-      name: "manageJobsComponent",
-    },
+      {
+        path: "/admin/manageJobs",
+        component: manageJobsComponent,
+        name: "manageJobs",
+      },
       {
         path: "employer", // Define the route with a parameter
         name: "EmployerMonitor",
@@ -85,62 +93,34 @@ const routes = [
     path: "/employer",
     component: NavbarEmployer,
     children: [
-      { path: "home", component: JobSearch },
-      { path: "jobs/:id", component: JobDetails, name: "EmployerJobDetails" },
+      { path: "/employer/home", component: JobSearch },
+      {
+        path: "/employer/jobs/:id",
+        component: JobDetails,
+        name: "EmployerJobDetails",
+      },
 
-      { path: "add", 
-        component: CreateJob ,
-        name: "addJob",
-      },
+      { path: "/employer/add", component: CreateJob, name: "addJob" },
       {
-        path: 'dashboard/:id',
+        path: "dashboard/:id",
         component: EmployerDashboard,
-        name: 'dashboards',
-      },
-      { path: "managejobs", 
-      component:  JobSearch,
-      name: "manageJobs",
-      },
-      { path: "update/:id", 
-      component: UpdateJob ,
-      name: "updateJob",
+        name: "dashboards",
       },
       {
-        path: '/employer/applications',
-        component: monitorApplications,
-        name: 'monitorApplications',
+        path: "/employer/managejobs",
+        component: JobSearch,
+        name: "manageJobs",
       },
-      {
-        path: '/employer/pendingApplications/:id',
-        component: pendingApplications,
-        name: 'pendingApplications',
-      },
-      {
-        path: '/employer/approvedApplications/:id',
-        component: approvedApplications,
-        name: 'approvedApplications',
-      },
-      {
-        path: '/employer/rejectedApplications/:id',
-        component: rejectedApplications,
-        name: 'rejectedApplications',
-      },
+      { path: "/employer/update/:id", component: UpdateJob, name: "updateJob" },
     ],
     meta: { requiresAuth: true, requiredRole: "employer" },
   },
 
   //! Unautjorized pages _______________________________________________________________
 
-  { 
-    path: "/", 
-    component: NavbarView,
-    children: [
-      { path: "", component: JobSearch },
-      { path: "login", component: LoginView },
-      { path: "register", component: RegisterView },
-
-    ]
-  },
+  { path: "/login", component: LoginView },
+  { path: "/register", component: RegisterView },
+  { path: "/", component: JobSearch },
 
   // { path: "/jobs", component: JobList },
   // { path: "/jobs/search", component: JobSearch },
@@ -162,21 +142,21 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   
-  // if (to.path === '/') {
-  //   // Redirect based on the user's role
-  //   const user = await userStore.fetchUser();
-  //   if (user.role === 'candidate') {
-  //       next('/candidate/home');
-  //   } else if (user.role === 'employer') {
-  //       next('/employer/home');
-  //   } else if (user.role === 'admin') {
-  //       next('/admin');
-  //   } else {
-  //       // Redirect to login if role not specified
-  //       next('/login');
-  //   }
-  //   return;
-  // }
+  // // if (to.path === '/') {
+  // //   // Redirect based on the user's role
+  // //   const user = await userStore.fetchUser();
+  // //   if (user.role === 'candidate') {
+  // //       next('/candidate/home');
+  // //   } else if (user.role === 'employer') {
+  // //       next('/employer/home');
+  // //   } else if (user.role === 'admin') {
+  // //       next('/admin');
+  // //   } else {
+  // //       // Redirect to login if role not specified
+  // //       next('/');
+  // //   }
+  // //   return;
+  // // }
 
   if (to.matched.some((record) => record.meta.requiredRole)) {
     try {
