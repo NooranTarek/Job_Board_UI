@@ -75,7 +75,7 @@ const routes = [
       {
         path: "manageJobs",
         component: manageJobsComponent,
-        name: "manageJobs",
+        name: "manageJobsComponent",
       },
       {
         path: "employer", // Define the route with a parameter
