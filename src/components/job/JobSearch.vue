@@ -157,7 +157,7 @@
 
                     <div>
                       <div>
-                        <router-link v-show="specifyRole('candidate')" style="width: 150px" :to="{
+                        <router-link v-show="!specifyRole('employer')" style="width: 150px" :to="{
                           name: 'CandidateJobDetails',
                           params: { id: job.id },
                         }" class="btn btn-primary mt-auto mb-1">View Details</router-link>
