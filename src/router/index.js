@@ -59,6 +59,7 @@ const routes = [
     path: "/admin",
     component: NavbarAdmin,
     children: [
+      { path: "jobs/:id", component: JobDetails, name: "AdminJobDetails" },
       {
         path: "candidate", // Define the route with a parameter
         name: "UserMonitor",
