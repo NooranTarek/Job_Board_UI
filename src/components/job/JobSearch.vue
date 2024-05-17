@@ -182,12 +182,14 @@
 
                     <div>
                       <div>
+                        <button  v-show="specifyRole('candidate')" class="opacity-0">View Details</button>
                         <router-link v-show="specifyRole('candidate')" style="width: 150px" :to="{
                           name: 'CandidateJobDetails',
                           params: { id: job.id },
                         }" class="btn btn-primary mt-auto mb-1">View Details</router-link>
                       </div>
                       <div>
+                        <button  v-show="specifyRole('admin')" class="opacity-0">View Details</button>
                         <router-link v-show="specifyRole('admin')" style="width: 150px" :to="{
                           name: 'AdminJobDetails',
                           params: { id: job.id },
