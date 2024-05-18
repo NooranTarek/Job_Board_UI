@@ -1,25 +1,33 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row align-items-center">
       <div class="col-lg-3 col-md-4">
         <div class="text-center card-box">
           <div class="member-card">
             <div class="thumb-xl member-thumb m-b-10 center-block">
               <img
-                :src="user.image ? user.image : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'"
+                :src="
+                  user.image
+                    ? user.image
+                    : 'https://cdn-icons-png.flaticon.com/512/7415/7415181.png'
+                "
                 class="img-circle img-thumbnail"
                 alt="profile-image"
               />
             </div>
             <div>
-              <h4 class="m-b-5">{{ user ? user.name : 'Loading...' }}</h4>
+              <h4 class="m-b-5">{{ user ? user.name : "Loading..." }}</h4>
             </div>
             <div class="text-left m-t-40">
               <p class="text-muted font-13">
-                <span class="m-l-15">{{ user ? user.email : 'Loading...' }}</span>
+                <span class="m-l-15">{{
+                  user ? user.email : "Loading..."
+                }}</span>
               </p>
               <p class="text-muted font-13">
-                <span class="m-l-15">{{ user ? user.role : 'Loading...' }}</span>
+                <span class="m-l-15">{{
+                  user ? user.role : "Loading..."
+                }}</span>
               </p>
             </div>
           </div>
@@ -29,38 +37,56 @@
       <div class="col-md-8 col-lg-9">
         <div>
           <div>
- <ul class="nav nav-tabs navtab-custom">
+            <ul class="nav nav-tabs navtab-custom">
               <li class>
-                <RouterLink class="nav-link" to="/candidate/WelcomeCandidate">Welcome</RouterLink>
+                <RouterLink class="nav-link" to="/candidate/WelcomeCandidate"
+                  >Welcome</RouterLink
+                >
               </li>
               <li class>
-                <RouterLink class="nav-link" to="/candidate/CandidateUpdateProfileForm">Settings</RouterLink>
+                <RouterLink
+                  class="nav-link"
+                  to="/candidate/CandidateUpdateProfileForm"
+                  >Settings</RouterLink
+                >
               </li>
               <li class>
-                <RouterLink class="nav-link" to="/candidate/CandidateProfileApplication">Applications</RouterLink>
+                <RouterLink
+                  class="nav-link"
+                  to="/candidate/CandidateProfileApplication"
+                  >Applications</RouterLink
+                >
               </li>
-                <li class>
-                <RouterLink class="nav-link" to="/candidate/CandidateStatistics">Statistics</RouterLink>
+              <li class>
+                <RouterLink class="nav-link" to="/candidate/CandidateStatistics"
+                  >Statistics</RouterLink
+                >
               </li>
             </ul>
-            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div id="chart_container">
-        <div>
-            <img id="chart_image" src="https://www.recruiter.com/recruiting/wp-content/uploads/2022/03/recruiting-data.jpg">
-        </div>
-    <div id="chart"></div> 
 
+        <div id="chart_container" class="row">
+          <div class="col-md-6">
+            <div id="chart"></div>
+          </div>
+          <div class="col-6">
+            <img
+            id="chart_image"
+            src="https://www.recruiter.com/recruiting/wp-content/uploads/2022/03/recruiting-data.jpg"
+            />
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 import { useUserStore } from "../../store/modules/UserProfilePinia";
-import ApexCharts from 'apexcharts'
+import ApexCharts from "apexcharts";
 
 export default {
   setup() {
@@ -74,71 +100,74 @@ export default {
 
     onMounted(async () => {
       applications.value = await fetchApplications();
-      renderChart(); 
+      renderChart();
     });
 
     const renderChart = () => {
       const statusCounts = {};
-      applications.value.forEach(application => {
+      applications.value.forEach((application) => {
         const status = application.status;
         statusCounts[status] = (statusCounts[status] || 0) + 1;
       });
 
-const chartOptions = {
-  series: Object.values(statusCounts),
-  chart: {
-    type: 'donut',
-    animations: {
-      enabled: true,
-      easing: 'easeinout',
-      speed: 800,
-      animateGradually: {
-        enabled: true,
-        delay: 150
-      },
-      dynamicAnimation: {
-        enabled: true,
-        speed: 350
-      }
-    }
-  },
-  labels: Object.keys(statusCounts),
-  colors: ['#FAD223', '#75A338', '#CF4E53'] 
-};
+      const chartOptions = {
+        series: Object.values(statusCounts),
+        chart: {
+          type: "donut",
+          animations: {
+            enabled: true,
+            easing: "easeinout",
+            speed: 800,
+            animateGradually: {
+              enabled: true,
+              delay: 150,
+            },
+            dynamicAnimation: {
+              enabled: true,
+              speed: 350,
+            },
+          },
+        },
+        labels: Object.keys(statusCounts),
+        colors: ["#FAD223", "#75A338", "#CF4E53"],
+      };
 
+      const chart = new ApexCharts(
+        document.querySelector("#chart"),
+        chartOptions
+      );
 
-      const chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
-      chart.render();
+      chart.render().then(() => {
+        const svgElements = document.querySelectorAll('#chart svg');
+        if (svgElements.length > 1) {
+          for (let i = 0; i < svgElements.length - 1; i++) {
+            svgElements[i].parentNode.removeChild(svgElements[i]);
+          }
+        }
+      });
+
     };
 
+    
+
     return { applications, user };
-  }
+  },
 };
 </script>
 
-
 <style scoped>
-#chart_image{
-    width: 420px;
-    height: 450px;
-    margin-left: 400px;
-
+#chart_image {
+  width: 100%;
+  mix-blend-mode: multiply;
 }
-#chart_container{
-    width: 800px;
-    margin-left: 300px;
-    margin-top: -390px;
-    height: 400px;
-    background-color: white;
-}
-#chart{
-    width: 450px;
-    margin-top: -400px;
-    margin-left: -20px;
+#chart_container {
 
-
+  background-color: transparent;
 }
-.resume{
+#chart {
+  width: 100%;
+}
+.resume {
   font-size: 80px;
   margin-left: 80px;
 }
