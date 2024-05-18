@@ -215,10 +215,10 @@ export default {
       try {
         await axiosInstance.post("/applications/", application, config);
         this.$router.push({ path: "/candidate/home" });
-        toast.success("Job Posted successfully");
+        toast.success("application added successfully");
       } catch (err) {
         console.log("error posting = ", err);
-        toast.error("Error Posting application. Please try again later.");
+        toast.error("Error Posting application. Please try again.");
       }
     },
 

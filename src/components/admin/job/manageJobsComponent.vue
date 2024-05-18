@@ -42,34 +42,45 @@
         </div>
       </div>
     </ul>
+    <div v-if="totalCount > 0">
+            <Pagination :currentPage="currentPage" :totalPages="totalPages" :totalCount="totalCount"
+              @page-changed="handlePageChange" />
+          </div>
   </div>
 </template>
 
   
-  <script>
+<script>
 import { JobStore } from '../../../store/modules/JobStore';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheck ,faXmark} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Pagination from '../../reusable/Pagination.vue';
 
 library.add(faCheck,faXmark);
 
 export default {
   components: {
     FontAwesomeIcon,
-  },
+    Pagination
+},
   data: () => ({
     joblist: JobStore(),
+    limit: 10,
+      currentPage: 1,
+      totalPages: 0,
+      totalCount: 0,
+      loading:false
   }),
   async beforeMount() {
-    await this.joblist.getAllJobs();
+    await this.searchJobs();
   },
   methods: {
     async approveJob(job) {
       try {
         job.status = 'approved';
         await this.joblist.changeJobStatus(job.id, job); 
-        await this.joblist.getAllJobs();
+        await this.searchJobs();
       } catch (error) {
         console.error('Error approving job:', error);
       }
@@ -79,9 +90,31 @@ export default {
       try {
         job.status = 'rejected';
         await this.joblist.changeJobStatus(job.id, job); 
-        await this.joblist.getAllJobs();
+        await this.searchJobs();
       } catch (error) {
         console.error('Error rejecting job:', error);
+      }
+    },
+    async handlePageChange(page) {
+      this.currentPage = page;
+      await this.searchJobs();
+    },
+    async searchJobs() {
+      this.loading = true;
+      try {
+        let params = { page: this.currentPage, limit: this.limit };
+        params.filters = {};
+
+        const token = localStorage.getItem("token");
+          await this.joblist.getJobs(params);
+
+        this.currentPage = this.joblist.currentPage;
+        this.totalPages = this.joblist.totalPages;
+        this.totalCount = this.joblist.totalCount;
+      } catch (error) {
+        console.error("Error searching for jobs:", error);
+      } finally {
+        this.loading = false;
       }
     },
   },

@@ -9,7 +9,7 @@ export const JobStore = defineStore("jobstore", {
         totalCount : 0,
     }),
     actions: {
-        async getAllJobs() {
+        async getAllJobs(pageNumber) {
             try {
                 const token = localStorage.getItem("token");
                 let config = "";
@@ -20,7 +20,7 @@ export const JobStore = defineStore("jobstore", {
                     },
                     };
                 }
-                const response = await axiosInstance.get("jobs",config);
+                const response = await axiosInstance.get(`jobs?page=${page}`,config);
                 this.jobs = response.data.data;
                 // console.log(response);
             } catch (error) {
