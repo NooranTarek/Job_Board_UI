@@ -49,6 +49,7 @@ export const useUserStore = defineStore({
         config
       );
       this.user = response.data;
+      console.log("hello");
       console.log(response.data);
       if (response.data.success === true) {
         toast.success(response.data.message, "🤝");
