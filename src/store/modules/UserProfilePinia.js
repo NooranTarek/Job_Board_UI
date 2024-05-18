@@ -54,11 +54,11 @@ export const useUserStore = defineStore({
         toast.success(response.data.message, "🤝");
       } else {
         // console.log(response.data.errors.email[0]);
-        if (response.data.errors.name) {
-          toast.error(response.data.errors.name[0], "👎");
+        if (response.data.message) {
+          toast.error(response.data.message, "👎");
         } else {
           console.log("from email");
-          toast.error(response.data.errors.email[0], "👎");
+          toast.error(response.data.message, "👎");
         }
       }
     },
