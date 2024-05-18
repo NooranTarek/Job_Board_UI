@@ -34,32 +34,37 @@ export const useUserStore = defineStore({
       }
     },
     async updateUser(userData) {
-      const token = localStorage.getItem("token");
-      let config = "";
-      if (token) {
-        config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-      }
-      const response = await axiosInstance.put(
-        `/users/${userData.id}`,
-        userData,
-        config
-      );
-      this.user = response.data;
-      console.log("hello");
-      console.log(response.data);
-      if (response.data.success === true) {
-        toast.success(response.data.message, "🤝");
-      } else {
-        // console.log(response.data.errors.email[0]);
-        if (response.data.message) {
-          toast.error(response.data.message, "👎");
+      try {
+        const token = localStorage.getItem("token");
+        let config = "";
+        if (token) {
+          config = {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          };
+        }
+        const response = await axiosInstance.put(
+          `/users/${userData.id}`,
+          userData,
+          config
+        );
+
+        this.user = response.data;
+        if (response.data.success === true) {
+          toast.success(response.data.message, "🤝");
+        } 
+      } catch (error) {
+        console.error("Error updating user:", error);
+          if (error.response && error.response.data && error.response.data.message) {
+          const errorMessage = error.response.data.message;
+          if (errorMessage.includes("SQLSTATE[23505]")) {
+            toast.error("Email duplicated", "👎");
+          } else {
+            toast.error("An error occurred while updating the user.", "👎");
+          }
         } else {
-          console.log("from email");
-          toast.error(response.data.message, "👎");
+          toast.error("An error occurred while updating the user.", "👎");
         }
       }
     },
